@@ -25,9 +25,11 @@ public class Order {
     @OneToMany(mappedBy = "reportedOrder", fetch = FetchType.LAZY)
     private List<OrderReport> orderReports = new ArrayList<OrderReport>();
 
+    @Enumerated(EnumType.STRING)
+    private OrderCategory category;
+
     private String title;
     private String content;
-    private OrderCategory category;
     private int cost;
     private boolean isPayed;
     private LocalDateTime orderDateTime;

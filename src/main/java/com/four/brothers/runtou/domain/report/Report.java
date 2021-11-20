@@ -18,6 +18,7 @@ public abstract class Report {
     @JoinColumn(name = "REPORTER_NUMBER")
     private User reporter;
 
+    @Enumerated(EnumType.STRING)
     private ReportCategory category;
     private String content;
     private LocalDateTime reportedDateTime;
