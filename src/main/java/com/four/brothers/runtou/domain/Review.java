@@ -66,6 +66,9 @@ public class Review {
     }
 
     public void setScore(int score) {
+        if (score > 10 || score <= 0) {
+            throw new IllegalArgumentException("리뷰 점수는 1~10 사이입니다.");
+        }
         this.score = score;
     }
 
