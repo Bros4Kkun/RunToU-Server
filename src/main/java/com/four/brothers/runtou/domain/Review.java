@@ -2,10 +2,16 @@ package com.four.brothers.runtou.domain;
 
 import com.four.brothers.runtou.domain.user.Orderer;
 import com.four.brothers.runtou.domain.user.Performer;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 public class Review {
 
@@ -29,42 +35,8 @@ public class Review {
     private String content;
     private LocalDateTime reviewedDateTime;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Orderer getOrderer() {
-        return orderer;
-    }
-
-    public void setOrderer(Orderer orderer) {
-        this.orderer = orderer;
-    }
-
-    public Performer getPerformer() {
-        return performer;
-    }
-
-    public void setPerformer(Performer performer) {
-        this.performer = performer;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
+    //롬복 setter 덮어쓰기
     public void setScore(int score) {
         if (score > 10 || score <= 0) {
             throw new IllegalArgumentException("리뷰 점수는 1~10 사이입니다.");
@@ -72,19 +44,4 @@ public class Review {
         this.score = score;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDateTime getReviewedDateTime() {
-        return reviewedDateTime;
-    }
-
-    public void setReviewedDateTime(LocalDateTime reviewedDateTime) {
-        this.reviewedDateTime = reviewedDateTime;
-    }
 }
