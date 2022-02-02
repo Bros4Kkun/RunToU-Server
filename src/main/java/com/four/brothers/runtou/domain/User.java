@@ -65,4 +65,8 @@ public class User {
     message.setUser(this);
     this.chatMessages.add(message);
   }
+
+  public void changeNickname(String nickname) {
+    this.nickname = nickname;
+  }
 }
