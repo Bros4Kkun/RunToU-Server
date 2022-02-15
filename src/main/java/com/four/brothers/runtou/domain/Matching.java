@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Match extends BaseTimeEntity {
+public class Matching extends BaseTimeEntity {
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
   @Column
   private Long id;
@@ -29,10 +29,10 @@ public class Match extends BaseTimeEntity {
   @JoinColumn(name = "PERFORMER_ID", nullable = false)
   private Performer performer;
 
-  @OneToOne(mappedBy = "match", fetch = FetchType.EAGER, orphanRemoval = true)
+  @OneToOne(mappedBy = "matching", fetch = FetchType.EAGER, orphanRemoval = true)
   private Review review;
 
-  @OneToMany(mappedBy = "match")
+  @OneToMany(mappedBy = "matching")
   private List<MatchRequest> matchRequests = new ArrayList<>();
 
   @Column(nullable = false)
@@ -42,7 +42,7 @@ public class Match extends BaseTimeEntity {
   private LocalDateTime completedDateTime;
 
 
-  public Match(Boolean isCompleted, @Nullable LocalDateTime completedDateTime, OrderSheet orderSheet, Performer performer) {
+  public Matching(Boolean isCompleted, @Nullable LocalDateTime completedDateTime, OrderSheet orderSheet, Performer performer) {
     this.isCompleted = isCompleted;
     this.completedDateTime = completedDateTime;
     this.orderSheet = orderSheet;
@@ -51,14 +51,14 @@ public class Match extends BaseTimeEntity {
 
   public void updateReview(Review review) {
     if (this.review != null) {
-      this.review.setMatch(null);
+      this.review.setMatching(null);
     }
-    review.setMatch(this);
+    review.setMatching(this);
     this.review = review;
   }
 
   public void addMatchRequest(MatchRequest request) {
-    request.setMatch(this);
+    request.setMatching(this);
     this.matchRequests.add(request);
   }
 

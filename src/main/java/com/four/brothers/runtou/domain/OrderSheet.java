@@ -22,7 +22,7 @@ public class OrderSheet extends BaseTimeEntity {
   private Orderer orderer;
 
   @OneToOne(mappedBy = "orderSheet", orphanRemoval = true)
-  private Match match;
+  private Matching matching;
 
   @OneToMany(mappedBy = "orderSheet", fetch = FetchType.LAZY)
   private List<ChatRoom> chatRooms = new ArrayList<>();
@@ -61,9 +61,9 @@ public class OrderSheet extends BaseTimeEntity {
     this.wishedDeadline = wishedDeadline;
   }
 
-  public void updateMatch(Match match) {
-    match.setOrderSheet(this);
-    this.match = match;
+  public void updateMatching(Matching matching) {
+    matching.setOrderSheet(this);
+    this.matching = matching;
   }
 
   public void addChatRoom(ChatRoom room) {
