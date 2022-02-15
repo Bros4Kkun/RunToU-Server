@@ -4,7 +4,6 @@ import com.four.brothers.runtou.domain.base.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -18,8 +17,8 @@ public class Review extends BaseTimeEntity {
   private Long id;
 
   @OneToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "MATCH_ID", nullable = false, unique = true)
-  private Match match;
+  @JoinColumn(name = "MATCHING_ID", nullable = false, unique = true)
+  private Matching matching;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
@@ -29,13 +28,13 @@ public class Review extends BaseTimeEntity {
   @Column(nullable = false, length = 2024)
   private String content; //CLOB 타입
 
-  public Review(Match match, ReviewScore score, String content) {
-    this.match = match;
+  public Review(Matching matching, ReviewScore score, String content) {
+    this.matching = matching;
     this.score = score;
     this.content = content;
   }
 
-  protected void setMatch(Match match) {
-    this.match = match;
+  protected void setMatching(Matching matching) {
+    this.matching = matching;
   }
 }

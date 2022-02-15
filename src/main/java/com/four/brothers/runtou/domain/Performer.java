@@ -23,7 +23,7 @@ public class Performer extends User {
   private Long earnedMoney;
 
   @OneToMany(mappedBy = "performer")
-  private List<Match> matches = new ArrayList<>();
+  private List<Matching> matchings = new ArrayList<>();
 
   @OneToMany(mappedBy = "performer", fetch = FetchType.LAZY)
   private List<ChatRoom> chatRooms = new ArrayList<>();
@@ -35,9 +35,9 @@ public class Performer extends User {
     this.earnedMoney = earnedMoney;
   }
 
-  public void addMatch(Match match) {
-    match.setPerformer(this);
-    this.matches.add(match);
+  public void addMatching(Matching matching) {
+    matching.setPerformer(this);
+    this.matchings.add(matching);
   }
 
   public void addChatRoom(ChatRoom room) {
