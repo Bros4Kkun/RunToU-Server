@@ -1,41 +1,38 @@
 package com.four.brothers.runtou.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class SwaggerConfig {
 
-  /*
-   * Docket : Swagger 설정의 핵심이 되는 Bean
-   * useDefaultResponseMessages : Swagger에서 제공해주는 기본 응답 코드 (200, 401, 403, 404), false로 설정시 기본 응답 코드 노출X
-   * api : api 스펙이 작성되어 있는 패키지 (Controller)를 지정
-   * paths : apis 에 있는 API 중 특정 path를 선택
-   * apiInfo : Swagger UI로 노출할 정보
-   */
   @Bean
-  public Docket api() {
-    return new Docket(DocumentationType.OAS_30)
-      .select()
-      .apis(RequestHandlerSelectors.basePackage("com.four.brothers.runtou.controller"))
-      .paths(PathSelectors.any())
-      .build()
-      .apiInfo(apiInfo());
-  }
+  public OpenAPI api() {
+    Info info = new Info()
+      .title("Run-To-U")
+      .version("V1.0")
+      .contact(new Contact()
+              .name("Web Site")
+              .url("http://3.38.254.41"))
+      .license(new License()
+              .name("Apache License Version 2.0")
+              .url("http://www.apache.org/license/LICENSE-2.0"));
 
-  private ApiInfo apiInfo() {
-    return new ApiInfoBuilder()
-      .title("RunToU Swagger")
-      .description("API Testing")
-      .version("1.0")
-      .build();
+    SecurityScheme auth = new SecurityScheme()
+      .type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.HEADER).name("JSESSIONID");
+    SecurityRequirement securityRequirement = new SecurityRequirement().addList("basicAuth");
+
+    return new OpenAPI()
+      .components(new Components().addSecuritySchemes("basicAuth", auth))
+      .addSecurityItem(securityRequirement)
+      .info(info);
   }
 
 }
