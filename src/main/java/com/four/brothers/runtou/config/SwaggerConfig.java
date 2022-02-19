@@ -26,7 +26,7 @@ public class SwaggerConfig {
               .url("http://www.apache.org/license/LICENSE-2.0"));
 
     SecurityScheme auth = new SecurityScheme()
-      .type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.HEADER).name("JSESSIONID");
+      .type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.COOKIE).name("JSESSIONID");
     SecurityRequirement securityRequirement = new SecurityRequirement().addList("basicAuth");
 
     return new OpenAPI()
