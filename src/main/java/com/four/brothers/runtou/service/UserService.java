@@ -6,6 +6,7 @@ import com.four.brothers.runtou.dto.UserDto;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
 import com.four.brothers.runtou.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class UserService {
   private final OrdererRepository ordererRepository;
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
   /**
    * 회원가입 메서드
@@ -27,7 +29,7 @@ public class UserService {
   public boolean signUpAsOrderer(OrdererDto.SignUpRequest signUpRequest) {
     String accountId = signUpRequest.getAccountId();
     String nickname = signUpRequest.getNickname();
-    String password = signUpRequest.getPassword();
+    String password = passwordEncoder.encode(signUpRequest.getPassword());
     String phoneNumber = signUpRequest.getPhoneNumber();
     String accountNumber = signUpRequest.getAccountNumber();
 
