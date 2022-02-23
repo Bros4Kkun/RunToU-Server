@@ -20,7 +20,7 @@ public class User {
   @Column(nullable = false, length = 30, unique = true)
   private String accountId;
 
-  @Column(nullable = false, length = 50)
+  @Column(nullable = false)
   private String password;
 
   @Column(nullable = false, length = 30, unique = true)
