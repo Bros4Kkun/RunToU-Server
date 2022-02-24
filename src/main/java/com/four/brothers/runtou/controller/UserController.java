@@ -39,13 +39,6 @@ public class UserController {
       throw new IllegalArgumentException("요청시 작성된 json의 형식이나 값이 잘못되었습니다.");
     }
 
-    Enumeration<String> headerNames = requestMsg.getHeaderNames();
-    while (headerNames.hasMoreElements()) {
-      String name = headerNames.nextElement();
-      log.info("Requst Header - " + name + ": " + requestMsg.getHeader(name));
-    }
-
-
     return new SignUpResponse(userService.signUpAsOrderer(request));
   }
 
