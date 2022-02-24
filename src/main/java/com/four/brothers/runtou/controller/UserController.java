@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Enumeration;
+
 import static com.four.brothers.runtou.dto.OrdererDto.*;
 import static com.four.brothers.runtou.dto.UserDto.*;
 
@@ -29,11 +33,18 @@ public class UserController {
   public SignUpResponse signUp(
     @Parameter(name = "회원 정보")
     @Validated @RequestBody SignUpRequest request,
-    BindingResult bindingResult
+    BindingResult bindingResult, HttpServletRequest requestMsg
   ) {
     if (bindingResult.hasFieldErrors()) {
       throw new IllegalArgumentException("요청시 작성된 json의 형식이나 값이 잘못되었습니다.");
     }
+
+    Enumeration<String> headerNames = requestMsg.getHeaderNames();
+    while (headerNames.hasMoreElements()) {
+      String name = headerNames.nextElement();
+      log.info("Requst Header - " + name + ": " + requestMsg.getHeader(name));
+    }
+
 
     return new SignUpResponse(userService.signUpAsOrderer(request));
   }
