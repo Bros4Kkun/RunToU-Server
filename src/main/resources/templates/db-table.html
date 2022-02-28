@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Table - Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+  <link href="/css/styles.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+  <style>
+    .error-class {
+      color: rgba(255, 60, 0, 0.99);
+    }
+  </style>
+</head>
+<body class="sb-nav-fixed">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+  <!-- Navbar Brand-->
+  <h1 class="navbar-brand ps-3">관리자용 DB 관리</h1>
+  <!-- Navbar-->
+  <button class="btn btn-primary d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0" type="button" th:onclick="|location.href='@{/admin/db/logout}'|">
+    Logout
+  </button>
+</nav>
+<div id="layoutSidenav">
+  <div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+      <div class="sb-sidenav-menu">
+        <div class="nav">
+          <div class="sb-sidenav-menu-heading">Database Table</div>
+          <a class="nav-link" th:href="@{/admin/db/table/user}">
+            USER
+          </a>
+          <a class="nav-link" th:href="@{/admin/db/table/post}">
+            POST
+          </a>
+          <a class="nav-link" th:href="@{/admin/db/table/comment}">
+            COMMENT
+          </a>
+          <a class="nav-link" th:href="@{/admin/db/table/follow}">
+            FOLLOW
+          </a>
+          <a class="nav-link" th:href="@{/admin/db/table/chat-room}">
+            CHAT_ROOM
+          </a>
+          <a class="nav-link" th:href="@{/admin/db/table/chat}">
+            CHAT
+          </a>
+          <a class="nav-link" th:href="@{/admin/db/table/alert}">
+            ALERT
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+        <h1 class="mt-4">Tables</h1>
+        <div class="card mb-4">
+          <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            <th:block th:text="|${entityName} - TABLE|">TEXT</th:block>
+          </div>
+          <div class="card-body">
+            <table id="datatablesSimple">
+              <thead>
+              <tr>
+                <th:block th:each="fieldName : ${dtoFieldsNames}">
+                  <th th:text="${fieldName}">FIELD NAME</th>
+                </th:block>
+                <th>삭제하기</th>
+              </tr>
+              </thead>
+              <tfoot>
+              <tr>
+                <th:block th:each="fieldName : ${dtoFieldsNames}">
+                  <th th:text="${fieldName}">FIELD NAME</th>
+                </th:block>
+                <th>삭제하기</th>
+              </tr>
+              </tfoot>
+              <tbody>
+              <tr th:each="dto : ${dtos}">
+                <th:block th:each="fieldName : ${dtoFieldsNames}">
+                  <td th:text="${dto.getFieldValueByName(fieldName)}">FIELD VALUE</td>
+                </th:block>
+                <td>
+                  <th:block th:if="${dto.id!=1 || entityName != T(com.scope.socialboardweb.service.TableNames).USER}">
+                    <form th:method="delete" th:action="@{/admin/db/table/{tableName}/{rowPk}(tableName=${entityName}, rowPk=${dto.id})}">
+                      <input type="hidden" name="_method" value="delete">
+                      <button class="btn btn-danger" type="submit">삭제</button>
+                    </form>
+                  </th:block>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+      <div class="container-fluid px-4">
+      </div>
+    </footer>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="/js/datatables-simple-demo.js"></script>
+</body>
+</html>
