@@ -79,6 +79,51 @@ public class AdminService {
     return toDto(result, MatchRequestDto.class);
   }
 
+  @Transactional
+  public void deleteOrdererRow(long rowPk) {
+    ordererRepository.deleteOrdererById(rowPk);
+  }
+
+  @Transactional
+  public void deletePerformerRow(long rowPk) {
+    performerRepository.deletePerformerById(rowPk);
+  }
+
+  @Transactional
+  public void deleteAdminRow(long rowPk) {
+    adminRepository.deleteAdminById(rowPk);
+  }
+
+  @Transactional
+  public void deleteOrderSheet(long rowPk) {
+    orderSheetRepository.deleteOrderSheetById(rowPk);
+  }
+
+  @Transactional
+  public void deleteReview(long rowPk) {
+    reviewRepository.deleteReviewById(rowPk);
+  }
+
+  @Transactional
+  public void deleteMatching(long rowPk) {
+    matchingRepository.deleteMatchingById(rowPk);
+  }
+
+  @Transactional
+  public void deleteFilterWord(long rowPk) {
+    filterWordRepository.deleteFilterWordById(rowPk);
+  }
+
+  @Transactional
+  public void deleteReport(long rowPk) {
+    reportRepository.deleteReportById(rowPk);
+  }
+
+  @Transactional
+  public void deleteMatchRequest(long rowPk) {
+    matchRequestRepository.deleteMatchingRequestById(rowPk);
+  }
+
   private <F,T extends ModelDto> List<T> toDto(List<F> entityList, Class<T> dtoType) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
     List<T> result = new ArrayList<>();
     for (F entity : entityList) {
