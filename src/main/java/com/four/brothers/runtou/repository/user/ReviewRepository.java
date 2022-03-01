@@ -2,13 +2,14 @@ package com.four.brothers.runtou.repository.user;
 
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Review;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Transactional
+@Repository
 public class ReviewRepository {
   @PersistenceContext
   EntityManager em;
