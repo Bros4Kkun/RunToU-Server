@@ -35,4 +35,14 @@ public class MatchRequestRepository {
 
     return resultList;
   }
+
+  /**
+   * pk값으로 삭제하는 메서드
+   * @param pk
+   */
+  public void deleteMatchingRequestById(long pk) {
+    String jpql = "delete from MatchRequest o " +
+      "where o.id = :pk";
+    em.createQuery(jpql).setParameter("pk", pk).executeUpdate();
+  }
 }

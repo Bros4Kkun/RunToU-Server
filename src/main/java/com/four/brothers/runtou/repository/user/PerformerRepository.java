@@ -35,4 +35,16 @@ public class PerformerRepository {
 
     return resultList;
   }
+
+  /**
+   * pk값으로 삭제하는 메서드
+   * @param pk
+   */
+  public void deletePerformerById(long pk) {
+    String jpql = "delete from Performer p " +
+      "where p.id = :pk";
+    em.createQuery(jpql)
+      .setParameter("pk", pk)
+      .executeUpdate();
+  }
 }

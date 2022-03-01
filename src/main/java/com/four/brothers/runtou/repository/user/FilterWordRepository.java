@@ -35,4 +35,14 @@ public class FilterWordRepository {
 
     return resultList;
   }
+
+  /**
+   * pk값으로 삭제하는 메서드
+   * @param pk
+   */
+  public void deleteFilterWordById(long pk) {
+    String jpql = "delete from FilterWord o " +
+      "where o.id = :pk";
+    em.createQuery(jpql).setParameter("pk", pk).executeUpdate();
+  }
 }

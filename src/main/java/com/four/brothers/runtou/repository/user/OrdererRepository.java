@@ -87,8 +87,9 @@ public class OrdererRepository {
    * @param pk 삭제할 Orderer의 pk값
    */
   public void deleteOrdererById(long pk) {
-    Orderer orderer = em.find(Orderer.class, pk);
-    em.remove(orderer);
+    String jpql = "delete from Orderer o " +
+      "where o.id = :pk";
+    em.createQuery(jpql).setParameter("pk", pk).executeUpdate();
   }
 
 
