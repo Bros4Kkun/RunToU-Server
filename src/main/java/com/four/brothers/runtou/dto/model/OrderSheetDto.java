@@ -39,4 +39,31 @@ public class OrderSheetDto implements ModelDto<OrderSheetDto, OrderSheet> {
     this.wishedDeadLine = entity.getWishedDeadline();
     return this;
   }
+
+  @Override
+  public String getFieldValueByName(String fieldName) {
+    switch (fieldName) {
+      case "id":
+        return String.valueOf(this.id);
+      case "ordererId":
+        return String.valueOf(this.ordererId);
+      case "matchingId":
+        return String.valueOf(this.matchingId);
+      case "title":
+        return this.title;
+      case "content":
+        return this.content;
+      case "category":
+        return String.valueOf(this.category);
+      case "destination":
+        return destination;
+      case "cost":
+        return String.valueOf(this.cost);
+      case "isPayed":
+        return String.valueOf(this.isPayed);
+      case "wishedDeadLine":
+        return String.valueOf(this.wishedDeadLine);
+    }
+    return "";
+  }
 }

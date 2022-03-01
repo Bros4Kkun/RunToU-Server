@@ -25,4 +25,19 @@ public class ReviewDto implements ModelDto<ReviewDto, Review> {
     this.content = entity.getContent();
     return this;
   }
+
+  @Override
+  public String getFieldValueByName(String fieldName) {
+    switch (fieldName) {
+      case "id":
+        return String.valueOf(this.id);
+      case "matchingId":
+        return String.valueOf(this.matchingId);
+      case "score":
+        return String.valueOf(this.score);
+      case "content":
+        return this.content;
+    }
+    return "";
+  }
 }

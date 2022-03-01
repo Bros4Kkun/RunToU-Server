@@ -20,4 +20,15 @@ public class FilterWordDto implements ModelDto<FilterWordDto, FilterWord> {
     this.word = entity.getWord();
     return this;
   }
+
+  @Override
+  public String getFieldValueByName(String fieldName) {
+    switch (fieldName) {
+      case "id":
+        return String.valueOf(this.id);
+      case "word":
+        return this.word;
+    }
+    return "";
+  }
 }

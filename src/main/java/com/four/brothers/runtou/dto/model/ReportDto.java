@@ -14,7 +14,7 @@ import lombok.Setter;
 public class ReportDto implements ModelDto<ReportDto, Report> {
   private Long id;
   private Long reportUserId;
-  private Long haveReportedUser;
+  private Long haveReportedUserId;
   private ReportCategory category;
   private String content;
 
@@ -22,9 +22,26 @@ public class ReportDto implements ModelDto<ReportDto, Report> {
   public ReportDto toDtoFromEntity(Report entity) {
     this.id = entity.getId();
     this.reportUserId = entity.getReportUser().getId();
-    this.haveReportedUser = entity.getHaveReportedUser().getId();
+    this.haveReportedUserId = entity.getHaveReportedUser().getId();
     this.category = entity.getCategory();
     this.content = entity.getContent();
     return this;
+  }
+
+  @Override
+  public String getFieldValueByName(String fieldName) {
+    switch (fieldName) {
+      case "id":
+        return String.valueOf(this.id);
+      case "reportUserId":
+        return String.valueOf(this.reportUserId);
+      case "haveReportedUserId":
+        return String.valueOf(this.haveReportedUserId);
+      case "category":
+        return String.valueOf(this.category);
+      case "content":
+        return this.content;
+    }
+    return "";
   }
 }

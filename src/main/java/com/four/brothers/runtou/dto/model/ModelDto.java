@@ -8,4 +8,6 @@ public interface ModelDto<T, E> {
    * @return
    */
   public T toDtoFromEntity(E entity);
+
+  public String getFieldValueByName(String fieldName);
 }

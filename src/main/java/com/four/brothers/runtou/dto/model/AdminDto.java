@@ -27,4 +27,21 @@ public class AdminDto implements ModelDto<AdminDto, Admin> {
 
     return this;
   }
+
+  @Override
+  public String getFieldValueByName(String fieldName) {
+    switch (fieldName) {
+      case "id":
+        return String.valueOf(this.id);
+      case "accountId":
+        return this.accountId;
+      case "password":
+        return this.password;
+      case "nickname":
+        return this.nickname;
+      case "accountNumber":
+        return this.accountNumber;
+    }
+    return "";
+  }
 }

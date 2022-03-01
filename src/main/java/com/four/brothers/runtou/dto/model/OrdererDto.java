@@ -30,4 +30,23 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
     this.isDoingJobNow = entity.getIsDoingJobNow();
     return this;
   }
+
+  @Override
+  public String getFieldValueByName(String fieldName) {
+    switch (fieldName) {
+      case "id":
+        return String.valueOf(this.id);
+      case "accountId":
+        return this.accountId;
+      case "password":
+        return this.password;
+      case "nickname":
+        return this.nickname;
+      case "accountNumber":
+        return this.accountNumber;
+      case "isDoingJobNow":
+        return String.valueOf(this.isDoingJobNow);
+    }
+    return "";
+  }
 }

@@ -32,4 +32,25 @@ public class PerformerDto implements ModelDto<PerformerDto, Performer> {
     this.becamePerformerDateTime = entity.getBecamePerformerDateTime();
     return this;
   }
+
+  @Override
+  public String getFieldValueByName(String fieldName) {
+    switch (fieldName) {
+      case "id":
+        return String.valueOf(this.id);
+      case "accountId":
+        return this.accountId;
+      case "password":
+        return this.password;
+      case "nickname":
+        return this.nickname;
+      case "accountNumber":
+        return this.accountNumber;
+      case "isDoingJobNow":
+        return String.valueOf(this.isDoingJobNow);
+      case "becamePerformerDateTime":
+        return String.valueOf(this.becamePerformerDateTime);
+    }
+    return "";
+  }
 }

@@ -16,7 +16,7 @@ public class MatchingDto implements ModelDto<MatchingDto, Matching> {
   private Long id;
   private Long orderSheetId;
   private Long performerId;
-  private Long ReviewId;
+  private Long reviewId;
   private Boolean isCompleted;
   private LocalDateTime completedDateTime;
 
@@ -25,9 +25,28 @@ public class MatchingDto implements ModelDto<MatchingDto, Matching> {
     this.id = entity.getId();
     this.orderSheetId = entity.getOrderSheet().getId();
     this.performerId = entity.getPerformer().getId();
-    this.ReviewId = entity.getReview().getId();
+    this.reviewId = entity.getReview().getId();
     this.isCompleted = entity.getIsCompleted();
     this.completedDateTime = entity.getCompletedDateTime();
     return this;
+  }
+
+  @Override
+  public String getFieldValueByName(String fieldName) {
+    switch (fieldName) {
+      case "id":
+        return String.valueOf(this.id);
+      case "orderSheetId":
+        return String.valueOf(this.orderSheetId);
+      case "performerId":
+        return String.valueOf(this.performerId);
+      case "reviewid":
+        return String.valueOf(this.reviewId);
+      case "isCompleted":
+        return String.valueOf(this.isCompleted);
+      case "completedDateTime":
+        return String.valueOf(this.completedDateTime);
+    }
+    return "";
   }
 }
