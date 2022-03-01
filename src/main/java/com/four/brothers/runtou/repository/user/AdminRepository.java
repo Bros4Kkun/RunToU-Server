@@ -62,9 +62,17 @@ public class AdminRepository {
    * 모든 Admin을 반환하는 메서드
    * @return
    */
-  public List<Admin> findAll() {
+  public List<Admin> findAll(int nowPage, int itemSize) {
+    if (nowPage < 1) {
+      throw new IllegalArgumentException("조회할 현재 페이지는 1 이상이어야 합니다.");
+    }
+    if (itemSize < 1) {
+      throw new IllegalArgumentException("한번에 조회할 수 있는 엔티티의 개수는 1 이상이어야 합니다.");
+    }
     String jpql = "select a from Admin a";
     List<Admin> list = em.createQuery(jpql, Admin.class)
+      .setFirstResult((nowPage - 1) * itemSize)
+      .setMaxResults(itemSize)
       .getResultList();
     return list;
   }

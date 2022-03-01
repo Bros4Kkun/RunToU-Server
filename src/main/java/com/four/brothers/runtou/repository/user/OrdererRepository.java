@@ -70,7 +70,7 @@ public class OrdererRepository {
       throw new IllegalArgumentException("조회할 현재 페이지는 1 이상이어야 합니다.");
     }
     if (itemSize < 1) {
-      throw new IllegalArgumentException("한번에 조회할 수 있는 Orderer는 1 이상이어야 합니다.");
+      throw new IllegalArgumentException("한번에 조회할 수 있는 엔티티의 개수는 1 이상이어야 합니다.");
     }
     String jpql = "select o from Orderer o";
     List<Orderer> list = em.createQuery(jpql, Orderer.class)
