@@ -95,32 +95,32 @@ public class AdminService {
   }
 
   @Transactional
-  public void deleteOrderSheet(long rowPk) {
+  public void deleteOrderSheetRow(long rowPk) {
     orderSheetRepository.deleteOrderSheetById(rowPk);
   }
 
   @Transactional
-  public void deleteReview(long rowPk) {
+  public void deleteReviewRow(long rowPk) {
     reviewRepository.deleteReviewById(rowPk);
   }
 
   @Transactional
-  public void deleteMatching(long rowPk) {
+  public void deleteMatchingRow(long rowPk) {
     matchingRepository.deleteMatchingById(rowPk);
   }
 
   @Transactional
-  public void deleteFilterWord(long rowPk) {
+  public void deleteFilterWordRow(long rowPk) {
     filterWordRepository.deleteFilterWordById(rowPk);
   }
 
   @Transactional
-  public void deleteReport(long rowPk) {
+  public void deleteReportRow(long rowPk) {
     reportRepository.deleteReportById(rowPk);
   }
 
   @Transactional
-  public void deleteMatchRequest(long rowPk) {
+  public void deleteMatchRequestRow(long rowPk) {
     matchRequestRepository.deleteMatchingRequestById(rowPk);
   }
 
