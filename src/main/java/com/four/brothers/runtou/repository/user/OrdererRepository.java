@@ -96,7 +96,7 @@ public class OrdererRepository {
    * Orderer의 계정 id값으로 Orderer 삭제
    * @param accountId 삭제할 Orderer의 계정 id값
    */
-  public void deleteOrdererById(String accountId) {
+  public void deleteOrdererByAccountId(String accountId) {
     Optional<Orderer> orderer = findOrdererByAccountId(accountId);
     if (orderer.isEmpty()) {
       throw new IllegalArgumentException("존재하지 않는 Account Id 값입니다.");
