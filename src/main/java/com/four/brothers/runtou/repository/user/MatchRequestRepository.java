@@ -27,7 +27,7 @@ public class MatchRequestRepository {
       throw new IllegalArgumentException("한번에 조회할 수 있는 엔티티의 개수는 1 이상이어야 합니다.");
     }
 
-    String jpql = "select p from OrderSheet p";
+    String jpql = "select p from MatchRequest p";
     List<MatchRequest> resultList = em.createQuery(jpql, MatchRequest.class)
       .setFirstResult((nowPage - 1) * itemSize)
       .setMaxResults(itemSize)
