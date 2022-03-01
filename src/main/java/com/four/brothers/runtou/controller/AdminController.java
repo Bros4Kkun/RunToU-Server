@@ -17,7 +17,7 @@ import java.util.Locale;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 @Controller
 public class AdminController {
 
@@ -123,7 +123,7 @@ public class AdminController {
       adminService.deleteReviewRow(rowPk);
     }
 
-    return "redirect:/api/admin/db/table/" + tableName.toLowerCase(Locale.ROOT);
+    return "redirect:/admin/db/table/" + tableName.toLowerCase(Locale.ROOT);
   }
 
   private <T> List<String> getDtoFieldsNames(Class<T> dtoType) {
