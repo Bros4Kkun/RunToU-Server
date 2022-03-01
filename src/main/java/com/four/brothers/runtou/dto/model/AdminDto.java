@@ -10,18 +10,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AdminDto {
+public class AdminDto implements ModelDto<AdminDto, Admin> {
   private Long id;
   private String accountId;
   private String password;
   private String nickname;
   private String accountNumber;
 
-  public AdminDto(Admin admin) {
-    this.id = admin.getId();
-    this.accountId = admin.getAccountId();
-    this.password = admin.getPassword();
-    this.nickname = admin.getNickname();
-    this.accountNumber = admin.getAccountNumber();
+  @Override
+  public AdminDto toDtoFromEntity(Admin entity) {
+    this.id = entity.getId();
+    this.accountId = entity.getAccountId();
+    this.password = entity.getPassword();
+    this.nickname = entity.getNickname();
+    this.accountNumber = entity.getAccountNumber();
+
+    return this;
   }
 }
