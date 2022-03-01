@@ -21,7 +21,7 @@ import static com.four.brothers.runtou.dto.UserDto.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class UserRestController {
   private final UserService userService;
 
   @Operation(summary = "유저 회원가입")
