@@ -58,7 +58,7 @@ public class AdminController {
   public String logout(HttpServletRequest request) {
     HttpSession session = request.getSession();
     session.removeAttribute("loginAdmin");
-    return "redirect:/api/admin/db";
+    return "redirect:/admin/db";
   }
 
   @GetMapping("/db/table/orderer")
