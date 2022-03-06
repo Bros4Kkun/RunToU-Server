@@ -1,22 +1,32 @@
 package com.four.brothers.runtou.service;
 
+import com.four.brothers.runtou.domain.Orderer;
+import com.four.brothers.runtou.domain.Performer;
 import com.four.brothers.runtou.domain.User;
+import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.OrdererDto;
 import com.four.brothers.runtou.dto.UserDto;
+import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
+import com.four.brothers.runtou.repository.user.PerformerRepository;
 import com.four.brothers.runtou.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import java.util.Optional;
+
+import static com.four.brothers.runtou.dto.LoginDto.*;
+import static com.four.brothers.runtou.dto.UserDto.*;
 
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
   private final OrdererRepository ordererRepository;
+  private final PerformerRepository performerRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -33,7 +43,11 @@ public class UserService {
     String phoneNumber = signUpRequest.getPhoneNumber();
     String accountNumber = signUpRequest.getAccountNumber();
 
-    ordererRepository.saveOrderer(accountId, password, nickname, phoneNumber, accountNumber);
+    try {
+      ordererRepository.saveOrderer(accountId, password, nickname, phoneNumber, accountNumber);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("이미 회원정보가 존재합니다.");
+    }
 
     return true;
   }
@@ -46,9 +60,9 @@ public class UserService {
    * @return
    */
   @Transactional
-  public UserDto.DuplicatedAccountIdResponse isDuplicatedAccountId(UserDto.DuplicatedAccountIdRequest request) {
+  public DuplicatedAccountIdResponse isDuplicatedAccountId(DuplicatedAccountIdRequest request) {
     Optional<User> userByAccountId = userRepository.findUserByAccountId(request.getAccountId());
-    return new UserDto.DuplicatedAccountIdResponse(userByAccountId.isPresent());
+    return new DuplicatedAccountIdResponse(userByAccountId.isPresent());
   }
 
   /**
@@ -59,9 +73,67 @@ public class UserService {
    * @return
    */
   @Transactional
-  public UserDto.DuplicatedNicknameResponse isDuplicatedNickname(UserDto.DuplicatedNicknameRequest request) {
+  public DuplicatedNicknameResponse isDuplicatedNickname(DuplicatedNicknameRequest request) {
     Optional<User> userByNickname = userRepository.findUserByNickname(request.getNickname());
-    return new UserDto.DuplicatedNicknameResponse(userByNickname.isPresent());
+    return new DuplicatedNicknameResponse(userByNickname.isPresent());
+  }
+
+  /**
+   * Orderer로 로그인하는 메서드
+   * @param request
+   * @return
+   */
+  @Transactional
+  public LoginUser loginAsOrderer(LoginRequest request) {
+    String accountId = request.getAccountId();
+    String rawPassword = request.getRawPassword();
+    Optional<Orderer> orderer = ordererRepository.findOrdererByAccountId(accountId);
+    String encodedPassword;
+
+    if (orderer.isEmpty()) {
+      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+    }
+
+    encodedPassword = orderer.get().getPassword();
+
+    if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+    }
+
+    return new LoginUser(orderer.get().getAccountId(),
+            orderer.get().getNickname(),
+            orderer.get().getPhoneNumber(),
+            orderer.get().getAccountNumber(),
+            UserRole.ORDERER);
+  }
+
+  /**
+   * Performer로 로그인하는 메서드
+   * @param request
+   * @return
+   */
+  @Transactional
+  public LoginUser loginAsPerformer(LoginRequest request) {
+    String accountId = request.getAccountId();
+    String rawPassword = request.getRawPassword();
+    Optional<Performer> performer = performerRepository.findPerformerByAccountId(accountId);
+    String encodedPassword;
+
+    if (performer.isEmpty()) {
+      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+    }
+
+    encodedPassword = performer.get().getPassword();
+
+    if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+    }
+
+    return new LoginUser(performer.get().getAccountId(),
+      performer.get().getNickname(),
+      performer.get().getPhoneNumber(),
+      performer.get().getAccountNumber(),
+      UserRole.PERFORMER);
   }
 
 }

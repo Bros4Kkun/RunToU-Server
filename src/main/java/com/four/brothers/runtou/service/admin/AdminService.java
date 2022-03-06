@@ -1,9 +1,12 @@
 package com.four.brothers.runtou.service.admin;
 
 import com.four.brothers.runtou.domain.*;
+import com.four.brothers.runtou.dto.LoginDto;
+import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.dto.model.*;
 import com.four.brothers.runtou.repository.user.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +14,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static com.four.brothers.runtou.dto.LoginDto.*;
 
 @RequiredArgsConstructor
 @Service
 public class AdminService {
+  private final PasswordEncoder passwordEncoder;
   private final OrdererRepository ordererRepository;
   private final PerformerRepository performerRepository;
   private final AdminRepository adminRepository;
@@ -122,6 +129,32 @@ public class AdminService {
   @Transactional
   public void deleteMatchRequestRow(long rowPk) {
     matchRequestRepository.deleteMatchingRequestById(rowPk);
+  }
+
+  /**
+   * 어드민 로그인 메서드
+   * @param request
+   * @return
+   */
+  @Transactional
+  public LoginUser login(LoginRequest request) {
+    String accountId = request.getAccountId();
+    String rawPassword = request.getRawPassword();
+    Optional<Admin> admin = adminRepository.findAdminByAccountId(accountId);
+
+    if (admin.isEmpty()) {
+      return null;
+    }
+
+    if (!passwordEncoder.matches(rawPassword, admin.get().getPassword())) {
+      return null;
+    }
+
+    return new LoginUser(admin.get().getAccountId(),
+          admin.get().getNickname(),
+          admin.get().getPhoneNumber(),
+          admin.get().getAccountNumber(),
+          UserRole.ADMIN);
   }
 
   private <F,T extends ModelDto> List<T> toDto(List<F> entityList, Class<T> dtoType) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {

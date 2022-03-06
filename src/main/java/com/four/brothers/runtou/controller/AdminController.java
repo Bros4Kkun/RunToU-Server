@@ -1,19 +1,26 @@
 package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.domain.TableNames;
+import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.model.*;
 import com.four.brothers.runtou.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.four.brothers.runtou.dto.LoginDto.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,8 +31,34 @@ public class AdminController {
   private final AdminService adminService;
 
   @GetMapping("/db")
-  public String main() {
+  public String login(@ModelAttribute("admin") LoginRequest request) {
+    return "db-login";
+  }
+
+  @PostMapping("/db")
+  public String login(@Validated @ModelAttribute("admin") LoginRequest request,
+                      BindingResult bindingResult,
+                      HttpServletRequest httpServletRequest) {
+
+    LoginUser loginAdmin = adminService.login(request);
+    if (loginAdmin == null) {
+      bindingResult.reject("wrongAdminAccount", "관리자 계정 정보가 틀립니다.");
+    }
+    if (bindingResult.hasErrors()) {
+      return "db-login";
+    }
+
+    HttpSession session = httpServletRequest.getSession();
+    session.setAttribute("loginAdmin", loginAdmin);
+
     return "db-main";
+  }
+
+  @GetMapping("/db/logout")
+  public String logout(HttpServletRequest request) {
+    HttpSession session = request.getSession();
+    session.removeAttribute("loginAdmin");
+    return "redirect:/api/admin/db";
   }
 
   @GetMapping("/db/table/orderer")

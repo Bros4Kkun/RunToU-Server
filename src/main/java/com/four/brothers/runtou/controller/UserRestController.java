@@ -1,5 +1,8 @@
 package com.four.brothers.runtou.controller;
 
+import com.four.brothers.runtou.dto.ErrorDto;
+import com.four.brothers.runtou.dto.LoginDto;
+import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,15 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import java.util.Enumeration;
-
+import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.OrdererDto.*;
 import static com.four.brothers.runtou.dto.UserDto.*;
 
@@ -39,7 +39,9 @@ public class UserRestController {
       throw new IllegalArgumentException("요청시 작성된 json의 형식이나 값이 잘못되었습니다.");
     }
 
-    return new SignUpResponse(userService.signUpAsOrderer(request));
+    boolean result = userService.signUpAsOrderer(request);
+
+    return new SignUpResponse(result);
   }
 
   @Operation(summary = "계정 아이디 중복 확인")
@@ -68,5 +70,42 @@ public class UserRestController {
     }
 
     return userService.isDuplicatedNickname(request);
+  }
+
+  @Operation(summary = "로그인")
+  @PostMapping("/signin")
+  public LoginResponse login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
+    LoginUser loginUser = null;
+    if (request.getRole() == UserRole.ORDERER) {
+      loginUser = userService.loginAsOrderer(request);
+    } else if (request.getRole() == UserRole.PERFORMER) {
+      loginUser = userService.loginAsPerformer(request);
+    }
+
+    HttpSession session = httpServletRequest.getSession();
+    session.setAttribute("loginUser", loginUser);
+
+    return new LoginResponse(true,
+      loginUser.getAccountId(),
+      loginUser.getNickname(),
+      loginUser.getPhoneNumber(),
+      loginUser.getAccountNumber(),
+      loginUser.getRole());
+  }
+
+  @Operation(summary = "로그아웃")
+  @GetMapping("/logout")
+  public boolean logout(HttpServletRequest request) {
+    request.getSession().removeAttribute("loginUser");
+
+    return true;
+  }
+
+  @Operation(summary = "현재 로그인한 사용자 정보")
+  @GetMapping("/test")
+  public LoginUser test(
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
+  ) {
+    return loginUser;
   }
 }

@@ -5,8 +5,11 @@ import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PerformerRepository {
@@ -34,6 +37,21 @@ public class PerformerRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  public Optional<Performer> findPerformerByAccountId(String accountId) {
+    Performer result = null;
+    String jpql = "select p from Performer p " +
+      "where p.accountId = :accountId";
+    TypedQuery<Performer> query = em.createQuery(jpql, Performer.class).setParameter("accountId", accountId);
+
+    try {
+      result = query.getSingleResult();
+    } catch (NoResultException e) {
+      result = null;
+    }
+
+    return Optional.ofNullable(result);
   }
 
   /**
