@@ -1,5 +1,7 @@
 package com.four.brothers.runtou.controller;
 
+import com.four.brothers.runtou.dto.LoginDto;
+import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import java.util.Enumeration;
-
+import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.OrdererDto.*;
 import static com.four.brothers.runtou.dto.UserDto.*;
 
@@ -68,5 +70,21 @@ public class UserRestController {
     }
 
     return userService.isDuplicatedNickname(request);
+  }
+
+  @Operation(summary = "로그인")
+  @PostMapping("/signin")
+  public LoginResponse login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
+    LoginUser loginUser = null;
+    if (request.getRole() == UserRole.ORDERER) {
+      loginUser = userService.loginAsOrderer(request);
+    } else if (request.getRole() == UserRole.PERFORMER) {
+      loginUser = userService.loginAsPerformer(request);
+    }
+
+    HttpSession session = httpServletRequest.getSession();
+    session.setAttribute("loginUser", loginUser);
+
+    return new LoginResponse(true, loginUser.getRole());
   }
 }
