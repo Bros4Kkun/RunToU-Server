@@ -23,6 +23,10 @@ public class LoginDto {
   @AllArgsConstructor
   public static class LoginResponse {
     private boolean success;
+    private String accountId;
+    private String nickname;
+    private String phoneNumber;
+    private String accountNumber;
     private UserRole role;
   }
 

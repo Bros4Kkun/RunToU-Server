@@ -45,7 +45,7 @@ public class UserService {
 
     try {
       ordererRepository.saveOrderer(accountId, password, nickname, phoneNumber, accountNumber);
-    } catch (EntityExistsException e) {
+    } catch (Exception e) {
       throw new IllegalArgumentException("이미 회원정보가 존재합니다.");
     }
 

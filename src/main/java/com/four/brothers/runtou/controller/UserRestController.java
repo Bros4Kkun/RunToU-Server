@@ -39,7 +39,9 @@ public class UserRestController {
       throw new IllegalArgumentException("요청시 작성된 json의 형식이나 값이 잘못되었습니다.");
     }
 
-    return new SignUpResponse(userService.signUpAsOrderer(request));
+    boolean result = userService.signUpAsOrderer(request);
+
+    return new SignUpResponse(result);
   }
 
   @Operation(summary = "계정 아이디 중복 확인")
@@ -83,13 +85,11 @@ public class UserRestController {
     HttpSession session = httpServletRequest.getSession();
     session.setAttribute("loginUser", loginUser);
 
-    return new LoginResponse(true, loginUser.getRole());
-  }
-
-  @GetMapping("/test")
-  public LoginUser test(
-    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
-  ) {
-    return loginUser;
+    return new LoginResponse(true,
+      loginUser.getAccountId(),
+      loginUser.getNickname(),
+      loginUser.getPhoneNumber(),
+      loginUser.getAccountNumber(),
+      loginUser.getRole());
   }
 }
