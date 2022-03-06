@@ -24,9 +24,9 @@ public class LoginConfig implements WebMvcConfigurer {
       .order(2);
 
     registry.addInterceptor(adminLoginInterceptor)
-        .addPathPatterns("/api/admin/**")
-        .excludePathPatterns("/api/admin/db")
-        .excludePathPatterns("/api/admin/db/logout")
+        .addPathPatterns("/admin/**")
+        .excludePathPatterns("/admin/db")
+        .excludePathPatterns("/admin/db/logout")
         .order(1);
 
   }
