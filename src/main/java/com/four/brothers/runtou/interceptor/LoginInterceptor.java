@@ -9,7 +9,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
 
 @RequiredArgsConstructor
 @Component
@@ -26,10 +25,8 @@ public class LoginInterceptor implements HandlerInterceptor {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       ErrorDto.Response dto = new ErrorDto.Response("로그인이 필요합니다.");
       String body = objectMapper.writeValueAsString(dto);
-      PrintWriter writer = response.getWriter();
 
-      writer.print(body);
-      writer.flush();
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, body);
 
       return false;
     }

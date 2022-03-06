@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import java.util.Optional;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
@@ -42,7 +43,11 @@ public class UserService {
     String phoneNumber = signUpRequest.getPhoneNumber();
     String accountNumber = signUpRequest.getAccountNumber();
 
-    ordererRepository.saveOrderer(accountId, password, nickname, phoneNumber, accountNumber);
+    try {
+      ordererRepository.saveOrderer(accountId, password, nickname, phoneNumber, accountNumber);
+    } catch (EntityExistsException e) {
+      throw new IllegalArgumentException("이미 회원정보가 존재합니다.");
+    }
 
     return true;
   }
@@ -83,9 +88,15 @@ public class UserService {
     String accountId = request.getAccountId();
     String rawPassword = request.getRawPassword();
     Optional<Orderer> orderer = ordererRepository.findOrdererByAccountId(accountId);
-    String encodedPassword = orderer.get().getPassword();
+    String encodedPassword;
 
-    if (orderer.isEmpty() || !passwordEncoder.matches(rawPassword, encodedPassword)) {
+    if (orderer.isEmpty()) {
+      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+    }
+
+    encodedPassword = orderer.get().getPassword();
+
+    if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
       throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
     }
 
@@ -106,9 +117,15 @@ public class UserService {
     String accountId = request.getAccountId();
     String rawPassword = request.getRawPassword();
     Optional<Performer> performer = performerRepository.findPerformerByAccountId(accountId);
-    String encodedPassword = performer.get().getPassword();
+    String encodedPassword;
 
-    if (performer.isEmpty() || !passwordEncoder.matches(rawPassword, encodedPassword)) {
+    if (performer.isEmpty()) {
+      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+    }
+
+    encodedPassword = performer.get().getPassword();
+
+    if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
       throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
     }
 

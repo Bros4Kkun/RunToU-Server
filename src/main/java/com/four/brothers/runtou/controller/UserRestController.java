@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.controller;
 
+import com.four.brothers.runtou.dto.ErrorDto;
 import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.service.UserService;
@@ -10,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -86,5 +84,12 @@ public class UserRestController {
     session.setAttribute("loginUser", loginUser);
 
     return new LoginResponse(true, loginUser.getRole());
+  }
+
+  @GetMapping("/test")
+  public LoginUser test(
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
+  ) {
+    return loginUser;
   }
 }
