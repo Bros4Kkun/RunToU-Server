@@ -92,4 +92,20 @@ public class UserRestController {
       loginUser.getAccountNumber(),
       loginUser.getRole());
   }
+
+  @Operation(summary = "로그아웃")
+  @GetMapping("/logout")
+  public boolean logout(HttpServletRequest request) {
+    request.getSession().removeAttribute("loginUser");
+
+    return true;
+  }
+
+  @Operation(summary = "현재 로그인한 사용자 정보")
+  @GetMapping("/test")
+  public LoginUser test(
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
+  ) {
+    return loginUser;
+  }
 }
