@@ -121,7 +121,7 @@ class AdminRepositoryTest {
       },
       () -> {
         List<Admin> result = adminRepository.findAll(nowPage, itemSize2);
-        assertSame(2, result.size());
+        assertSame(1, result.size());
       }
     );
   }
