@@ -18,13 +18,13 @@ public class AdminRepository {
   /**
    * Admin을 저장하는 메서드
    * @param accountId
-   * @param password
+   * @param encodedPassword
    * @param nickname
    * @param phoneNumber
    * @param accountNumber
    */
-  public void saveAdmin(String accountId, String password, String nickname, String phoneNumber, String accountNumber) {
-    Admin admin = new Admin(accountId, password, nickname, phoneNumber, accountNumber);
+  public void saveAdmin(String accountId, String encodedPassword, String nickname, String phoneNumber, String accountNumber) {
+    Admin admin = new Admin(accountId, encodedPassword, nickname, phoneNumber, accountNumber);
     em.persist(admin);
   }
 
