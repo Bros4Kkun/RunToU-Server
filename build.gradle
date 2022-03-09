@@ -31,7 +31,6 @@ dependencies {
 	implementation 'mysql:mysql-connector-java'
 	implementation 'org.springdoc:spring-boot-springdoc:3.1.2'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'com.google.code.findbugs:jsr305'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
