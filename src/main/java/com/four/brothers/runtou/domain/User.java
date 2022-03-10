@@ -32,6 +32,10 @@ public class User {
   @Column(nullable = false)
   private String accountNumber;
 
+  @Lob
+  @Column
+  private String selfIntroduction;
+
   //내가 신고한 신고리스트
   @OneToMany(mappedBy = "reportUser")
   private List<Report> myReportList = new ArrayList<>();

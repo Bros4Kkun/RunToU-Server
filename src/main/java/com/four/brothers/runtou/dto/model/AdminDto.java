@@ -16,6 +16,7 @@ public class AdminDto implements ModelDto<AdminDto, Admin> {
   private String password;
   private String nickname;
   private String accountNumber;
+  private String selfIntroduction;
 
   @Override
   public AdminDto toDtoFromEntity(Admin entity) {
@@ -24,6 +25,7 @@ public class AdminDto implements ModelDto<AdminDto, Admin> {
     this.password = entity.getPassword();
     this.nickname = entity.getNickname();
     this.accountNumber = entity.getAccountNumber();
+    this.selfIntroduction = entity.getSelfIntroduction();
 
     return this;
   }
@@ -41,6 +43,8 @@ public class AdminDto implements ModelDto<AdminDto, Admin> {
         return this.nickname;
       case "accountNumber":
         return this.accountNumber;
+      case "selfIntroduction":
+        return this.selfIntroduction;
     }
     return "";
   }
