@@ -1,8 +1,9 @@
 package com.four.brothers.runtou.controller;
 
-import com.four.brothers.runtou.dto.ErrorDto;
-import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.UserRole;
+import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.code.LoginExceptionCode;
+import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -36,7 +38,7 @@ public class UserRestController {
     BindingResult bindingResult, HttpServletRequest requestMsg
   ) {
     if (bindingResult.hasFieldErrors()) {
-      throw new IllegalArgumentException("요청시 작성된 json의 형식이나 값이 잘못되었습니다.");
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
     }
 
     boolean result = userService.signUpAsOrderer(request);
@@ -52,7 +54,7 @@ public class UserRestController {
     BindingResult bindingResult
   ) {
     if (bindingResult.hasFieldErrors()) {
-      throw new IllegalArgumentException("요청시 작성된 json의 형식이나 값이 잘못되었습니다.");
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
     }
 
     return userService.isDuplicatedAccountId(request);
@@ -66,7 +68,7 @@ public class UserRestController {
   ) {
 
     if (bindingResult.hasFieldErrors()) {
-      throw new IllegalArgumentException("요청시 작성된 json의 형식이나 값이 잘못되었습니다.");
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
     }
 
     return userService.isDuplicatedNickname(request);
@@ -74,12 +76,23 @@ public class UserRestController {
 
   @Operation(summary = "로그인")
   @PostMapping("/signin")
-  public LoginResponse login(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
+  public LoginResponse login(@Validated @RequestBody LoginRequest request,
+                             BindingResult bindingResult,
+                             HttpServletRequest httpServletRequest) {
+
+    if (bindingResult.hasFieldErrors()) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+    }
+
     LoginUser loginUser = null;
     if (request.getRole() == UserRole.ORDERER) {
       loginUser = userService.loginAsOrderer(request);
     } else if (request.getRole() == UserRole.PERFORMER) {
       loginUser = userService.loginAsPerformer(request);
+    }
+
+    if (loginUser == null) {
+      throw new BadRequestException(LoginExceptionCode.WRONG_VALUE);
     }
 
     HttpSession session = httpServletRequest.getSession();

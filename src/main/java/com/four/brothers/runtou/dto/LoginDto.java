@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class LoginDto {
 
   @Getter
@@ -12,9 +15,23 @@ public class LoginDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class LoginRequest {
+    @NotEmpty
     private String accountId;
+    @NotEmpty
     private String rawPassword;
+    @NotNull
     private UserRole role;
+  }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class AdminLoginRequest {
+    @NotEmpty
+    private String accountId;
+    @NotEmpty
+    private String rawPassword;
   }
 
   @Getter

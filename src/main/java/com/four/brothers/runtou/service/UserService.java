@@ -3,9 +3,7 @@ package com.four.brothers.runtou.service;
 import com.four.brothers.runtou.domain.Orderer;
 import com.four.brothers.runtou.domain.Performer;
 import com.four.brothers.runtou.domain.User;
-import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.OrdererDto;
-import com.four.brothers.runtou.dto.UserDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
 import com.four.brothers.runtou.repository.user.PerformerRepository;
@@ -15,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityExistsException;
 import java.util.Optional;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
@@ -91,13 +88,13 @@ public class UserService {
     String encodedPassword;
 
     if (orderer.isEmpty()) {
-      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+      return null;
     }
 
     encodedPassword = orderer.get().getPassword();
 
     if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+      return null;
     }
 
     return new LoginUser(orderer.get().getAccountId(),
@@ -120,13 +117,13 @@ public class UserService {
     String encodedPassword;
 
     if (performer.isEmpty()) {
-      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+      return null;
     }
 
     encodedPassword = performer.get().getPassword();
 
     if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-      throw new IllegalArgumentException("로그인 정보가 잘못되었습니다.");
+      return null;
     }
 
     return new LoginUser(performer.get().getAccountId(),
