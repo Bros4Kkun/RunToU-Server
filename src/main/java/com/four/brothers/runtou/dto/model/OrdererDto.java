@@ -19,6 +19,7 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
   private String nickname;
   private String accountNumber;
   private Boolean isDoingJobNow;
+  private String selfIntroduction;
 
   @Override
   public OrdererDto toDtoFromEntity(Orderer entity) {
@@ -28,6 +29,7 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
     this.nickname = entity.getNickname();
     this.accountNumber = entity.getAccountNumber();
     this.isDoingJobNow = entity.getIsDoingJobNow();
+    this.selfIntroduction = entity.getSelfIntroduction();
     return this;
   }
 
@@ -46,6 +48,8 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
         return this.accountNumber;
       case "isDoingJobNow":
         return String.valueOf(this.isDoingJobNow);
+      case "selfIntroduction":
+        return this.selfIntroduction;
     }
     return "";
   }
