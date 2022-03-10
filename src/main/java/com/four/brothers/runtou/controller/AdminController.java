@@ -1,7 +1,7 @@
 package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.domain.TableNames;
-import com.four.brothers.runtou.dto.LoginDto;
+import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.dto.model.*;
 import com.four.brothers.runtou.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +36,11 @@ public class AdminController {
   }
 
   @PostMapping("/db")
-  public String login(@Validated @ModelAttribute("admin") LoginRequest request,
+  public String login(@Validated @ModelAttribute("admin") AdminLoginRequest request,
                       BindingResult bindingResult,
                       HttpServletRequest httpServletRequest) {
-
-    LoginUser loginAdmin = adminService.login(request);
+    LoginRequest loginRequest = new LoginRequest(request.getAccountId(), request.getRawPassword(), UserRole.ADMIN);
+    LoginUser loginAdmin = adminService.login(loginRequest);
     if (loginAdmin == null) {
       bindingResult.reject("wrongAdminAccount", "관리자 계정 정보가 틀립니다.");
     }
