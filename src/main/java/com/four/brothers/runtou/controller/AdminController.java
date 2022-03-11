@@ -51,6 +51,11 @@ public class AdminController {
     HttpSession session = httpServletRequest.getSession();
     session.setAttribute("loginAdmin", loginAdmin);
 
+    return "redirect:/admin/db/main";
+  }
+
+  @GetMapping("/db/main")
+  public String main() {
     return "db-main";
   }
 
