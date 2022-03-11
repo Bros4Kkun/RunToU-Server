@@ -4,19 +4,25 @@ import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.LoginExceptionCode;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
+import com.four.brothers.runtou.exception.code.SignupExceptionCode;
 import com.four.brothers.runtou.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.JDBCException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityExistsException;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.sql.SQLException;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.OrdererDto.*;
@@ -37,11 +43,17 @@ public class UserRestController {
     @Validated @RequestBody SignUpRequest request,
     BindingResult bindingResult, HttpServletRequest requestMsg
   ) {
+    boolean result = false;
+
     if (bindingResult.hasFieldErrors()) {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
     }
 
-    boolean result = userService.signUpAsOrderer(request);
+    try {
+      result = userService.signUpAsOrderer(request);
+    } catch (DataIntegrityViolationException e) {
+      throw new BadRequestException(SignupExceptionCode.ALREADY_EXIST_INFO);
+    }
 
     return new SignUpResponse(result);
   }
