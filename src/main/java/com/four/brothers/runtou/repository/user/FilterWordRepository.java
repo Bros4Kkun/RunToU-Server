@@ -7,11 +7,17 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FilterWordRepository {
   @PersistenceContext
   EntityManager em;
+
+  public void saveWord(String word) {
+    FilterWord filterWord = new FilterWord(word);
+    em.persist(word);
+  }
 
   /**
    * 모든 필터링 단어를 조회하는 메서드

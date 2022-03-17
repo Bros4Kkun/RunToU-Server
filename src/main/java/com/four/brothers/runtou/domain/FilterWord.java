@@ -18,4 +18,8 @@ public class FilterWord {
 
   @Column(length = 100, nullable = false)
   private String word;
+
+  public FilterWord(String word) {
+    this.word = word;
+  }
 }
