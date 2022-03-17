@@ -14,6 +14,10 @@ public class FilterWordRepository {
   @PersistenceContext
   EntityManager em;
 
+  /**
+   * 필터링 단어를 저장하는 메서드
+   * @param word
+   */
   public void saveWord(String word) {
     FilterWord filterWord = new FilterWord(word);
     em.persist(word);
