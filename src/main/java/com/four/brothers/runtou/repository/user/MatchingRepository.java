@@ -2,16 +2,30 @@ package com.four.brothers.runtou.repository.user;
 
 import com.four.brothers.runtou.domain.Matching;
 import com.four.brothers.runtou.domain.OrderSheet;
+import com.four.brothers.runtou.domain.Performer;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public class MatchingRepository {
   @PersistenceContext
   EntityManager em;
+
+  /**
+   * 주문 정보를 저장하는 메서드
+   * @param orderSheet 주문서
+   * @param performer 수행자
+   * @param isCompleted 완료여부
+   * @param completedDateTime 완료시간
+   */
+  public void saveMatching(OrderSheet orderSheet, Performer performer, boolean isCompleted, LocalDateTime completedDateTime) {
+    Matching matching = new Matching(isCompleted, completedDateTime, orderSheet, performer);
+    em.persist(matching);
+  }
 
   /**
    * 모든 매칭을 조회하는 메서드
