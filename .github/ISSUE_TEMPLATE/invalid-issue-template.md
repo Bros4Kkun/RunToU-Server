@@ -1,6 +1,6 @@
 ---
 name: Invalid issue template
-about: Describe this issue template's purpose here.
+about: 로직상 어색한 Issue 템플릿 (버그까진 아닌 Issue)
 title: ''
 labels: invalid
 assignees: TaegyunWoo

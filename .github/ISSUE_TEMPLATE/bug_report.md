@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: 버그 Issue 템플릿
 title: ''
 labels: bug
 assignees: TaegyunWoo
