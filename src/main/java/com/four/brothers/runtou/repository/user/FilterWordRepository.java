@@ -20,7 +20,7 @@ public class FilterWordRepository {
    */
   public void saveWord(String word) {
     FilterWord filterWord = new FilterWord(word);
-    em.persist(word);
+    em.persist(filterWord);
   }
 
   /**
