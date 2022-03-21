@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrderSheetRepository {
@@ -58,7 +60,8 @@ public class OrderSheetRepository {
   }
 
   /**
-   * 금액 지불이 완료된 주문서만 조회하는 메서드
+   * 금액 지불이 완료된 주문서만 조회하는 메서드.
+   * 또한 category 기준으로 조건을 걸어 조회한다.
    * @param nowPage 현재 페이지
    * @param itemSize 페이지당 출력할 개수
    * @return
@@ -89,6 +92,15 @@ public class OrderSheetRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  /**
+   * pk값으로 OrderSheet를 조회하는 메서드
+   * @param id
+   * @return
+   */
+  public Optional<OrderSheet> findById(long id) {
+    return Optional.ofNullable(em.find(OrderSheet.class, id));
   }
 
   /**
