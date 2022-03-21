@@ -31,9 +31,49 @@ public class OrderSheetDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class AllOrderSheetResponse {
-    private List<OrderSheetItem> orderSheetItemList;
+    private List<OrderSheetItemSample> orderSheetItemSampleList;
   }
 
+  /**
+   * 주문서 요약 DTO 클래스.
+   * 주문서 목록의 요소로 사용된다.
+   */
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class OrderSheetItemSample {
+    private long id;
+    private String ordererNickname;
+    private String title;
+    private String contentSample;
+    private OrderSheetCategory category;
+    private String destination;
+    private int cost;
+
+    public OrderSheetItemSample(OrderSheet entity) {
+      this.id = entity.getId();
+      this.ordererNickname = entity.getOrderer().getNickname();
+      this.title = entity.getTitle();
+
+      //내용이 20글자를 넘지 않는 경우에 대한, 예외처리
+      try {
+        //미리보기이므로, 최대 20글자까지만 제공한다.
+        this.contentSample = entity.getContent().substring(0, 20);
+      } catch (IndexOutOfBoundsException e) {
+        this.contentSample = entity.getContent();
+      }
+
+      this.category = entity.getCategory();
+      this.destination = entity.getDestination();
+      this.cost = entity.getCost();
+    }
+  }
+
+  /**
+   * 주문서 상세정보 DTO 클래스.
+   * 주문서 상세 보기에서 사용된다.
+   */
   @Getter
   @Setter
   @NoArgsConstructor
@@ -48,7 +88,6 @@ public class OrderSheetDto {
     private OrderSheetCategory category;
     private String destination;
     private int cost;
-    private boolean isPayed;
     private LocalDateTime wishedDeadLine;
     private boolean isWrittenByCurrentUser;
 
@@ -62,7 +101,6 @@ public class OrderSheetDto {
       this.category = entity.getCategory();
       this.destination = entity.getDestination();
       this.cost = entity.getCost();
-      this.isPayed = entity.getIsPayed();
       this.wishedDeadLine = entity.getWishedDeadline();
       this.isWrittenByCurrentUser = isWrittenByCurrentUser;
     }
