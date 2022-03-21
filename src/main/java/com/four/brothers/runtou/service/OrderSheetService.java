@@ -1,7 +1,9 @@
 package com.four.brothers.runtou.service;
 
 import com.four.brothers.runtou.domain.OrderSheet;
+import com.four.brothers.runtou.domain.Orderer;
 import com.four.brothers.runtou.repository.user.OrderSheetRepository;
+import com.four.brothers.runtou.repository.user.OrdererRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +20,22 @@ import static com.four.brothers.runtou.dto.OrderSheetDto.*;
 public class OrderSheetService {
 
   private final OrderSheetRepository orderSheetRepository;
+  private final OrdererRepository ordererRepository;
 
-
+  @Transactional
+  public void saveOrderSheet(OrderSheetSaveRequest request, LoginUser loginUser) {
+    Optional<Orderer> orderer = ordererRepository.findOrdererByAccountId(loginUser.getAccountId());
+    orderSheetRepository.saveOrderSheet(
+      orderer.get(),
+      request.getTitle(),
+      request.getContent(),
+      request.getCategory(),
+      request.getDestination(),
+      request.getCost(),
+      false,
+      request.getWishedDeadline()
+    );
+  }
 
   /**
    * 결제가 완료된 모든 주문서를 조회하는 메서드 (페이징처리 O)

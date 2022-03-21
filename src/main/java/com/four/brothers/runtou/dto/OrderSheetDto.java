@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,6 +50,24 @@ public class OrderSheetDto {
   @AllArgsConstructor
   public static class OrderSheetDetailsResponse {
     private OrderSheetItem orderSheetItem;
+  }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class OrderSheetSaveRequest {
+    @NotEmpty
+    private String title;
+    @NotEmpty
+    private String content;
+    @NotNull
+    private OrderSheetCategory category;
+    @NotEmpty
+    private String destination;
+    private int cost;
+    @NotNull
+    private LocalDateTime wishedDeadline;
   }
 
   /**
