@@ -15,6 +15,17 @@ public class OrderSheetRepository {
   @PersistenceContext
   EntityManager em;
 
+  /**
+   * 주문서를 저장하는 메서드
+   * @param orderer 주문자
+   * @param title 제목
+   * @param content 내용
+   * @param category 요청 카테고리
+   * @param destination 목적지
+   * @param cost 비용
+   * @param isPayed 결제가 완료되었는지
+   * @param wishedDeadline 희망 완료기간
+   */
   public void saveOrderSheet(Orderer orderer, String title, String content,
                              OrderSheetCategory category, String destination,
                              int cost, boolean isPayed, LocalDateTime wishedDeadline) {
