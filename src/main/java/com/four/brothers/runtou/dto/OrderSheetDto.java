@@ -34,6 +34,23 @@ public class OrderSheetDto {
     private List<OrderSheetItemSample> orderSheetItemSampleList;
   }
 
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class OrderSheetDetailsRequest {
+    @NotNull
+    private long orderSheetId;
+  }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class OrderSheetDetailsResponse {
+    private OrderSheetItem orderSheetItem;
+  }
+
   /**
    * 주문서 요약 DTO 클래스.
    * 주문서 목록의 요소로 사용된다.
@@ -43,7 +60,7 @@ public class OrderSheetDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class OrderSheetItemSample {
-    private long id;
+    private long orderSheetId;
     private String ordererNickname;
     private String title;
     private String contentSample;
@@ -52,7 +69,7 @@ public class OrderSheetDto {
     private int cost;
 
     public OrderSheetItemSample(OrderSheet entity) {
-      this.id = entity.getId();
+      this.orderSheetId = entity.getId();
       this.ordererNickname = entity.getOrderer().getNickname();
       this.title = entity.getTitle();
 
@@ -79,7 +96,7 @@ public class OrderSheetDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class OrderSheetItem {
-    private long id;
+    private long orderSheetId;
     private long matchingId;
     private String ordererAccountId;
     private String ordererNickname;
@@ -92,7 +109,7 @@ public class OrderSheetDto {
     private boolean isWrittenByCurrentUser;
 
     public OrderSheetItem(OrderSheet entity, boolean isWrittenByCurrentUser) {
-      this.id = entity.getId();
+      this.orderSheetId = entity.getId();
       this.matchingId = entity.getMatching().getId();
       this.ordererAccountId = entity.getOrderer().getAccountId();
       this.ordererNickname = entity.getOrderer().getNickname();
