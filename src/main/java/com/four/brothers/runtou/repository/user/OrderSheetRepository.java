@@ -63,7 +63,7 @@ public class OrderSheetRepository {
    * @param itemSize 페이지당 출력할 개수
    * @return
    */
-  public List<OrderSheet> findAllOnlyPayed(int nowPage, int itemSize) {
+  public List<OrderSheet> findAllOnlyPayed(int nowPage, int itemSize, OrderSheetCategory category) {
     if (nowPage < 1) {
       throw new IllegalArgumentException("조회할 현재 페이지는 1 이상이어야 합니다.");
     }
@@ -71,8 +71,19 @@ public class OrderSheetRepository {
       throw new IllegalArgumentException("한번에 조회할 수 있는 엔티티의 개수는 1 이상이어야 합니다.");
     }
 
-    String jpql = "select p from OrderSheet p where p.isPayed = true";
+    String jpql = "";
+
+    if (category == OrderSheetCategory.ALL) {
+      jpql = "select p from OrderSheet p " +
+        "where p.isPayed = true";
+    } else {
+      jpql = "select p from OrderSheet p " +
+        "where p.isPayed = true " +
+        "and p.category = :category";
+    }
+
     List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
+      .setParameter("category", category)
       .setFirstResult((nowPage - 1) * itemSize)
       .setMaxResults(itemSize)
       .getResultList();
