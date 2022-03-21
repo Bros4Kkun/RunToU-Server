@@ -21,14 +21,14 @@ public class OrderSheetService {
 
 
   /**
-   * 모든 주문서를 조회하는 메서드 (페이징처리 O)
+   * 결제가 완료된 모든 주문서를 조회하는 메서드 (페이징처리 O)
    * @param request
    * @param loginUser
    * @return OrderSheetItem이 담긴 List형 변수
    */
   @Transactional
   public AllOrderSheetResponse lookUpAllOrderSheet(AllOrderSheetRequest request, LoginUser loginUser) {
-    List<OrderSheet> orderSheetList = orderSheetRepository.findAll(request.getNowPage(), request.getItemSize());
+    List<OrderSheet> orderSheetList = orderSheetRepository.findAllOnlyPayed(request.getNowPage(), request.getItemSize());
     List<OrderSheetItemSample> result = new ArrayList<>();
 
     //entity -> dto 변환 로직
