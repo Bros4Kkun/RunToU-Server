@@ -40,7 +40,12 @@ public class OrderSheetService {
     return new AllOrderSheetResponse(result);
   }
 
-
+  /**
+   * 단일 주문서의 상세정보를 반환하는 메서드
+   * @param request
+   * @param loginUser
+   * @return
+   */
   @Transactional
   public OrderSheetDetailsResponse lookUpOrderSheetDetails(OrderSheetDetailsRequest request, LoginUser loginUser) {
     Optional<OrderSheet> orderSheet = orderSheetRepository.findById(request.getOrderSheetId());
