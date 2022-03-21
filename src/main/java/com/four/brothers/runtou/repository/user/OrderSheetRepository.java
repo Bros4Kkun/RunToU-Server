@@ -58,6 +58,29 @@ public class OrderSheetRepository {
   }
 
   /**
+   * 금액 지불이 완료된 주문서만 조회하는 메서드
+   * @param nowPage 현재 페이지
+   * @param itemSize 페이지당 출력할 개수
+   * @return
+   */
+  public List<OrderSheet> findAllOnlyPayed(int nowPage, int itemSize) {
+    if (nowPage < 1) {
+      throw new IllegalArgumentException("조회할 현재 페이지는 1 이상이어야 합니다.");
+    }
+    if (itemSize < 1) {
+      throw new IllegalArgumentException("한번에 조회할 수 있는 엔티티의 개수는 1 이상이어야 합니다.");
+    }
+
+    String jpql = "select p from OrderSheet p where p.isPayed = true";
+    List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
+      .setFirstResult((nowPage - 1) * itemSize)
+      .setMaxResults(itemSize)
+      .getResultList();
+
+    return resultList;
+  }
+
+  /**
    * pk값으로 삭제하는 메서드
    * @param pk
    */
