@@ -22,7 +22,6 @@ class OrdererRepositoryTest {
 
   @DisplayName("Orderer저장")
   @Test
-
   void saveOrdererTest()
   {
     //given
@@ -37,6 +36,7 @@ class OrdererRepositoryTest {
         ()->{ordererRepository.saveOrderer(accountId, password, nickname,phoneNumber,accountNumber);}
     );
   }
+
   @DisplayName("pk값으로 Orderer검색하기")
   @Test
   void findbyOrdererByIdTest(){
@@ -50,7 +50,8 @@ class OrdererRepositoryTest {
 
     ordererRepository.saveOrderer(accountId,password,nickname,phoneNumber,accountNumber);
 
-    pk = ordererRepository.findOrdererByAccountId(accountId).get().getAccountId();
+    pk = ordererRepository.findOrdererById(nickname).get().getNickname();
+//    pk = ordererRepository.findOrdererById(nickname).get().getId()();
 
     //when
     Optional<Orderer> result = ordererRepository.findOrdererByAccountId(pk);
@@ -140,9 +141,10 @@ class OrdererRepositoryTest {
     assertDoesNotThrow(
         ()->ordererRepository.deleteOrdererById(pk)
     );
-
+    
   }
-  @DisplayName("id값으로 orderer삭제")
+
+  @DisplayName("계정id값으로 orderer삭제")
   @Test
   void deleteOrdererByAccountIdTest(){
 
