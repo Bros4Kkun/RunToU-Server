@@ -67,6 +67,7 @@ public class OrderSheetDto {
     @Schema(description = "요청서 내용")
     private String content;
 
+    @NotNull
     @Schema(description = "요청서 카테고리\n" +
       "- DELIVERY_AND_SHOPPING: 배달 및 장보기\n" +
       "- CLEANING_AND_HOUSEWORK: 청소 및 집안일\n" +
