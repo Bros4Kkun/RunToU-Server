@@ -76,7 +76,8 @@ public class OrderSheetRepository {
 
     String jpql = "";
 
-    if (category == OrderSheetCategory.ALL) {
+    //category가 null이라면, 카테고리 조건없이 검색
+    if (category == null) {
       jpql = "select p from OrderSheet p " +
         "where p.isPayed = true";
     } else {

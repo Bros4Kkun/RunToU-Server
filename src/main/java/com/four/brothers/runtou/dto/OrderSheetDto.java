@@ -2,6 +2,7 @@ package com.four.brothers.runtou.dto;
 
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.OrderSheetCategory;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,6 @@ public class OrderSheetDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class AllOrderSheetRequest {
-    @NotNull
     private OrderSheetCategory category;
     @NotNull
     private int nowPage;
@@ -60,15 +60,25 @@ public class OrderSheetDto {
   @AllArgsConstructor
   public static class OrderSheetSaveRequest {
     @NotEmpty
+    @Schema(description = "요청서 제목")
     private String title;
+
     @NotEmpty
+    @Schema(description = "요청서 내용")
     private String content;
+
     @NotNull
+    @Schema(description = "요청서 카테고리",
+      enumAsRef = true
+    )
     private OrderSheetCategory category;
+
     @NotEmpty
     private String destination;
+
     @Range(min = 1, max = 100000)
     private int cost;
+
     @NotNull
     private LocalDateTime wishedDeadline;
   }
