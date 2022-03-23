@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Import({OrdererRepository.class})
 @DataJpaTest
-
 class OrdererRepositoryTest {
 
   @Autowired
@@ -46,15 +45,14 @@ class OrdererRepositoryTest {
     String nickname ="ck";
     String phoneNumber = "01012341234";
     String accountNumber = "123451233";
-    String pk;
+    long pk;
 
     ordererRepository.saveOrderer(accountId,password,nickname,phoneNumber,accountNumber);
 
-    pk = ordererRepository.findOrdererById(nickname).get().getNickname();
-//    pk = ordererRepository.findOrdererById(nickname).get().getId()();
+    pk = ordererRepository.findOrdererByAccountId(accountId).get().getId();
 
     //when
-    Optional<Orderer> result = ordererRepository.findOrdererByAccountId(pk);
+    Optional<Orderer> result = ordererRepository.findOrdererById(pk);
 
     //then
     assertTrue(result.isPresent());
@@ -79,6 +77,7 @@ class OrdererRepositoryTest {
     //then
     assertFalse(result.isEmpty());
   }
+
   @DisplayName("모든 orderer 조회")
   @Test
   void findAllTest(){
