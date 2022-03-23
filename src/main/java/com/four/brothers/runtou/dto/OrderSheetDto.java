@@ -67,18 +67,27 @@ public class OrderSheetDto {
     @Schema(description = "요청서 내용")
     private String content;
 
-    @NotNull
-    @Schema(description = "요청서 카테고리",
+    @Schema(description = "요청서 카테고리\n" +
+      "- DELIVERY_AND_SHOPPING: 배달 및 장보기\n" +
+      "- CLEANING_AND_HOUSEWORK: 청소 및 집안일\n" +
+      "- DELIVERY_AND_INSTALLATION: 설치 조립 운반\n" +
+      "- ACCOMPANY: 동행 및 돌봄\n" +
+      "- ANTI_BUG: 벌레 및 쥐잡기\n" +
+      "- ROLE_ACTING: 역할 대행\n" +
+      "- ETC: 기타",
       enumAsRef = true
     )
     private OrderSheetCategory category;
 
+    @Schema(description = "목적지")
     @NotEmpty
     private String destination;
 
+    @Schema(description = "1 이상, 100,000 이하의 의뢰금액")
     @Range(min = 1, max = 100000)
     private int cost;
 
+    @Schema(description = "원하는 수행 완료 일자")
     @NotNull
     private LocalDateTime wishedDeadline;
   }
