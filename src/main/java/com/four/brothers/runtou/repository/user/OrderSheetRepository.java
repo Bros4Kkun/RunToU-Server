@@ -80,19 +80,26 @@ public class OrderSheetRepository {
     if (category == null) {
       jpql = "select p from OrderSheet p " +
         "where p.isPayed = true";
+
+      List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
+        .setFirstResult((nowPage - 1) * itemSize)
+        .setMaxResults(itemSize)
+        .getResultList();
+
+      return resultList;
     } else {
       jpql = "select p from OrderSheet p " +
         "where p.isPayed = true " +
         "and p.category = :category";
+
+      List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
+        .setParameter("category", category)
+        .setFirstResult((nowPage - 1) * itemSize)
+        .setMaxResults(itemSize)
+        .getResultList();
+
+      return resultList;
     }
-
-    List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
-      .setParameter("category", category)
-      .setFirstResult((nowPage - 1) * itemSize)
-      .setMaxResults(itemSize)
-      .getResultList();
-
-    return resultList;
   }
 
   /**

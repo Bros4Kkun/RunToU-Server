@@ -22,10 +22,15 @@ public class OrderSheetDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class AllOrderSheetRequest {
-    private OrderSheetCategory category;
-    @NotNull
+    @Schema(description = "조회할 카테고리\n**만약 `null`값이라면, 모든 카테고리 검색**")
+    private OrderSheetCategory category = null;
+
+    @Schema(description = "현재 페이지")
+    @Positive
     private int nowPage;
-    @NotNull
+
+    @Schema(description = "페이지당 아이템 수")
+    @Positive
     private int itemSize;
   }
 
@@ -160,7 +165,9 @@ public class OrderSheetDto {
 
     public OrderSheetItem(OrderSheet entity, boolean isWrittenByCurrentUser) {
       this.orderSheetId = entity.getId();
-      this.matchingId = entity.getMatching().getId();
+      if (entity.getMatching() != null) {
+        this.matchingId = entity.getMatching().getId();
+      }
       this.ordererAccountId = entity.getOrderer().getAccountId();
       this.ordererNickname = entity.getOrderer().getNickname();
       this.title = entity.getTitle();
