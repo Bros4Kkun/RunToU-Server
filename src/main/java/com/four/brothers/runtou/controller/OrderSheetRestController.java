@@ -25,7 +25,16 @@ import static com.four.brothers.runtou.dto.OrderSheetDto.*;
 public class OrderSheetRestController {
   private final OrderSheetService orderSheetService;
 
-  @Operation(summary = "새 요청서 등록")
+  @Operation(summary = "새 요청서 등록",
+    description = "<요청서 카테고리 목록>\n" +
+    "- DELIVERY_AND_SHOPPING: 배달 및 장보기\n" +
+    "- CLEANING_AND_HOUSEWORK: 청소 및 집안일\n" +
+    "- DELIVERY_AND_INSTALLATION: 설치 조립 운반\n" +
+    "- ACCOMPANY: 동행 및 돌봄\n" +
+    "- ANTI_BUG: 벌레 및 쥐잡기\n" +
+    "- ROLE_ACTING: 역할 대행\n" +
+    "- ETC: 기타"
+  )
   @PostMapping()
   public OrderSheetSaveResponse saveNewOrderSheet(
     @Validated @RequestBody OrderSheetSaveRequest request,
@@ -42,7 +51,20 @@ public class OrderSheetRestController {
     return new OrderSheetSaveResponse(true);
   }
 
-  @Operation(summary = "모든 요청서 조회")
+  @Operation(summary = "모든 요청서 조회", parameters = {
+    @Parameter(name = "category",
+      description = "- ALL : 모든 카테고리\n" +
+      "- DELIVERY_AND_SHOPPING: 배달 및 장보기\n" +
+      "- CLEANING_AND_HOUSEWORK: 청소 및 집안일\n" +
+      "- DELIVERY_AND_INSTALLATION: 설치 조립 운반\n" +
+      "- ACCOMPANY: 동행 및 돌봄\n" +
+      "- ANTI_BUG: 벌레 및 쥐잡기\n" +
+      "- ROLE_ACTING: 역할 대행\n" +
+      "- ETC: 기타",
+    example = "ALL"),
+    @Parameter(name = "nowPage",
+      description = "현재 페이지 번호 (1 이상)")
+  })
   @GetMapping("/list/{category}/{nowPage}")
   public AllOrderSheetResponse findAllOrderSheetWithCategory(
     @PathVariable String category,
