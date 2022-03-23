@@ -30,7 +30,7 @@ public class OrdererRepository {
    * @param pk Orderer의 PK값
    * @return 검색 결과
    */
-  public Optional<Orderer> findOrdererById(String pk) {
+  public Optional<Orderer> findOrdererById(long pk) {
     return Optional.ofNullable(em.find(Orderer.class, pk));
   }
 
