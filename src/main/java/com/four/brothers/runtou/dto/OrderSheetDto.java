@@ -73,6 +73,14 @@ public class OrderSheetDto {
     private LocalDateTime wishedDeadline;
   }
 
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class OrderSheetSaveResponse {
+    boolean saveResult;
+  }
+
   /**
    * 주문서 요약 DTO 클래스.
    * 주문서 목록의 요소로 사용된다.
