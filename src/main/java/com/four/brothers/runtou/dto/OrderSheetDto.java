@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -65,6 +67,7 @@ public class OrderSheetDto {
     private OrderSheetCategory category;
     @NotEmpty
     private String destination;
+    @Range(min = 1, max = 100000)
     private int cost;
     @NotNull
     private LocalDateTime wishedDeadline;
