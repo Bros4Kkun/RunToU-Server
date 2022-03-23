@@ -29,7 +29,9 @@ public class OrderSheetDto implements ModelDto<OrderSheetDto, OrderSheet> {
   public OrderSheetDto toDtoFromEntity(OrderSheet entity) {
     this.id = entity.getId();
     this.ordererId = entity.getOrderer().getId();
-    this.matchingId = entity.getMatching().getId();
+    if (entity.getMatching() != null) {
+      this.matchingId = entity.getMatching().getId();
+    }
     this.title = entity.getTitle();
     this.content = entity.getContent();
     this.category = entity.getCategory();
