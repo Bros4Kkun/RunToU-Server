@@ -80,5 +80,18 @@ public class OrderSheetService {
     return new OrderSheetDetailsResponse(item);
   }
 
+  /**
+   * 해당 pk값을 갖는 주문서를 결제완료 상태로 전환시키는 메서드
+   * @param id
+   */
+  @Transactional
+  public void updateOrderSheetIsPayed(long id) {
+    Optional<OrderSheet> foundOrderSheet = orderSheetRepository.findById(id);
 
+    if (foundOrderSheet.isEmpty()) {
+      throw new IllegalArgumentException("존재하지 않는 주문서 id입니다.");
+    }
+
+    foundOrderSheet.get().payComplete();
+  }
 }
