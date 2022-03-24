@@ -40,6 +40,7 @@ public class LoginConfig implements WebMvcConfigurer {
       .excludePathPatterns("/api/user/logout/**")
       .excludePathPatterns("/api/user/signin/**")
       .excludePathPatterns("/api/admin/**")
+      .excludePathPatterns("/api/ordersheet/test/pay/**")
       .excludePathPatterns("/error")
       .order(3);
 
