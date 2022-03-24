@@ -75,4 +75,17 @@ public class OrderSheet extends BaseTimeEntity {
     this.orderer = orderer;
   }
 
+  /**
+   * 결제 완료 상태로 변환하는 메서드
+   */
+  public void payComplete() {
+    this.isPayed = true;
+  }
+
+  /**
+   * 결제 비완료 상태로 변환하는 메서드
+   */
+  public void payNotComplete() {
+    this.isPayed = false;
+  }
 }
