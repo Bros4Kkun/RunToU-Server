@@ -1,14 +1,12 @@
 package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.domain.OrderSheetCategory;
-import com.four.brothers.runtou.dto.LoginDto;
-import com.four.brothers.runtou.dto.OrderSheetDto;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.service.OrderSheetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.OrderSheetDto.*;
 
+@Tag(name = "OrderSheetController", description = "주문서 관련 API")
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/ordersheet")
