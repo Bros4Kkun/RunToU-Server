@@ -2,6 +2,7 @@ package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.domain.OrderSheetCategory;
 import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.NoAuthorityException;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.service.OrderSheetService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -101,6 +102,24 @@ public class OrderSheetRestController {
     }
 
     return response;
+  }
+
+  @Operation(summary = "주문서 수정")
+  @PatchMapping("/{orderSheetId}")
+  public OrderSheetSaveResponse updateOrderSheet(
+    @PathVariable long orderSheetId,
+    @Validated OrderSheetSaveRequest request,
+    BindingResult bindingResult,
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
+    ) throws NoAuthorityException {
+
+    if (bindingResult.hasFieldErrors()) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+    }
+
+    orderSheetService.updateOrderSheet(orderSheetId, request, loginUser);
+
+    return new OrderSheetSaveResponse(true);
   }
 
 
