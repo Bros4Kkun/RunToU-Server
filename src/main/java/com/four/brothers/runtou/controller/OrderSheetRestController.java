@@ -108,16 +108,21 @@ public class OrderSheetRestController {
   @PatchMapping("/{orderSheetId}")
   public OrderSheetSaveResponse updateOrderSheet(
     @PathVariable long orderSheetId,
-    @Validated OrderSheetSaveRequest request,
+    @Validated @RequestBody OrderSheetSaveRequest request,
     BindingResult bindingResult,
     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
     ) throws NoAuthorityException {
 
     if (bindingResult.hasFieldErrors()) {
+      log.info(bindingResult.getFieldError().toString());
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
     }
 
-    orderSheetService.updateOrderSheet(orderSheetId, request, loginUser);
+    try {
+      orderSheetService.updateOrderSheet(orderSheetId, request, loginUser);
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+    }
 
     return new OrderSheetSaveResponse(true);
   }
