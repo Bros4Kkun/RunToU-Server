@@ -17,7 +17,7 @@ public class ControllerAdvice {
   }
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler(IllegalArgumentException.class)
+  @ExceptionHandler(NoAuthorityException.class)
   public ErrorDto.Response noAuthorityHandle(NoAuthorityException e) {
     return new ErrorDto.Response(BadRequestException.httpStatus, e.getCode(), e.getErrorMsg());
   }
