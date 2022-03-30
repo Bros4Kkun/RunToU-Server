@@ -88,4 +88,13 @@ public class OrderSheet extends BaseTimeEntity {
   public void payNotComplete() {
     this.isPayed = false;
   }
+
+  public void update(String title, String content, OrderSheetCategory category, String destination, int cost, LocalDateTime wishedDeadline) {
+    this.title = title;
+    this.content = content;
+    this.category = category;
+    this.destination = destination;
+    this.cost = cost;
+    this.wishedDeadline = wishedDeadline;
+  }
 }

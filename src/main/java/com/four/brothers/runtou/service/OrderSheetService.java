@@ -2,6 +2,8 @@ package com.four.brothers.runtou.service;
 
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Orderer;
+import com.four.brothers.runtou.exception.NoAuthorityException;
+import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.repository.user.OrderSheetRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
 import lombok.RequiredArgsConstructor;
@@ -98,5 +100,29 @@ public class OrderSheetService {
     }
 
     foundOrderSheet.get().payComplete();
+  }
+
+  /**
+   * 해당 주문서의 내용을 수정하는 메서드
+   * @param orderSheetId 수정할 주문서의 pk값
+   * @param request 수정할 내용
+   */
+  @Transactional
+  public void updateOrderSheet(long orderSheetId, OrderSheetSaveRequest request, LoginUser loginUser) throws NoAuthorityException {
+    Optional<OrderSheet> op = orderSheetRepository.findById(orderSheetId);
+
+    if (op.isEmpty()) {
+      throw new IllegalArgumentException("존재하지 않는 주문서 id입니다.");
+    }
+
+
+    OrderSheet orderSheet = op.get();
+
+    //로그인한 유저가 작성한 글인지 확인
+    if (!loginUser.getAccountId().equals(orderSheet.getOrderer().getAccountId())) {
+      throw new NoAuthorityException(RequestExceptionCode.NO_AUTHORITY);
+    }
+
+    orderSheet.update(request.getTitle(), request.getContent(), request.getCategory(), request.getDestination(), request.getCost(), request.getWishedDeadline());
   }
 }
