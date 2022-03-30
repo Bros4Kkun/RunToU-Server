@@ -2,7 +2,9 @@ package com.four.brothers.runtou.service;
 
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Orderer;
+import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.NoAuthorityException;
+import com.four.brothers.runtou.exception.code.OrderSheetExceptionCode;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.repository.user.OrderSheetRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
@@ -120,7 +122,12 @@ public class OrderSheetService {
 
     //로그인한 유저가 작성한 글인지 확인
     if (!loginUser.getAccountId().equals(orderSheet.getOrderer().getAccountId())) {
-      throw new NoAuthorityException(RequestExceptionCode.NO_AUTHORITY);
+      throw new NoAuthorityException(RequestExceptionCode.NO_AUTHORITY); //본인이 작성하지 않은 글을 수정하려고 하면, 예외 발생
+    }
+
+    //이미 수행 중인 심부름인지 확인
+    if (orderSheet.getIsPayed()) {
+      throw new BadRequestException(OrderSheetExceptionCode.ALREADY_MATCHED);
     }
 
     orderSheet.update(request.getTitle(), request.getContent(), request.getCategory(), request.getDestination(), request.getCost(), request.getWishedDeadline());
