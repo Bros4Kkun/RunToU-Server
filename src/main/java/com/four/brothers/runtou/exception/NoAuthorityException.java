@@ -7,17 +7,18 @@ import org.springframework.http.HttpStatus;
 import javax.naming.AuthenticationException;
 
 @Getter
-public class NoAuthorityException extends AuthenticationException {
+public class NoAuthorityException extends AuthenticationException implements Exception {
   public static HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 
   private ExceptionCode code;
   private String errorMsg;
+  private String detail;
 
   /**
    * ExceptionCode 인터페이스를 상속받은 ENUM 타입 처리
    * @param code
    */
-  public NoAuthorityException(ExceptionCode code) {
+  public NoAuthorityException(ExceptionCode code, String detail) {
     if (!code.getClass().isEnum()) {
       throw new IllegalArgumentException("매개변수로 enum 타입이 와야합니다.");
     }
@@ -27,5 +28,6 @@ public class NoAuthorityException extends AuthenticationException {
 
     this.code = code;
     this.errorMsg = code.getValue();
+    this.detail = detail;
   }
 }

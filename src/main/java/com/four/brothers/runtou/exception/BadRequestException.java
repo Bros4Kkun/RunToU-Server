@@ -9,18 +9,18 @@ import org.springframework.http.HttpStatus;
  * "404 Bad Request"를 반환해야 하는 예외
  */
 @Getter
-@NoArgsConstructor
-public class BadRequestException extends IllegalArgumentException {
+public class BadRequestException extends IllegalArgumentException implements Exception {
   public static HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
   private ExceptionCode code;
   private String errorMsg;
+  private String detail;
 
   /**
    * ExceptionCode 인터페이스를 상속받은 ENUM 타입 처리
    * @param code
    */
-  public BadRequestException(ExceptionCode code) {
+  public BadRequestException(ExceptionCode code, String detail) {
     if (!code.getClass().isEnum()) {
       throw new IllegalArgumentException("매개변수로 enum 타입이 와야합니다.");
     }
@@ -30,5 +30,6 @@ public class BadRequestException extends IllegalArgumentException {
 
     this.code = code;
     this.errorMsg = code.getValue();
+    this.detail = detail;
   }
 }

@@ -66,7 +66,7 @@ public class OrderSheetRepository {
    * @param itemSize 페이지당 출력할 개수
    * @return
    */
-  public List<OrderSheet> findAllOnlyPayed(int nowPage, int itemSize, OrderSheetCategory category) {
+  public List<OrderSheet> findAllOnlyPayed(int nowPage, int itemSize, OrderSheetCategory category) throws IllegalArgumentException {
     if (nowPage < 1) {
       throw new IllegalArgumentException("조회할 현재 페이지는 1 이상이어야 합니다.");
     }

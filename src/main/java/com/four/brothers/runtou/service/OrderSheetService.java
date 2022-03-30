@@ -52,7 +52,7 @@ public class OrderSheetService {
    * @return OrderSheetItem이 담긴 List형 변수
    */
   @Transactional
-  public AllOrderSheetResponse lookUpAllOrderSheet(AllOrderSheetRequest request) {
+  public AllOrderSheetResponse lookUpAllOrderSheet(AllOrderSheetRequest request) throws IllegalArgumentException {
     List<OrderSheet> orderSheetList = orderSheetRepository.findAllOnlyPayed(request.getNowPage(),
                                                               request.getItemSize(), request.getCategory());
     List<OrderSheetItemSample> result = new ArrayList<>();
@@ -122,12 +122,12 @@ public class OrderSheetService {
 
     //로그인한 유저가 작성한 글인지 확인
     if (!loginUser.getAccountId().equals(orderSheet.getOrderer().getAccountId())) {
-      throw new NoAuthorityException(RequestExceptionCode.NO_AUTHORITY); //본인이 작성하지 않은 글을 수정하려고 하면, 예외 발생
+      throw new NoAuthorityException(RequestExceptionCode.NO_AUTHORITY, "현재 로그인한 사용자가 작성하지 않은 게시글입니다."); //본인이 작성하지 않은 글을 수정하려고 하면, 예외 발생
     }
 
     //이미 수행 중인 심부름인지 확인
     if (orderSheet.getIsPayed()) {
-      throw new BadRequestException(OrderSheetExceptionCode.ALREADY_MATCHED);
+      throw new BadRequestException(OrderSheetExceptionCode.ALREADY_MATCHED, "이미 결제가 완료된 요청서입니다.");
     }
 
     orderSheet.update(request.getTitle(), request.getContent(), request.getCategory(), request.getDestination(), request.getCost(), request.getWishedDeadline());

@@ -43,7 +43,7 @@ public class OrderSheetRestController {
     ) {
 
     if (bindingResult.hasFieldErrors()) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
     }
 
     orderSheetService.saveOrderSheet(request, loginUser.getAccountId());
@@ -72,6 +72,7 @@ public class OrderSheetRestController {
   ) {
 
     AllOrderSheetRequest request;
+    AllOrderSheetResponse response;
 
     if (category.equals("ALL")) {
       request = new AllOrderSheetRequest(null, nowPage, 10);
@@ -79,11 +80,15 @@ public class OrderSheetRestController {
       try {
         request = new AllOrderSheetRequest(OrderSheetCategory.valueOf(category), nowPage, 10);
       } catch (IllegalArgumentException e) {
-        throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+        throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, "존재하지 않는 카테고리입니다.");
       }
     }
 
-    AllOrderSheetResponse response = orderSheetService.lookUpAllOrderSheet(request);
+    try {
+      response = orderSheetService.lookUpAllOrderSheet(request);
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, e.getMessage());
+    }
 
     return response;
   }
@@ -98,7 +103,7 @@ public class OrderSheetRestController {
     try {
       response = orderSheetService.lookUpOrderSheetDetails(request, loginUser);
     } catch(IllegalArgumentException e) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, e.getMessage());
     }
 
     return response;
@@ -114,14 +119,13 @@ public class OrderSheetRestController {
     ) throws NoAuthorityException {
 
     if (bindingResult.hasFieldErrors()) {
-      log.info(bindingResult.getFieldError().toString());
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
     }
 
     try {
       orderSheetService.updateOrderSheet(orderSheetId, request, loginUser);
     } catch (IllegalArgumentException e) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, e.getMessage());
     }
 
     return new OrderSheetSaveResponse(true);

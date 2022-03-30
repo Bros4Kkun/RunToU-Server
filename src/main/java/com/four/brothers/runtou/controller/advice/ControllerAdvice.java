@@ -13,12 +13,12 @@ public class ControllerAdvice {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(IllegalArgumentException.class)
   public ErrorDto.Response badRequestHandle(BadRequestException e) {
-    return new ErrorDto.Response(BadRequestException.httpStatus, e.getCode(), e.getErrorMsg());
+    return new ErrorDto.Response(BadRequestException.httpStatus, e.getCode(), e.getErrorMsg(), e.getDetail());
   }
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ExceptionHandler(NoAuthorityException.class)
   public ErrorDto.Response noAuthorityHandle(NoAuthorityException e) {
-    return new ErrorDto.Response(NoAuthorityException.httpStatus, e.getCode(), e.getErrorMsg());
+    return new ErrorDto.Response(NoAuthorityException.httpStatus, e.getCode(), e.getErrorMsg(), e.getDetail());
   }
 }
