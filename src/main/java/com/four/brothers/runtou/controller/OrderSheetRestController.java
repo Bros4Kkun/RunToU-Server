@@ -45,7 +45,7 @@ public class OrderSheetRestController {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
     }
 
-    orderSheetService.saveOrderSheet(request, loginUser);
+    orderSheetService.saveOrderSheet(request, loginUser.getAccountId());
 
     return new OrderSheetSaveResponse(true);
   }

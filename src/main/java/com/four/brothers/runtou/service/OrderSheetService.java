@@ -22,9 +22,14 @@ public class OrderSheetService {
   private final OrderSheetRepository orderSheetRepository;
   private final OrdererRepository ordererRepository;
 
+  /**
+   * 주문서를 저장하는 메서드
+   * @param request 저장할 주문서 내용
+   * @param writerAccountId 작성자 계정 Id
+   */
   @Transactional
-  public void saveOrderSheet(OrderSheetSaveRequest request, LoginUser loginUser) {
-    Optional<Orderer> orderer = ordererRepository.findOrdererByAccountId(loginUser.getAccountId());
+  public void saveOrderSheet(OrderSheetSaveRequest request, String writerAccountId) {
+    Optional<Orderer> orderer = ordererRepository.findOrdererByAccountId(writerAccountId);
     orderSheetRepository.saveOrderSheet(
       orderer.get(),
       request.getTitle(),
