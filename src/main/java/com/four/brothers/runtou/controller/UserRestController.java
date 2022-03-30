@@ -46,13 +46,13 @@ public class UserRestController {
     boolean result = false;
 
     if (bindingResult.hasFieldErrors()) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
     }
 
     try {
       result = userService.signUpAsOrderer(request);
     } catch (DataIntegrityViolationException e) {
-      throw new BadRequestException(SignupExceptionCode.ALREADY_EXIST_INFO);
+      throw new BadRequestException(SignupExceptionCode.ALREADY_EXIST_INFO, "회원가입 정보가 중복됩니다.");
     }
 
     return new SignUpResponse(result);
@@ -66,7 +66,7 @@ public class UserRestController {
     BindingResult bindingResult
   ) {
     if (bindingResult.hasFieldErrors()) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
     }
 
     return userService.isDuplicatedAccountId(request);
@@ -80,7 +80,7 @@ public class UserRestController {
   ) {
 
     if (bindingResult.hasFieldErrors()) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
     }
 
     return userService.isDuplicatedNickname(request);
@@ -93,7 +93,7 @@ public class UserRestController {
                              HttpServletRequest httpServletRequest) {
 
     if (bindingResult.hasFieldErrors()) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
     }
 
     LoginUser loginUser = null;
@@ -104,7 +104,7 @@ public class UserRestController {
     }
 
     if (loginUser == null) {
-      throw new BadRequestException(LoginExceptionCode.WRONG_VALUE);
+      throw new BadRequestException(LoginExceptionCode.WRONG_VALUE, "로그인 정보가 잘못되었습니다.");
     }
 
     HttpSession session = httpServletRequest.getSession();

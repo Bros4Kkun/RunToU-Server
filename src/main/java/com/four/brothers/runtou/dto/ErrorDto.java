@@ -15,5 +15,6 @@ public class ErrorDto {
     private HttpStatus httpStatus;
     private ExceptionCode code;
     private String errorMsg;
+    private String detail;
   }
 }

@@ -2,15 +2,13 @@ package com.four.brothers.runtou.exception;
 
 import com.four.brothers.runtou.exception.code.ExceptionCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-/**
- * "404 Bad Request"를 반환해야 하는 예외
- */
+import javax.naming.AuthenticationException;
+
 @Getter
-public class BadRequestException extends IllegalArgumentException implements Exception {
-  public static HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+public class NoAuthorityException extends AuthenticationException implements Exception {
+  public static HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 
   private ExceptionCode code;
   private String errorMsg;
@@ -20,7 +18,7 @@ public class BadRequestException extends IllegalArgumentException implements Exc
    * ExceptionCode 인터페이스를 상속받은 ENUM 타입 처리
    * @param code
    */
-  public BadRequestException(ExceptionCode code, String detail) {
+  public NoAuthorityException(ExceptionCode code, String detail) {
     if (!code.getClass().isEnum()) {
       throw new IllegalArgumentException("매개변수로 enum 타입이 와야합니다.");
     }

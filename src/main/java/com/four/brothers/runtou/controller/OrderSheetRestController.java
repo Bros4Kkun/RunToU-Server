@@ -2,6 +2,7 @@ package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.domain.OrderSheetCategory;
 import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.NoAuthorityException;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.service.OrderSheetService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,10 +43,10 @@ public class OrderSheetRestController {
     ) {
 
     if (bindingResult.hasFieldErrors()) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
     }
 
-    orderSheetService.saveOrderSheet(request, loginUser);
+    orderSheetService.saveOrderSheet(request, loginUser.getAccountId());
 
     return new OrderSheetSaveResponse(true);
   }
@@ -71,6 +72,7 @@ public class OrderSheetRestController {
   ) {
 
     AllOrderSheetRequest request;
+    AllOrderSheetResponse response;
 
     if (category.equals("ALL")) {
       request = new AllOrderSheetRequest(null, nowPage, 10);
@@ -78,11 +80,15 @@ public class OrderSheetRestController {
       try {
         request = new AllOrderSheetRequest(OrderSheetCategory.valueOf(category), nowPage, 10);
       } catch (IllegalArgumentException e) {
-        throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+        throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, "존재하지 않는 카테고리입니다.");
       }
     }
 
-    AllOrderSheetResponse response = orderSheetService.lookUpAllOrderSheet(request);
+    try {
+      response = orderSheetService.lookUpAllOrderSheet(request);
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, e.getMessage());
+    }
 
     return response;
   }
@@ -97,10 +103,32 @@ public class OrderSheetRestController {
     try {
       response = orderSheetService.lookUpOrderSheetDetails(request, loginUser);
     } catch(IllegalArgumentException e) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT);
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, e.getMessage());
     }
 
     return response;
+  }
+
+  @Operation(summary = "주문서 수정")
+  @PatchMapping("/{orderSheetId}")
+  public OrderSheetSaveResponse updateOrderSheet(
+    @PathVariable long orderSheetId,
+    @Validated @RequestBody OrderSheetSaveRequest request,
+    BindingResult bindingResult,
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
+    ) throws NoAuthorityException {
+
+    if (bindingResult.hasFieldErrors()) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
+    }
+
+    try {
+      orderSheetService.updateOrderSheet(orderSheetId, request, loginUser);
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, e.getMessage());
+    }
+
+    return new OrderSheetSaveResponse(true);
   }
 
 
