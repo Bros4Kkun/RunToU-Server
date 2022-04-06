@@ -20,6 +20,9 @@ public class OrdererDto {
     @Length(max = 30)
     private String accountId;
     @NotEmpty
+    @Length(max = 20)
+    private String realName;
+    @NotEmpty
     @Length(max = 30)
     private String nickname;
     @NotEmpty

@@ -41,6 +41,7 @@ public class LoginDto {
   public static class LoginResponse {
     private boolean success;
     private String accountId;
+    private String realName;
     private String nickname;
     private String phoneNumber;
     private String accountNumber;
@@ -53,6 +54,7 @@ public class LoginDto {
   @AllArgsConstructor
   public static class LoginUser {
     private String accountId;
+    private String realName;
     private String nickname;
     private String phoneNumber;
     private String accountNumber;

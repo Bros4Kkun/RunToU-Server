@@ -21,8 +21,8 @@ public class Orderer extends User {
   @OneToMany(mappedBy = "orderer", fetch = FetchType.LAZY)
   private List<ChatRoom> chatRooms = new ArrayList<>();
 
-  public Orderer(String accountId, String password, String nickname, String phoneNumber, String accountNumber, Boolean isDoingJobNow) {
-    super(accountId, password, nickname, phoneNumber, accountNumber);
+  public Orderer(String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber, Boolean isDoingJobNow) {
+    super(accountId, password, realName, nickname, phoneNumber, accountNumber);
     this.isDoingJobNow = isDoingJobNow;
   }
 

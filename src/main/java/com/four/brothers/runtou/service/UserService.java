@@ -35,13 +35,14 @@ public class UserService {
   @Transactional
   public boolean signUpAsOrderer(OrdererDto.SignUpRequest signUpRequest) {
     String accountId = signUpRequest.getAccountId();
+    String realName = signUpRequest.getRealName();
     String nickname = signUpRequest.getNickname();
     String password = passwordEncoder.encode(signUpRequest.getPassword());
     String phoneNumber = signUpRequest.getPhoneNumber();
     String accountNumber = signUpRequest.getAccountNumber();
 
     try {
-      ordererRepository.saveOrderer(accountId, password, nickname, phoneNumber, accountNumber);
+      ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
     } catch (Exception e) {
       throw new IllegalArgumentException("이미 회원정보가 존재합니다.");
     }
@@ -98,6 +99,7 @@ public class UserService {
     }
 
     return new LoginUser(orderer.get().getAccountId(),
+            orderer.get().getRealName(),
             orderer.get().getNickname(),
             orderer.get().getPhoneNumber(),
             orderer.get().getAccountNumber(),
@@ -127,6 +129,7 @@ public class UserService {
     }
 
     return new LoginUser(performer.get().getAccountId(),
+      performer.get().getRealName(),
       performer.get().getNickname(),
       performer.get().getPhoneNumber(),
       performer.get().getAccountNumber(),
