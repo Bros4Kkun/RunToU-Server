@@ -26,13 +26,14 @@ class OrdererRepositoryTest {
     //given
     String accountId = "test1";
     String password = "1234";
+    String realName = "test1";
     String nickname ="ck";
     String phoneNumber = "01012341234";
     String accountNumber = "123451233";
 
     //when-then
     assertDoesNotThrow(
-        ()->{ordererRepository.saveOrderer(accountId, password, nickname,phoneNumber,accountNumber);}
+        ()->{ordererRepository.saveOrderer(accountId, password, realName, nickname,phoneNumber,accountNumber);}
     );
   }
 
@@ -42,12 +43,13 @@ class OrdererRepositoryTest {
     //given
     String accountId = "test1";
     String password = "1234";
+    String realName = "test1";
     String nickname ="ck";
     String phoneNumber = "01012341234";
     String accountNumber = "123451233";
     long pk;
 
-    ordererRepository.saveOrderer(accountId,password,nickname,phoneNumber,accountNumber);
+    ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
 
     pk = ordererRepository.findOrdererByAccountId(accountId).get().getId();
 
@@ -65,11 +67,12 @@ class OrdererRepositoryTest {
     //given
     String accountId = "test1";
     String password = "1234";
+    String realName = "test1";
     String nickname ="ck";
     String phoneNumber = "01012341234";
     String accountNumber = "123451233";
 
-    ordererRepository.saveOrderer(accountId,password,nickname,phoneNumber,accountNumber);
+    ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
 
     //when
     Optional<Orderer> result =ordererRepository.findOrdererByAccountId(accountId);
@@ -84,12 +87,14 @@ class OrdererRepositoryTest {
     //given
     String accountId1 = "test1";
     String password1 = "1234";
+    String realName1 = "test1";
     String nickname1 ="ck";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "123451233";
 
     String accountId2 = "test2";
     String password2= "1234";
+    String realName2 = "test2";
     String nickname2 ="cg";
     String phoneNumber2 = "01012341234";
     String accountNumber2 = "123451233";
@@ -98,8 +103,8 @@ class OrdererRepositoryTest {
     int itemSize1 = 1;
     int itemSize2 =2;
 
-    ordererRepository.saveOrderer(accountId1,password1,nickname1,phoneNumber1,accountNumber1);
-    ordererRepository.saveOrderer(accountId2,password2,nickname2,phoneNumber2,accountNumber2);
+    ordererRepository.saveOrderer(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
+    ordererRepository.saveOrderer(accountId2, password2, realName2, nickname2, phoneNumber2, accountNumber2);
 
     //when-then
     assertAll(
@@ -125,13 +130,14 @@ class OrdererRepositoryTest {
   void deleteOrdererByIdTest(){
     String accountId1 = "test1";
     String password1 = "1234";
+    String realName1 = "test1";
     String nickname1 ="ck";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "123451233";
 
     long pk;
 
-    ordererRepository.saveOrderer(accountId1,password1,nickname1,phoneNumber1,accountNumber1);
+    ordererRepository.saveOrderer(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
     ordererRepository.findAll(1,1);
 
     pk = ordererRepository.findAll(1,1).get(0).getId();
@@ -150,11 +156,12 @@ class OrdererRepositoryTest {
     //given
     String accountId1 = "test1";
     String password1 = "1234";
+    String realName1 = "test1";
     String nickname1 ="ck";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "123451233";
     String keyword;
-    ordererRepository.saveOrderer(accountId1,password1,nickname1,phoneNumber1,accountNumber1);
+    ordererRepository.saveOrderer(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
 
     keyword = ordererRepository.findOrdererByAccountId(accountId1).get().getAccountId();
 

@@ -16,6 +16,7 @@ public class PerformerDto implements ModelDto<PerformerDto, Performer> {
   private Long id;
   private String accountId;
   private String password;
+  private String realName;
   private String nickname;
   private String accountNumber;
   private Boolean isDoingJobNow;
@@ -27,6 +28,7 @@ public class PerformerDto implements ModelDto<PerformerDto, Performer> {
     this.id = entity.getId();
     this.accountId = entity.getAccountId();
     this.password = entity.getPassword();
+    this.realName = entity.getRealName();
     this.nickname = entity.getNickname();
     this.accountNumber = entity.getAccountNumber();
     this.isDoingJobNow = entity.getIsDoingJobNow();
@@ -44,6 +46,8 @@ public class PerformerDto implements ModelDto<PerformerDto, Performer> {
         return this.accountId;
       case "password":
         return this.password;
+      case "realName":
+        return this.realName;
       case "nickname":
         return this.nickname;
       case "accountNumber":

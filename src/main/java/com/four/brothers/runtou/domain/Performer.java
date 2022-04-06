@@ -28,8 +28,8 @@ public class Performer extends User {
   @OneToMany(mappedBy = "performer", fetch = FetchType.LAZY)
   private List<ChatRoom> chatRooms = new ArrayList<>();
 
-  public Performer(String accountId, String password, String nickname, String phoneNumber, String accountNumber, Boolean isDoingJobNow, LocalDateTime becamePerformerDateTime, Long earnedMoney) {
-    super(accountId, password, nickname, phoneNumber, accountNumber);
+  public Performer(String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber, Boolean isDoingJobNow, LocalDateTime becamePerformerDateTime, Long earnedMoney) {
+    super(accountId, password, realName, nickname, phoneNumber, accountNumber);
     this.isDoingJobNow = isDoingJobNow;
     this.becamePerformerDateTime = becamePerformerDateTime;
     this.earnedMoney = earnedMoney;
