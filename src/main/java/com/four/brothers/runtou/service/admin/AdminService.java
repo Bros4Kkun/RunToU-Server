@@ -151,6 +151,7 @@ public class AdminService {
     }
 
     return new LoginUser(admin.get().getAccountId(),
+          admin.get().getRealName(),
           admin.get().getNickname(),
           admin.get().getPhoneNumber(),
           admin.get().getAccountNumber(),

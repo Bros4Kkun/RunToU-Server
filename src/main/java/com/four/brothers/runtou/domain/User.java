@@ -2,6 +2,7 @@ package com.four.brothers.runtou.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ public class User {
 
   @Column(nullable = false)
   private String password;
+
+  @Column(length = 20)
+  private String realName;
 
   @Column(nullable = false, length = 30, unique = true)
   private String nickname;
@@ -47,9 +51,10 @@ public class User {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<ChatMessage> chatMessages = new ArrayList<>();
 
-  public User(String accountId, String password, String nickname, String phoneNumber, String accountNumber) {
+  public User(String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber) {
     this.accountId = accountId;
     this.password = password;
+    this.realName = realName;
     this.nickname = nickname;
     this.phoneNumber = phoneNumber;
     this.accountNumber = accountNumber;

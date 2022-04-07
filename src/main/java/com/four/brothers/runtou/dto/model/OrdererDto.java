@@ -16,6 +16,7 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
   private Long id;
   private String accountId;
   private String password;
+  private String realName;
   private String nickname;
   private String accountNumber;
   private Boolean isDoingJobNow;
@@ -26,6 +27,7 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
     this.id = entity.getId();
     this.accountId = entity.getAccountId();
     this.password = entity.getPassword();
+    this.realName = entity.getRealName();
     this.nickname = entity.getNickname();
     this.accountNumber = entity.getAccountNumber();
     this.isDoingJobNow = entity.getIsDoingJobNow();
@@ -42,6 +44,8 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
         return this.accountId;
       case "password":
         return this.password;
+      case "realName":
+        return this.realName;
       case "nickname":
         return this.nickname;
       case "accountNumber":

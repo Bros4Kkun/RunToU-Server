@@ -14,6 +14,7 @@ public class AdminDto implements ModelDto<AdminDto, Admin> {
   private Long id;
   private String accountId;
   private String password;
+  private String realName;
   private String nickname;
   private String accountNumber;
   private String selfIntroduction;
@@ -23,6 +24,7 @@ public class AdminDto implements ModelDto<AdminDto, Admin> {
     this.id = entity.getId();
     this.accountId = entity.getAccountId();
     this.password = entity.getPassword();
+    this.realName = entity.getRealName();
     this.nickname = entity.getNickname();
     this.accountNumber = entity.getAccountNumber();
     this.selfIntroduction = entity.getSelfIntroduction();
@@ -39,6 +41,8 @@ public class AdminDto implements ModelDto<AdminDto, Admin> {
         return this.accountId;
       case "password":
         return this.password;
+      case "realName":
+        return this.realName;
       case "nickname":
         return this.nickname;
       case "accountNumber":

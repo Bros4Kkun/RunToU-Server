@@ -26,13 +26,14 @@ class AdminRepositoryTest {
     //given
     String accountId1 = "test1";
     String encodedPassword1 = "encodedPassword123!";
+    String realName1 = "test1";
     String nickname1 = "test1";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "1234567890";
 
     //when-then
     assertDoesNotThrow(() -> {
-      adminRepository.saveAdmin(accountId1, encodedPassword1, nickname1, phoneNumber1, accountNumber1);
+      adminRepository.saveAdmin(accountId1, encodedPassword1, realName1, nickname1, phoneNumber1, accountNumber1);
     });
   }
 
@@ -43,11 +44,12 @@ class AdminRepositoryTest {
     //given
     String accountId1 = "test1";
     String encodedPassword1 = "encodedPassword123!";
+    String realName1 = "test1";
     String nickname1 = "test1";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "1234567890";
 
-    adminRepository.saveAdmin(accountId1, encodedPassword1, nickname1, phoneNumber1, accountNumber1);
+    adminRepository.saveAdmin(accountId1, encodedPassword1, realName1, nickname1, phoneNumber1, accountNumber1);
 
     //when
     Optional<Admin> result = adminRepository.findAdminByAccountId(accountId1);
@@ -63,12 +65,13 @@ class AdminRepositoryTest {
     //given
     String accountId1 = "test1";
     String encodedPassword1 = "encodedPassword123!";
+    String realName1 = "test1";
     String nickname1 = "test1";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "1234567890";
     long id;
 
-    adminRepository.saveAdmin(accountId1, encodedPassword1, nickname1, phoneNumber1, accountNumber1);
+    adminRepository.saveAdmin(accountId1, encodedPassword1, realName1, nickname1, phoneNumber1, accountNumber1);
 
     id = adminRepository.findAdminByAccountId(accountId1).get().getId();
 
@@ -86,12 +89,14 @@ class AdminRepositoryTest {
     //given
     String accountId1 = "test1";
     String encodedPassword1 = "encodedPassword123!";
+    String realName1 = "test1";
     String nickname1 = "test1";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "1234567890";
 
     String accountId2 = "test2";
     String encodedPassword2 = "encodedPassword123!";
+    String realName2 = "test2";
     String nickname2 = "test2";
     String phoneNumber2 = "01012341234";
     String accountNumber2 = "1234567890";
@@ -100,8 +105,8 @@ class AdminRepositoryTest {
     int itemSize1 = 1;
     int itemSize2 = 2;
 
-    adminRepository.saveAdmin(accountId1, encodedPassword1, nickname1, phoneNumber1, accountNumber1);
-    adminRepository.saveAdmin(accountId2, encodedPassword2, nickname2, phoneNumber2, accountNumber2);
+    adminRepository.saveAdmin(accountId1, encodedPassword1, realName1, nickname1, phoneNumber1, accountNumber1);
+    adminRepository.saveAdmin(accountId2, encodedPassword2, realName2, nickname2, phoneNumber2, accountNumber2);
 
     //when - then
     assertAll(
@@ -123,12 +128,13 @@ class AdminRepositoryTest {
     //given
     String accountId1 = "test1";
     String encodedPassword1 = "encodedPassword123!";
+    String realName1 = "test1";
     String nickname1 = "test1";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "1234567890";
     long id;
 
-    adminRepository.saveAdmin(accountId1, encodedPassword1, nickname1, phoneNumber1, accountNumber1);
+    adminRepository.saveAdmin(accountId1, encodedPassword1, realName1, nickname1, phoneNumber1, accountNumber1);
 
     id = adminRepository.findAdminByAccountId(accountId1).get().getId();
 
@@ -143,12 +149,13 @@ class AdminRepositoryTest {
     //given
     String accountId1 = "test1";
     String encodedPassword1 = "encodedPassword123!";
+    String realName1 = "test1";
     String nickname1 = "test1";
     String phoneNumber1 = "01012341234";
     String accountNumber1 = "1234567890";
     String keyword;
 
-    adminRepository.saveAdmin(accountId1, encodedPassword1, nickname1, phoneNumber1, accountNumber1);
+    adminRepository.saveAdmin(accountId1, encodedPassword1, realName1, nickname1, phoneNumber1, accountNumber1);
 
     keyword = adminRepository.findAdminByAccountId(accountId1).get().getAccountId();
 

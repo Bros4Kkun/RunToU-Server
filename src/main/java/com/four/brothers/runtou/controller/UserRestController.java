@@ -112,6 +112,7 @@ public class UserRestController {
 
     return new LoginResponse(true,
       loginUser.getAccountId(),
+      loginUser.getRealName(),
       loginUser.getNickname(),
       loginUser.getPhoneNumber(),
       loginUser.getAccountNumber(),
