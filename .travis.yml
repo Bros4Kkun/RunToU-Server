@@ -24,13 +24,14 @@ cache:
 # 프로젝트 내에 권한이 추가된 gradlew를 활용하여 clean, build를 진행한다.
 script: "./gradlew clean build"
 
+# 배포 전 행위들을 선언한다.
 before_deploy:
-  # 현재 위치의 모든 파일을 springboot-test로 압축한다.
-  - zip -r springboot-test *
+  # 현재 위치의 모든 파일을 runtou-application로 압축한다.
+  - zip -r runtou-application *
   # deploy 디렉토리를 Travis가 실행 중인 위치에 생성한다.
   - mkdir -p deploy
   # 생성한 .zip 파일을 deploy 아래로 이동한다.
-  - mv springboot-test.zip deploy/springboot-test.zip
+  - mv runtou-application.zip deploy/runtou-application.zip
 
 # 외부 서비스와 연동할 행위들을 선언한다.
 deploy:
