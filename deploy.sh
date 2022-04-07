@@ -25,6 +25,7 @@ fi
 
 echo "> 새 애플리케이션 배포" >> /home/ec2-user/app/log/runtou/deploy.log
 nohup java -jar \
+  -Dspring.config.location=/home/ec2-user/app/s3-deploy/application-stage.properties \
   -Dspring.profiles.active=stage \
   /home/ec2-user/app/s3-deploy/runtou*.jar \
   >> /home/ec2-user/app/log/runtou/application.log 2>&1 &
