@@ -16,4 +16,4 @@ hooks:
     # EC2 경로가 아닌, 배포할 소스 코드의 shell script 위치
     - location: deploy.sh
       timeout: 60
-      runas: ec2-user
+      runas: root
