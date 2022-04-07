@@ -58,7 +58,7 @@ class MatchingRepositoryTest {
     Performer performer = new Performer(accountId1,password1,nickname1,phoneNumber1
         ,accountNumber1,isDoingJobNow1,becamePerformerDateTime,earnedMoney);
 
-    Boolean isCompleted = false;
+    Boolean isCompleted = true;
     LocalDateTime completedDateTime = LocalDateTime.now();
 
     //when-then
