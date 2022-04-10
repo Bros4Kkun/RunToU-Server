@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.repository.user;
 
+import com.four.brothers.runtou.domain.Orderer;
 import com.four.brothers.runtou.domain.Performer;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,20 @@ import java.util.Optional;
 public class PerformerRepository {
   @PersistenceContext
   private EntityManager em;
+
+  /**
+   * 새로운 수행자를 추가하는 메서드
+   * @param accountId 계정 Id
+   * @param password 계정 비밀번호
+   * @param realName 실명
+   * @param nickname 닉네임
+   * @param phoneNumber 전화번호
+   * @param accountNumber 계좌번호
+   */
+  public void savePerformer(String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber) {
+    Performer newPerformer = new Performer(accountId, password, realName, nickname, phoneNumber, accountNumber, false, LocalDateTime.now(), 0l);
+    em.persist(newPerformer);
+  }
 
   /**
    * 모든 Performer를 조회하는 메서드
