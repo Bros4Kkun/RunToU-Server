@@ -146,7 +146,7 @@ class OrdererRepositoryTest {
     assertDoesNotThrow(
         ()->ordererRepository.deleteOrdererById(pk)
     );
-    
+
   }
 
   @DisplayName("계정id값으로 orderer삭제")
