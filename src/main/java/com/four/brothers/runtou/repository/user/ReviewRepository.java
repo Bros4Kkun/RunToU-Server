@@ -1,7 +1,9 @@
 package com.four.brothers.runtou.repository.user;
 
+import com.four.brothers.runtou.domain.Matching;
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Review;
+import com.four.brothers.runtou.domain.ReviewScore;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,17 @@ import java.util.List;
 public class ReviewRepository {
   @PersistenceContext
   EntityManager em;
+
+  /**
+   * Review 를 저장하는 메서드
+   * @param matching review를 할 매칭
+   * @param score 점수
+   * @param content 내용
+   */
+  public void saveReview(Matching matching, ReviewScore score, String content) {
+    Review review = new Review(matching, score, content);
+    em.persist(review);
+  }
 
   /**
    * 모든 리뷰를 조회하는 메서드
