@@ -2,6 +2,8 @@ package com.four.brothers.runtou.repository.user;
 
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Report;
+import com.four.brothers.runtou.domain.ReportCategory;
+import com.four.brothers.runtou.domain.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,6 +14,18 @@ import java.util.List;
 public class ReportRepository {
   @PersistenceContext
   EntityManager em;
+
+  /**
+   * Report 를 저장하는 메서드
+   * @param reportUser 신고자
+   * @param haveReportedUser 피신고자 (신고를 당한 사람)
+   * @param category 신고종류
+   * @param content 신고내용
+   */
+  public void saveReport(User reportUser, User haveReportedUser, ReportCategory category, String content) {
+    Report report = new Report(reportUser, haveReportedUser, category, content);
+    em.persist(report);
+  }
 
   /**
    * 모든 신고를 조회하는 메서드
