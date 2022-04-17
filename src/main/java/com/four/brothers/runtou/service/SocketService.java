@@ -1,6 +1,7 @@
 package com.four.brothers.runtou.service;
 
 import com.four.brothers.runtou.dto.EchoDto;
+import com.four.brothers.runtou.dto.SocketDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -12,9 +13,13 @@ import org.springframework.stereotype.Service;
 public class SocketService {
   private final SimpMessagingTemplate simpTemplate;
 
-  public void echoMessage(String message) {
-    log.info("Start convertAndSend ${new Date()}");
-    simpTemplate.convertAndSend("/topic/greetings", new EchoDto(message));
-    log.info("End convertAndSend ${new Date()}");
+  /**
+   * 새로운 채팅방이 생성되었음을 Orderer에게 알리는 메서드
+   * @param ordererPk 알릴 Orderer의 PK 값
+   * @param chatRoomPk 생성된 채팅방의 PK 값
+   */
+  public void alertNewChatRoomToOrderer(long ordererPk, long chatRoomPk) {
+    simpTemplate.convertAndSend("/queue/" + ordererPk,
+      new SocketDto.NewChatRoomAlertResponse("New ChatRoom Requested.", chatRoomPk));
   }
 }
