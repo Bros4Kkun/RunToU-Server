@@ -55,6 +55,16 @@ public class PerformerRepository {
     return resultList;
   }
 
+  /**
+   * pk값으로 Performer를 찾는 메서드
+   * @param pk
+   * @return
+   */
+  public Optional<Performer> findPerformerById(long pk) {
+    Performer performer = em.find(Performer.class, pk);
+    return Optional.ofNullable(performer);
+  }
+
   public Optional<Performer> findPerformerByAccountId(String accountId) {
     Performer result = null;
     String jpql = "select p from Performer p " +
