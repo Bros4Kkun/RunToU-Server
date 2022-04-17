@@ -17,7 +17,7 @@ public class UserRepository {
 
   /**
    * 새로운 User를 저장하는 메서드
-   * @param accountId 계정 Id
+   * @param accountId 계정 ID
    * @param password 계정 비밀번호
    * @param realName 실명
    * @param nickname 닉네임
@@ -29,6 +29,11 @@ public class UserRepository {
     em.persist(user);
   }
 
+  /**
+   * 계정 ID로 User를 찾는 메서드
+   * @param accountId 계정 ID
+   * @return
+   */
   public Optional<User> findUserByAccountId(String accountId) {
     String jpql = "select u from User u where u.accountId = :accountId";
     TypedQuery<User> typedQuery = em.createQuery(jpql, User.class).setParameter("accountId", accountId);
@@ -42,6 +47,11 @@ public class UserRepository {
     return Optional.of(user);
   }
 
+  /**
+   * 닉네임으로 User 찾는 메서드
+   * @param nickname 닉네임
+   * @return
+   */
   public Optional<User> findUserByNickname(String nickname) {
     String jpql = "select u from User u where u.nickname = :nickname";
     TypedQuery<User> typedQuery = em.createQuery(jpql, User.class).setParameter("nickname", nickname);
