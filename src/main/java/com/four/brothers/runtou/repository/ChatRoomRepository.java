@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,6 +35,28 @@ public class ChatRoomRepository {
   public Optional<ChatRoom> findChatRoomById(long pk) {
     ChatRoom chatRoom = em.find(ChatRoom.class, pk);
     return Optional.ofNullable(chatRoom);
+  }
+
+  /**
+   * 동일한 채팅방이 이미 존재하는지 확인하는 메서드
+   * @param orderer
+   * @param performer
+   * @param orderSheet
+   * @return
+   */
+  public List<ChatRoom> findSameChatRoom(Orderer orderer, Performer performer, OrderSheet orderSheet) {
+    String jpql = "select c from ChatRoom c " +
+      "where c.orderer = :orderer and " +
+      "c.performer = :performer and " +
+      "c.orderSheet = :orderSheet";
+
+    List<ChatRoom> resultList = em.createQuery(jpql, ChatRoom.class)
+      .setParameter("orderer", orderer)
+      .setParameter("performer", performer)
+      .setParameter("orderSheet", orderSheet)
+      .getResultList();
+
+    return resultList;
   }
 
 }
