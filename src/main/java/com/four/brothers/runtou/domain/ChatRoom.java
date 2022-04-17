@@ -10,6 +10,14 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@Table(
+  uniqueConstraints={
+    @UniqueConstraint(
+      name="constraint1",
+      columnNames={"ORDERER_ID", "PERFORMER_ID", "ORDER_SHEET_ID"}
+    )
+  }
+)
 @Entity
 public class ChatRoom extends BaseTimeEntity {
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
