@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SocketController {
   private final SocketService socketService;
 
+  /**
+   * 웹소켓을 통해, 웹소켓 통신하기
+   * @param message
+   * @return
+   */
   @MessageMapping("/hello-msg-mapping")
   @SendTo("/topic/greetings")
   public EchoDto echoMessageMapping(String message) {
@@ -24,8 +26,13 @@ public class SocketController {
     return new EchoDto(message.trim());
   }
 
-  @RequestMapping(value = "/hello-convert-and-send", method = RequestMethod.POST)
+  /**
+   * 직접 Service 인스턴스를 사용하여, 웹소켓 통신하기
+   * @param message
+   */
+  @PostMapping("/hello-convert-and-send")
   public void echoConvertAndSend(@RequestParam("msg") String message) {
+    log.info("echoConvertAndSend");
     socketService.echoMessage(message);
   }
 }
