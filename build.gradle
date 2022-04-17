@@ -36,8 +36,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	implementation 'org.springframework.integration:spring-integration-amqp'
-	implementation 'io.netty:netty-all'
-	implementation 'io.projectreactor:reactor-net'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
