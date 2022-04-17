@@ -15,6 +15,20 @@ public class UserRepository {
   @PersistenceContext
   private EntityManager em;
 
+  /**
+   * 새로운 User를 저장하는 메서드
+   * @param accountId 계정 Id
+   * @param password 계정 비밀번호
+   * @param realName 실명
+   * @param nickname 닉네임
+   * @param phoneNumber 휴대폰 번호
+   * @param accountNumber 계좌 번호
+   */
+  public void saveUser(String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber) {
+    User user = new User(accountId, password, realName, nickname, phoneNumber, accountNumber);
+    em.persist(user);
+  }
+
   public Optional<User> findUserByAccountId(String accountId) {
     String jpql = "select u from User u where u.accountId = :accountId";
     TypedQuery<User> typedQuery = em.createQuery(jpql, User.class).setParameter("accountId", accountId);
