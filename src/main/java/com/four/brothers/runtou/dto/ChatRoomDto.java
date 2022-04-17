@@ -20,4 +20,12 @@ public class ChatRoomDto {
     @NotNull
     private long orderSheetPk;
   }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class NewChatRoomResponse {
+    private long chatRoomPk;
+  }
 }
