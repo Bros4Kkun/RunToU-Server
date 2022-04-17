@@ -2,6 +2,7 @@ package com.four.brothers.runtou.controller.advice;
 
 import com.four.brothers.runtou.dto.ErrorDto;
 import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.exception.NoAuthorityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,5 +21,11 @@ public class ControllerAdvice {
   @ExceptionHandler(NoAuthorityException.class)
   public ErrorDto.Response noAuthorityHandle(NoAuthorityException e) {
     return new ErrorDto.Response(NoAuthorityException.httpStatus, e.getCode(), e.getErrorMsg(), e.getDetail());
+  }
+
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  @ExceptionHandler(CanNotAccessException.class)
+  public ErrorDto.Response canNotAccessHandle(CanNotAccessException e) {
+    return new ErrorDto.Response(CanNotAccessException.httpStatus, e.getCode(), e.getErrorMsg(), e.getDetail());
   }
 }
