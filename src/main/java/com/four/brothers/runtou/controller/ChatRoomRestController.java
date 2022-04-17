@@ -2,7 +2,9 @@ package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.dto.ChatRoomDto;
 import com.four.brothers.runtou.dto.LoginDto;
+import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.CanNotAccessException;
+import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.service.ChatRoomService;
 import com.four.brothers.runtou.service.SocketService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +39,10 @@ public class ChatRoomRestController {
     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser,
     @Validated @RequestBody NewChatRoomRequest request,
     BindingResult bindingResult) throws CanNotAccessException {
+
+    if (bindingResult.hasFieldErrors()) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
+    }
 
     NewChatRoomResponse newChatRoomResponse = chatRoomService.makeNewChatRoomByPerformer(request, loginUser);
 
