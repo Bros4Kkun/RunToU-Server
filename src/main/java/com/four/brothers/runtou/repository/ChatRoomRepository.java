@@ -28,11 +28,11 @@ public class ChatRoomRepository {
 
   /**
    * pk값으로 채팅방을 찾는 메서드
-   * @param id pk값
+   * @param pk pk값
    * @return
    */
-  public Optional<ChatRoom> findChatRoomById(long id) {
-    ChatRoom chatRoom = em.find(ChatRoom.class, id);
+  public Optional<ChatRoom> findChatRoomById(long pk) {
+    ChatRoom chatRoom = em.find(ChatRoom.class, pk);
     return Optional.ofNullable(chatRoom);
   }
 
