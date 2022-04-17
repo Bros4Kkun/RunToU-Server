@@ -33,6 +33,7 @@ public class ChatRoomService {
 
   /**
    * 요청에 의해 채팅방을 새로 만드는 메서드
+   * 만약 기존의 채팅방이 이미 존재한다면, 기존의 것을 반환한다.
    * @param newChatRoomRequest
    * @param loginUser
    * @return
@@ -43,6 +44,7 @@ public class ChatRoomService {
     Optional<Orderer> orderer;
     Optional<Performer> performer;
     Optional<OrderSheet> orderSheet;
+    boolean isNewRoom = false;
 
     //만약 채팅을 신청한 사람이 '심부름 수행자'가 아니라면
     if (loginUser.getRole() == UserRole.PERFORMER) {
@@ -59,9 +61,14 @@ public class ChatRoomService {
     if (sameChatRoomList.size() == 0) { //기존 채팅방이 존재하지 않는다면
       chatRoomRepository.saveChatRoom(orderer.get(), performer.get(), orderSheet.get());
       sameChatRoomList = chatRoomRepository.findSameChatRoom(orderer.get(), performer.get(), orderSheet.get());
+      isNewRoom = true;
     }
 
-    return new NewChatRoomResponse(sameChatRoomList.get(0).getId());
+    return new NewChatRoomResponse(newChatRoomRequest.getOrdererPk(),
+      newChatRoomRequest.getPerformerPk(),
+      newChatRoomRequest.getOrderSheetPk(),
+      sameChatRoomList.get(0).getId(),
+      isNewRoom);
   }
 
   /**

@@ -26,6 +26,10 @@ public class ChatRoomDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class NewChatRoomResponse {
+    private long ordererPk;
+    private long performerPk;
+    private long orderSheetPk;
     private long chatRoomPk;
+    private boolean isNew;
   }
 }
