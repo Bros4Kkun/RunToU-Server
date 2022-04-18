@@ -33,7 +33,7 @@ public class ChatRoomRestController {
     description = "만약 기존의 채팅방이 있다면, 기존 것으로 응답\n" +
       "기존의 채팅방이 없다면, 새 채팅방으로 응답"
   )
-  @GetMapping("/ordersheet/{orderSheetPk}")
+  @PostMapping("/ordersheet/{orderSheetPk}")
   public NewChatRoomResponse addNewChatRoom(
     @PathVariable long orderSheetPk,
     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser,
