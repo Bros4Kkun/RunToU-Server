@@ -47,7 +47,7 @@ public class ChatRoomService {
     boolean isNewRoom = false;
 
     //만약 채팅을 신청한 사람이 '심부름 수행자'가 아니라면
-    if (loginUser.getRole() == UserRole.PERFORMER) {
+    if (loginUser.getRole() != UserRole.PERFORMER) {
       throw new CanNotAccessException(ChatRoomExceptionCode.REQUEST_USER_IS_NOT_PERFORMER, "오직 심부름 수행자만 채팅을 요청할 수 있습니다.");
     }
 
