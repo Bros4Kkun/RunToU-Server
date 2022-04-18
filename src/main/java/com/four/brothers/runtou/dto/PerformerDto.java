@@ -1,6 +1,5 @@
 package com.four.brothers.runtou.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,13 +8,12 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 
-public class OrdererDto {
-
+public class PerformerDto {
   @Getter
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class SignUpAsOrdererRequest {
+  public static class SignUpAsPerformerRequest {
     @NotEmpty
     @Length(max = 30)
     private String accountId;
@@ -40,7 +38,7 @@ public class OrdererDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class SignUpAsOrdererResponse {
+  public static class SignUpAsPerformerResponse {
     private boolean isSuccess;
     //프로필 사진 관련 내용은 추후에 작성
   }

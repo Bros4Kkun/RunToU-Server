@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.controller;
 
+import com.four.brothers.runtou.dto.PerformerDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.LoginExceptionCode;
@@ -11,21 +12,17 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.JDBCException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityExistsException;
-import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import java.sql.SQLException;
-
 import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.OrdererDto.*;
+import static com.four.brothers.runtou.dto.PerformerDto.*;
 import static com.four.brothers.runtou.dto.UserDto.*;
 
 @Tag(name = "UserController",description = "유저 관련 API")
@@ -36,11 +33,11 @@ import static com.four.brothers.runtou.dto.UserDto.*;
 public class UserRestController {
   private final UserService userService;
 
-  @Operation(summary = "유저 회원가입")
-  @PostMapping("/signup")
-  public SignUpResponse signUp(
+  @Operation(summary = "심부름 요청자 회원가입")
+  @PostMapping("/signup/orderer")
+  public SignUpAsOrdererResponse signUpAsOrderer(
     @Parameter(name = "회원 정보")
-    @Validated @RequestBody SignUpRequest request,
+    @Validated @RequestBody SignUpAsOrdererRequest request,
     BindingResult bindingResult, HttpServletRequest requestMsg
   ) {
     boolean result = false;
@@ -55,7 +52,7 @@ public class UserRestController {
       throw new BadRequestException(SignupExceptionCode.ALREADY_EXIST_INFO, "회원가입 정보가 중복됩니다.");
     }
 
-    return new SignUpResponse(result);
+    return new SignUpAsOrdererResponse(result);
   }
 
   @Operation(summary = "계정 아이디 중복 확인")
@@ -86,11 +83,11 @@ public class UserRestController {
     return userService.isDuplicatedNickname(request);
   }
 
-  @Operation(summary = "로그인")
+  @Operation(summary = "심부름 요청자 or 심부름 수행자 로그인")
   @PostMapping("/signin")
-  public LoginResponse login(@Validated @RequestBody LoginRequest request,
-                             BindingResult bindingResult,
-                             HttpServletRequest httpServletRequest) {
+  public LoginResponse loginAsOrderer(@Validated @RequestBody LoginRequest request,
+                                      BindingResult bindingResult,
+                                      HttpServletRequest httpServletRequest) {
 
     if (bindingResult.hasFieldErrors()) {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
@@ -119,6 +116,29 @@ public class UserRestController {
       loginUser.getRole());
   }
 
+  @Operation(summary = "심부름 수행자 회원가입")
+  @PostMapping("/signup/performer")
+  public SignUpAsPerformerResponse signUpAsPerformer(
+    @Parameter(name = "회원 정보")
+    @Validated @RequestBody SignUpAsPerformerRequest request,
+    BindingResult bindingResult, HttpServletRequest requestMsg
+  ) {
+    boolean result = false;
+
+    if (bindingResult.hasFieldErrors()) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
+    }
+
+    try {
+      result = userService.signUpAsPerformer(request);
+    } catch (DataIntegrityViolationException e) {
+      throw new BadRequestException(SignupExceptionCode.ALREADY_EXIST_INFO, "회원가입 정보가 중복됩니다.");
+    }
+
+    return new SignUpAsPerformerResponse(result);
+  }
+
+
   @Operation(summary = "로그아웃")
   @GetMapping("/logout")
   public boolean logout(HttpServletRequest request) {
@@ -137,9 +157,9 @@ public class UserRestController {
 
   @Operation(summary = "관리자 등록")
   @PostMapping("/admin")
-  public SignUpResponse addAdmin(
+  public SignUpAsOrdererResponse addAdmin(
     @Parameter(name = "회원 정보")
-    @Validated @RequestBody SignUpRequest request,
+    @Validated @RequestBody SignUpAsOrdererRequest request,
     BindingResult bindingResult, HttpServletRequest requestMsg
   ) {
     boolean result = false;
@@ -154,6 +174,6 @@ public class UserRestController {
       throw new BadRequestException(SignupExceptionCode.ALREADY_EXIST_INFO, "관리자 정보가 중복됩니다.");
     }
 
-    return new SignUpResponse(result);
+    return new SignUpAsOrdererResponse(result);
   }
 }
