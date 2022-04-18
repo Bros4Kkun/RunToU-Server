@@ -19,7 +19,7 @@ public class SocketService {
    * @param chatRoomPk 생성된 채팅방의 PK 값
    */
   public void alertNewChatRoomToOrderer(long ordererPk, long chatRoomPk) {
-    simpTemplate.convertAndSend("/queue/" + ordererPk,
+    simpTemplate.convertAndSend("/queue/orderer/" + ordererPk,
       new SocketDto.NewChatRoomAlertResponse("New ChatRoom Requested.", chatRoomPk));
   }
 }
