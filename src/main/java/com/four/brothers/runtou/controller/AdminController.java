@@ -184,7 +184,7 @@ public class AdminController {
       adminService.deleteChatMessageRow(rowPk);
     }
 
-    return "redirect:/admin/db/table/" + tableName.toLowerCase(Locale.ROOT);
+    return "redirect:/admin/db/table/" + tableName.toLowerCase(Locale.ROOT).replaceAll("_", "");
   }
 
   private <T> List<String> getDtoFieldsNames(Class<T> dtoType) {
