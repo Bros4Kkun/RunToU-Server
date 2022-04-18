@@ -38,6 +38,29 @@ public class ChatRoomRepository {
   }
 
   /**
+   * 모든 채팅방을 찾는 메서드
+   * @param nowPage
+   * @param itemSize
+   * @return
+   */
+  public List<ChatRoom> findAll(int nowPage, int itemSize) {
+    if (nowPage < 1) {
+      throw new IllegalArgumentException("조회할 현재 페이지는 1 이상이어야 합니다.");
+    }
+    if (itemSize < 1) {
+      throw new IllegalArgumentException("한번에 조회할 수 있는 엔티티의 개수는 1 이상이어야 합니다.");
+    }
+
+    String jpql = "select c from ChatRoom c";
+    List<ChatRoom> resultList = em.createQuery(jpql, ChatRoom.class)
+      .setFirstResult((nowPage - 1) * itemSize)
+      .setMaxResults(itemSize)
+      .getResultList();
+
+    return resultList;
+  }
+
+  /**
    * 동일한 채팅방이 이미 존재하는지 확인하는 메서드
    * @param orderer
    * @param performer
@@ -57,6 +80,18 @@ public class ChatRoomRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  /**
+   * pk값으로 삭제하는 메서드
+   * @param pk
+   */
+  public void deleteChatRoomById(long pk) {
+    String jpql = "delete from ChatRoom c " +
+      "where c.id = :pk";
+    em.createQuery(jpql)
+      .setParameter("pk", pk)
+      .executeUpdate();
   }
 
 }

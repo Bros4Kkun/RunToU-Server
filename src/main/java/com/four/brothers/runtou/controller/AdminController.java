@@ -133,6 +133,22 @@ public class AdminController {
     return "db-table";
   }
 
+  @GetMapping("/db/table/chatroom")
+  public String chatRoomTable(Model model) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    model.addAttribute("entityName", TableNames.CHAT_ROOM);
+    model.addAttribute("dtoFieldsNames", getDtoFieldsNames(ChatRoomDto.class));
+    model.addAttribute("dtos", adminService.getAllChatRoomDto());
+    return "db-table";
+  }
+
+  @GetMapping("/db/table/chatmessage")
+  public String chatMessageTable(Model model) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    model.addAttribute("entityName", TableNames.CHAT_MESSAGE);
+    model.addAttribute("dtoFieldsNames", getDtoFieldsNames(ChatMessageDto.class));
+    model.addAttribute("dtos", adminService.getAllChatMessageDto());
+    return "db-table";
+  }
+
   @GetMapping("/db/table/filterword")
   public String filterWordTable(Model model) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
     model.addAttribute("entityName", TableNames.FILTER_WORD);
@@ -162,6 +178,10 @@ public class AdminController {
       adminService.deleteReportRow(rowPk);
     } else if (tableName.equals(TableNames.REVIEW.toString())) {
       adminService.deleteReviewRow(rowPk);
+    } else if (tableName.equals(TableNames.CHAT_ROOM.toString())) {
+      adminService.deleteChatRoomRow(rowPk);
+    } else if (tableName.equals(TableNames.CHAT_MESSAGE.toString())) {
+      adminService.deleteChatMessageRow(rowPk);
     }
 
     return "redirect:/admin/db/table/" + tableName.toLowerCase(Locale.ROOT);
