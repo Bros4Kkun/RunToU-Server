@@ -41,9 +41,8 @@ class ReviewRepositoryTest {
     String accountNumber = "11111111111";
     Boolean isDoingJobNow = true;
 
-    Orderer orderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, isDoingJobNow);
     ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    Orderer findOrderer = ordererRepository.findAll(1,1).get(0);
+    Orderer orderer = ordererRepository.findAll(1,1).get(0);
 
     String title = "장보기";
     String content = "오이2개;";
@@ -53,8 +52,7 @@ class ReviewRepositoryTest {
     Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    OrderSheet orderSheet = new OrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
     OrderSheet findOrderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "TestP";
@@ -67,12 +65,10 @@ class ReviewRepositoryTest {
     LocalDateTime becamePerformerDateTime = LocalDateTime.now();
     Long earnedMoney =1000l;
 
-    Performer performer = new Performer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP, isDoingJobNowP, becamePerformerDateTime, earnedMoney);
     performerRepository.savePerformer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP);
-    Performer findPerformer = performerRepository.findAll(1,1).get(0);
+    Performer performer = performerRepository.findAll(1,1).get(0);
 
-    Matching matching = new Matching(isCompleted, completedDateTime, findOrderSheet, findPerformer );
-    matchingRepository.saveMatching(findOrderSheet, findPerformer, isCompleted, completedDateTime);
+    matchingRepository.saveMatching(findOrderSheet, performer, isCompleted, completedDateTime);
     Matching findmatching = matchingRepository.findAll(1,1).get(0);
 
     ReviewScore reviewScore = ReviewScore.EIGHT;
@@ -100,9 +96,8 @@ class ReviewRepositoryTest {
     String accountNumber = "11111111111";
     Boolean isDoingJobNow = true;
 
-    Orderer orderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, isDoingJobNow);
     ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    Orderer findOrderer = ordererRepository.findAll(1,1).get(0);
+    Orderer orderer = ordererRepository.findAll(1,1).get(0);
 
     String title = "장보기";
     String content = "오이2개;";
@@ -112,9 +107,8 @@ class ReviewRepositoryTest {
     Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    OrderSheet orderSheet = new OrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
-    OrderSheet findOrderSheet = orderSheetRepository.findAll(1,1).get(0);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    OrderSheet orderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "TestP";
     String passwordP = "TestP";
@@ -126,27 +120,75 @@ class ReviewRepositoryTest {
     LocalDateTime becamePerformerDateTime = LocalDateTime.now();
     Long earnedMoney =1000l;
 
-    Performer performer = new Performer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP, isDoingJobNowP, becamePerformerDateTime, earnedMoney);
     performerRepository.savePerformer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP);
-    Performer findPerformer = performerRepository.findAll(1,1).get(0);
+    Performer performer = performerRepository.findAll(1,1).get(0);
 
-    Matching matching = new Matching(isCompleted, completedDateTime, findOrderSheet, findPerformer );
-    matchingRepository.saveMatching(findOrderSheet, findPerformer, isCompleted, completedDateTime);
-    Matching findmatching = matchingRepository.findAll(1,1).get(0);
+    matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime);
+    Matching matching = matchingRepository.findAll(1,1).get(0);
 
     ReviewScore reviewScore = ReviewScore.EIGHT;
     String contentReview = "배달이 빨랐습니다.";
 
+    Boolean isCompleted1 = false;
+    LocalDateTime completedDateTime1 = LocalDateTime.now();
+    String accountId1 = "test1";
+    String password1 = "test1";
+    String realName1 = "test1";
+    String nickname1 = "test1";
+    String phoneNumber1 = "0111231231";
+    String accountNumber1 = "12111111111";
+    Boolean isDoingJobNow1 = true;
+
+    ordererRepository.saveOrderer(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
+    Orderer orderer1 = ordererRepository.findAll(1,2).get(1);
+
+    String title1 = "장보기1";
+    String content1 = "오이1개;";
+    OrderSheetCategory category1 = OrderSheetCategory.DELIVERY_AND_SHOPPING;
+    String destination1 = "강남";
+    Integer cost1 = 1000;
+    Boolean isPayed1 = true;
+    LocalDateTime wishedDeadline1 = LocalDateTime.now();
+
+    orderSheetRepository.saveOrderSheet(orderer1, title1, content1, category1, destination1, cost1, isPayed1, wishedDeadline1);
+    OrderSheet orderSheet1 = orderSheetRepository.findAll(1,2).get(1);
+
+    String accountIdP1 = "TestP1";
+    String passwordP1 = "TestP1";
+    String realNameP1 = "TestP1";
+    String nicknameP1 = "TestP1";
+    String phoneNumberP1 = "01211123321";
+    String accountNumberP1 = "101231231111";
+    Boolean isDoingJobNowP1 = true;
+    LocalDateTime becamePerformerDateTime1 = LocalDateTime.now();
+    Long earnedMoney1 =10000l;
+
+    performerRepository.savePerformer(accountIdP1, passwordP1, realNameP1, nicknameP1, phoneNumberP1, accountNumberP1);
+    Performer performer1 = performerRepository.findAll(1,2).get(1);
+
+    matchingRepository.saveMatching(orderSheet1, performer1, isCompleted1, completedDateTime1);
+    Matching matching1 = matchingRepository.findAll(1,2).get(1);
+
+    ReviewScore reviewScore1 = ReviewScore.FIVE;
+    String contentReview1 = "배달이 빨랐습니다.1";
+
     int nowPage = 1;
     int itemSize = 1;
+    int itemSize2 = 2;
 
-    reviewRepository.saveReview(findmatching, reviewScore, contentReview);
+    reviewRepository.saveReview(matching, reviewScore, contentReview);
+    reviewRepository.saveReview(matching1, reviewScore1, contentReview1);
 
     //when-then
     assertAll(
         ()->{
           List<Review> result = reviewRepository.findAll(nowPage, itemSize);
           assertSame(1,result.size());
+        },
+        ()->{
+          List<Review> result = reviewRepository.findAll(nowPage, itemSize2);
+          assertSame(2,result.size());
+
         }
     );
   }
@@ -165,9 +207,8 @@ class ReviewRepositoryTest {
     String accountNumber = "11111111111";
     Boolean isDoingJobNow = true;
 
-    Orderer orderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, isDoingJobNow);
     ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    Orderer findOrderer = ordererRepository.findAll(1,1).get(0);
+    Orderer orderer = ordererRepository.findAll(1,1).get(0);
 
     String title = "장보기";
     String content = "오이2개;";
@@ -177,9 +218,8 @@ class ReviewRepositoryTest {
     Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    OrderSheet orderSheet = new OrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
-    OrderSheet findOrderSheet = orderSheetRepository.findAll(1,1).get(0);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    OrderSheet orderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "TestP";
     String passwordP = "TestP";
@@ -191,12 +231,11 @@ class ReviewRepositoryTest {
     LocalDateTime becamePerformerDateTime = LocalDateTime.now();
     Long earnedMoney =1000l;
 
-    Performer performer = new Performer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP, isDoingJobNowP, becamePerformerDateTime, earnedMoney);
     performerRepository.savePerformer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP);
-    Performer findPerformer = performerRepository.findAll(1,1).get(0);
+    Performer performer = performerRepository.findAll(1,1).get(0);
 
-    Matching matching = new Matching(isCompleted, completedDateTime, findOrderSheet, findPerformer );
-    matchingRepository.saveMatching(findOrderSheet, findPerformer, isCompleted, completedDateTime);
+    Matching matching = new Matching(isCompleted, completedDateTime, orderSheet, performer );
+    matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime);
     Matching findmatching = matchingRepository.findAll(1,1).get(0);
 
     ReviewScore reviewScore = ReviewScore.EIGHT;
