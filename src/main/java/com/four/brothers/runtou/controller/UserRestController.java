@@ -134,4 +134,26 @@ public class UserRestController {
   ) {
     return loginUser;
   }
+
+  @Operation(summary = "관리자 등록")
+  @PostMapping("/admin")
+  public SignUpResponse addAdmin(
+    @Parameter(name = "회원 정보")
+    @Validated @RequestBody SignUpRequest request,
+    BindingResult bindingResult, HttpServletRequest requestMsg
+  ) {
+    boolean result = false;
+
+    if (bindingResult.hasFieldErrors()) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
+    }
+
+    try {
+      result = userService.signUpAsAdmin(request);
+    } catch (DataIntegrityViolationException e) {
+      throw new BadRequestException(SignupExceptionCode.ALREADY_EXIST_INFO, "관리자 정보가 중복됩니다.");
+    }
+
+    return new SignUpResponse(result);
+  }
 }

@@ -6,6 +6,7 @@ import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.dto.model.*;
 import com.four.brothers.runtou.repository.user.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AdminService {
@@ -143,10 +145,12 @@ public class AdminService {
     Optional<Admin> admin = adminRepository.findAdminByAccountId(accountId);
 
     if (admin.isEmpty()) {
+      log.info("어드민 계정이 잘못되었습니다.");
       return null;
     }
 
     if (!passwordEncoder.matches(rawPassword, admin.get().getPassword())) {
+      log.info("어드민 비밀번호가 잘못되었습니다.");
       return null;
     }
 

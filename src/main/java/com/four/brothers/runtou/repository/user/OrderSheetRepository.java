@@ -3,6 +3,7 @@ package com.four.brothers.runtou.repository.user;
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.OrderSheetCategory;
 import com.four.brothers.runtou.domain.Orderer;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -64,9 +65,10 @@ public class OrderSheetRepository {
    * 또한 category 기준으로 조건을 걸어 조회한다.
    * @param nowPage 현재 페이지
    * @param itemSize 페이지당 출력할 개수
+   * @param category 조회할 카테고리 (null인 경우, 카테고리 상관 X)
    * @return
    */
-  public List<OrderSheet> findAllOnlyPayed(int nowPage, int itemSize, OrderSheetCategory category) throws IllegalArgumentException {
+  public List<OrderSheet> findAllOnlyPayed(int nowPage, int itemSize, @Nullable OrderSheetCategory category) throws IllegalArgumentException {
     if (nowPage < 1) {
       throw new IllegalArgumentException("조회할 현재 페이지는 1 이상이어야 합니다.");
     }

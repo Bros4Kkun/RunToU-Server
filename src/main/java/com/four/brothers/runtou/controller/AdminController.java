@@ -41,6 +41,9 @@ public class AdminController {
                       HttpServletRequest httpServletRequest) {
     LoginRequest loginRequest = new LoginRequest(request.getAccountId(), request.getRawPassword(), UserRole.ADMIN);
     LoginUser loginAdmin = adminService.login(loginRequest);
+
+    log.info("어드민 아이디: {}\n어드민 PW: {}", request.getAccountId(), request.getRawPassword());
+
     if (loginAdmin == null) {
       bindingResult.reject("wrongAdminAccount", "관리자 계정 정보가 틀립니다.");
     }

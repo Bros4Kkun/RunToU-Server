@@ -1,7 +1,8 @@
 package com.four.brothers.runtou.repository.user;
 
 import com.four.brothers.runtou.domain.MatchRequest;
-import com.four.brothers.runtou.domain.OrderSheet;
+import com.four.brothers.runtou.domain.Matching;
+import com.four.brothers.runtou.domain.Performer;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,16 @@ import java.util.List;
 public class MatchRequestRepository {
   @PersistenceContext
   EntityManager em;
+
+  /**
+   * 매칭요청 저장 메서드
+   * @param matching 요청할 매칭
+   * @param performer 매칭을 요청한 수행자
+   */
+  public void saveMatchRequest(Matching matching, Performer performer) {
+    MatchRequest matchRequest = new MatchRequest(matching, performer);
+    em.persist(matchRequest);
+  }
 
   /**
    * 모든 매칭요청을 조회하는 메서드

@@ -5,6 +5,7 @@ import com.four.brothers.runtou.domain.Performer;
 import com.four.brothers.runtou.domain.User;
 import com.four.brothers.runtou.dto.OrdererDto;
 import com.four.brothers.runtou.dto.UserRole;
+import com.four.brothers.runtou.repository.user.AdminRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
 import com.four.brothers.runtou.repository.user.PerformerRepository;
 import com.four.brothers.runtou.repository.user.UserRepository;
@@ -24,6 +25,7 @@ import static com.four.brothers.runtou.dto.UserDto.*;
 public class UserService {
   private final OrdererRepository ordererRepository;
   private final PerformerRepository performerRepository;
+  private final AdminRepository adminRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -43,6 +45,28 @@ public class UserService {
 
     try {
       ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("이미 회원정보가 존재합니다.");
+    }
+
+    return true;
+  }
+
+  /**
+   * 관리자 등록 메서드
+   * @param signUpRequest
+   */
+  @Transactional
+  public boolean signUpAsAdmin(OrdererDto.SignUpRequest signUpRequest) {
+    String accountId = signUpRequest.getAccountId();
+    String realName = signUpRequest.getRealName();
+    String nickname = signUpRequest.getNickname();
+    String password = passwordEncoder.encode(signUpRequest.getPassword());
+    String phoneNumber = signUpRequest.getPhoneNumber();
+    String accountNumber = signUpRequest.getAccountNumber();
+
+    try {
+      adminRepository.saveAdmin(accountId, password, realName, nickname, phoneNumber, accountNumber);
     } catch (Exception e) {
       throw new IllegalArgumentException("이미 회원정보가 존재합니다.");
     }
