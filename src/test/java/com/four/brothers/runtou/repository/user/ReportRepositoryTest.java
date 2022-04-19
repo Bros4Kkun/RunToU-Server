@@ -34,8 +34,6 @@ class ReportRepositoryTest {
     String phoneNumber = "01012341234";
     String accountNumber = "12341234123";
 
-    User reportUser = new User(accountId, password, realName, nickname, phoneNumber, accountNumber);
-
     userRepository.saveUser(accountId, password, realName, nickname, phoneNumber, accountNumber);
     User findUserByAccountId = userRepository.findUserByAccountId(accountId).get();
 
@@ -47,15 +45,14 @@ class ReportRepositoryTest {
     String accountNumber1 = "12341244123";
     User haveReportedUser = new User(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
 
-    userRepository.saveUser(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
-    User findUserByAccountId1 = userRepository.findUserByAccountId(accountId1).get();
+    User reporter = userRepository.findUserByAccountId(accountId1).get();
 
     ReportCategory category = ReportCategory.BAD_WORD;
     String content = "욕설";
 
     //when-then
     assertDoesNotThrow(
-        ()->{reportRepository.saveReport(findUserByAccountId, findUserByAccountId1, category, content);}
+        ()->{reportRepository.saveReport(findUserByAccountId, reporter, category, content);}
     );
 
   }
@@ -74,7 +71,7 @@ class ReportRepositoryTest {
     User reportUser = new User(accountId, password, realName, nickname, phoneNumber, accountNumber);
 
     userRepository.saveUser(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    User findUserByAccountId = userRepository.findUserByAccountId(accountId).get();
+    User findreportUser = userRepository.findUserByAccountId(accountId).get();
 
     String accountId1 = "test1";
     String password1 = "test1";
@@ -85,7 +82,7 @@ class ReportRepositoryTest {
     User haveReportedUser = new User(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
 
     userRepository.saveUser(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
-    User findUserByAccountId1 = userRepository.findUserByAccountId(accountId1).get();
+    User findUserByAccountId = userRepository.findUserByAccountId(accountId1).get();
 
     ReportCategory category = ReportCategory.BAD_WORD;
     String content = "욕설";
@@ -93,7 +90,7 @@ class ReportRepositoryTest {
     int nowPage = 1;
     int itemSize = 1;
     
-    reportRepository.saveReport(findUserByAccountId, findUserByAccountId1, category, content);
+    reportRepository.saveReport(findreportUser, findUserByAccountId, category, content);
 
     //when-then
     assertAll(
@@ -119,7 +116,7 @@ class ReportRepositoryTest {
     User reportUser = new User(accountId, password, realName, nickname, phoneNumber, accountNumber);
 
     userRepository.saveUser(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    User findUserByAccountId = userRepository.findUserByAccountId(accountId).get();
+    User findreporter = userRepository.findUserByAccountId(accountId).get();
 
     String accountId1 = "test1";
     String password1 = "test1";
@@ -127,18 +124,16 @@ class ReportRepositoryTest {
     String nickname1 = "test1";
     String phoneNumber1 = "01012342234";
     String accountNumber1 = "12341244123";
-    User haveReportedUser = new User(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
 
     userRepository.saveUser(accountId1, password1, realName1, nickname1, phoneNumber1, accountNumber1);
-    User findUserByAccountId1 = userRepository.findUserByAccountId(accountId1).get();
+    User findUserByAccountId = userRepository.findUserByAccountId(accountId1).get();
 
     ReportCategory category = ReportCategory.BAD_WORD;
     String content = "욕설";
 
     long pk;
 
-    reportRepository.saveReport(findUserByAccountId, findUserByAccountId1, category, content);
-    reportRepository.findAll(1,1);
+    reportRepository.saveReport(findreporter, findUserByAccountId, category, content);
     pk = reportRepository.findAll(1,1).get(0).getId();
 
     //when-then
