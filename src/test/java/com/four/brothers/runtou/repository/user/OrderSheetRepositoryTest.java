@@ -60,8 +60,8 @@ class OrderSheetRepositoryTest {
               , isPayed, wishedDeadline);
         }
     );
-
   }
+
   @DisplayName("모든 주문서 조회")
   @Test
   void findAllTest(){
@@ -90,16 +90,47 @@ class OrderSheetRepositoryTest {
 
     orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
 
+    String accountId2 = "test2";
+    String password2 = "test2";
+    String realName2 = "ck";
+    String nickname2 = "testck2";
+    String phoneNumber2 = "01012341634";
+    String accountNumber2 = "1234561190";
+    Boolean isDoingJobnow2 = false;
+
+    Orderer orderer2 = new Orderer(accountId2, password2, realName2, nickname2, phoneNumber2,
+        accountNumber2, isDoingJobnow2);
+
+    ordererRepository.saveOrderer(accountId2, password2, realName2, nickname2, phoneNumber2, accountNumber2);
+    Orderer findOrderer2 = ordererRepository.findAll(1,2).get(1);
+
+
+    String title2 = "장봐주세요1";
+    String content2 = "당근1";
+    OrderSheetCategory category2 = OrderSheetCategory.DELIVERY_AND_SHOPPING;
+    String destination2 = "강서구1";
+    int cost2 = 10000;
+    boolean isPayed2 = false;
+    LocalDateTime wishedDeadline2 = LocalDateTime.now();
+
+    orderSheetRepository.saveOrderSheet(findOrderer2, title2, content2, category2, destination2, cost2, isPayed2, wishedDeadline2);
+
     int nowpage = 1;
-    int itemSize = 1;
-    //when
+    int itemSize1 = 1;
+    int itemSize2 = 2;
+    //when-then
     assertAll(
         ()->{
-          List<OrderSheet> result = orderSheetRepository.findAll(nowpage,itemSize);
+          List<OrderSheet> result = orderSheetRepository.findAll(nowpage, itemSize1);
           assertSame(1,result.size());
+        },
+        ()->{
+          List<OrderSheet> result = orderSheetRepository.findAll(nowpage, itemSize2);
+          assertSame(2,result.size());
         }
     );
   }
+
 //헷갈림, 카테고리 기준걸고 조회?
   @DisplayName("금액이 지불된 주문서 조회")
   @Test
@@ -138,6 +169,10 @@ class OrderSheetRepositoryTest {
         ()->{
           List<OrderSheet> result = orderSheetRepository.findAllOnlyPayed(nowpage, itemSize, category);
           assertSame(1,result.size());
+        },
+        ()->{
+          List<OrderSheet> result = orderSheetRepository.findAllOnlyPayed(nowpage, itemSize, null);
+    assertSame(1,result.size());
         }
     );
   }
@@ -179,6 +214,7 @@ class OrderSheetRepositoryTest {
     assertTrue(result.isPresent());
 
   }
+
   @DisplayName("pk값으로 삭제")
   @Test
   void deleteOrderSheetByIdTest(){
