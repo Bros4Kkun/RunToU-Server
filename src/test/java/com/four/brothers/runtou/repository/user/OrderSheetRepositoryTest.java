@@ -38,12 +38,9 @@ class OrderSheetRepositoryTest {
     String nickname = "testck";
     String phoneNumber = "01012341234";
     String accountNumber = "1234567890";
-    Boolean isDoingJobnow = false;
-
-    Orderer orderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, isDoingJobnow);
 
     ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    Orderer findOrderer = ordererRepository.findAll(1,1).get(0);
+    Orderer orderer = ordererRepository.findAll(1,1).get(0);
 
     String title = "장봐주세요";
     String content = "당근";
@@ -56,7 +53,7 @@ class OrderSheetRepositoryTest {
     //when-then
     assertDoesNotThrow(
         ()->{
-          orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost
+          orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost
               , isPayed, wishedDeadline);
         }
     );
@@ -72,13 +69,9 @@ class OrderSheetRepositoryTest {
     String nickname = "testck";
     String phoneNumber = "01012341234";
     String accountNumber = "1234567890";
-    Boolean isDoingJobnow = false;
-
-    Orderer orderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, isDoingJobnow);
 
     ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    Orderer findOrderer = ordererRepository.findAll(1,1).get(0);
-
+    Orderer orderer = ordererRepository.findAll(1,1).get(0);
 
     String title = "장봐주세요";
     String content = "당근";
@@ -88,7 +81,7 @@ class OrderSheetRepositoryTest {
     boolean isPayed = false;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
 
     String accountId2 = "test2";
     String password2 = "test2";
@@ -96,14 +89,9 @@ class OrderSheetRepositoryTest {
     String nickname2 = "testck2";
     String phoneNumber2 = "01012341634";
     String accountNumber2 = "1234561190";
-    Boolean isDoingJobnow2 = false;
-
-    Orderer orderer2 = new Orderer(accountId2, password2, realName2, nickname2, phoneNumber2,
-        accountNumber2, isDoingJobnow2);
 
     ordererRepository.saveOrderer(accountId2, password2, realName2, nickname2, phoneNumber2, accountNumber2);
-    Orderer findOrderer2 = ordererRepository.findAll(1,2).get(1);
-
+    Orderer orderer2 = ordererRepository.findAll(1,2).get(1);
 
     String title2 = "장봐주세요1";
     String content2 = "당근1";
@@ -113,7 +101,7 @@ class OrderSheetRepositoryTest {
     boolean isPayed2 = false;
     LocalDateTime wishedDeadline2 = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(findOrderer2, title2, content2, category2, destination2, cost2, isPayed2, wishedDeadline2);
+    orderSheetRepository.saveOrderSheet(orderer2, title2, content2, category2, destination2, cost2, isPayed2, wishedDeadline2);
 
     int nowpage = 1;
     int itemSize1 = 1;
@@ -131,7 +119,6 @@ class OrderSheetRepositoryTest {
     );
   }
 
-//헷갈림, 카테고리 기준걸고 조회?
   @DisplayName("금액이 지불된 주문서 조회")
   @Test
   @Disabled
@@ -143,13 +130,9 @@ class OrderSheetRepositoryTest {
     String nickname = "testck";
     String phoneNumber = "01012341234";
     String accountNumber = "1234567890";
-    Boolean isDoingJobnow = false;
-
-    Orderer orderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, isDoingJobnow);
 
     ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    Orderer findOrderer = ordererRepository.findAll(1,1).get(0);
-
+    Orderer orderer = ordererRepository.findAll(1,1).get(0);
 
     String title = "장봐주세요";
     String content = "당근";
@@ -159,7 +142,7 @@ class OrderSheetRepositoryTest {
     boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
 
     int nowpage = 1;
     int itemSize = 1;
@@ -187,12 +170,9 @@ class OrderSheetRepositoryTest {
     String nickname = "testck";
     String phoneNumber = "01012341234";
     String accountNumber = "1234567890";
-    Boolean isDoingJobnow = false;
-
-    Orderer orderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, isDoingJobnow);
 
     ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    Orderer findOrderer = ordererRepository.findAll(1,1).get(0);
+    Orderer orderer = ordererRepository.findAll(1,1).get(0);
 
     String title = "장봐주세요";
     String content = "당근";
@@ -203,7 +183,7 @@ class OrderSheetRepositoryTest {
     LocalDateTime wishedDeadline = LocalDateTime.now();
     long pk;
 
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
 
     pk = orderSheetRepository.findAll(1,1).get(0).getId();
 
@@ -225,13 +205,9 @@ class OrderSheetRepositoryTest {
     String nickname = "testck";
     String phoneNumber = "01012341234";
     String accountNumber = "1234567890";
-    Boolean isDoingJobnow = false;
-
-    Orderer orderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, isDoingJobnow);
 
     ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
-    Orderer findOrderer = ordererRepository.findAll(1,1).get(0);
-
+    Orderer orderer = ordererRepository.findAll(1,1).get(0);
 
     String title = "장봐주세요";
     String content = "당근";
@@ -241,7 +217,7 @@ class OrderSheetRepositoryTest {
     boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
     long pk;
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
     orderSheetRepository.findAll(1,1);
 
     pk = orderSheetRepository.findAll(1,1).get(0).getId();
