@@ -20,7 +20,8 @@ public class OrdererRepository {
    * @param phoneNumber 휴대폰 번호
    * @param accountNumber 계좌 번호
    */
-  public void saveOrderer(String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber) {
+  public void saveOrderer(String accountId, String password, String realName, String nickname, String phoneNumber,
+                          String accountNumber) {
     Orderer newOrderer = new Orderer(accountId, password, realName, nickname, phoneNumber, accountNumber, false);
     em.persist(newOrderer);
   }
