@@ -12,13 +12,13 @@ import lombok.Setter;
 @Setter
 public class MatchRequestDto implements ModelDto<MatchRequestDto, MatchRequest> {
   private Long id;
-  private Long matchingId;
+  private Long orderSheetId;
   private Long performerId;
 
   @Override
   public MatchRequestDto toDtoFromEntity(MatchRequest entity) {
     this.id = entity.getId();
-    this.matchingId = entity.getMatching().getId();
+    this.orderSheetId = entity.getOrderSheet().getId();
     this.performerId = entity.getPerformer().getId();
     return this;
   }
@@ -28,8 +28,8 @@ public class MatchRequestDto implements ModelDto<MatchRequestDto, MatchRequest> 
     switch (fieldName) {
       case "id":
         return String.valueOf(this.id);
-      case "matchingId":
-        return String.valueOf(this.matchingId);
+      case "orderSheetId":
+        return String.valueOf(this.orderSheetId);
       case "performerId":
         return String.valueOf(this.performerId);
     }

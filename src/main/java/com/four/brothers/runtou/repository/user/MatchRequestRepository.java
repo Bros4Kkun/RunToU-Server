@@ -2,6 +2,7 @@ package com.four.brothers.runtou.repository.user;
 
 import com.four.brothers.runtou.domain.MatchRequest;
 import com.four.brothers.runtou.domain.Matching;
+import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Performer;
 import org.springframework.stereotype.Repository;
 
@@ -16,11 +17,11 @@ public class MatchRequestRepository {
 
   /**
    * 매칭요청 저장 메서드
-   * @param matching 요청할 매칭
+   * @param orderSheet 요청할 주문서
    * @param performer 매칭을 요청한 수행자
    */
-  public void saveMatchRequest(Matching matching, Performer performer) {
-    MatchRequest matchRequest = new MatchRequest(matching, performer);
+  public void saveMatchRequest(OrderSheet orderSheet, Performer performer) {
+    MatchRequest matchRequest = new MatchRequest(orderSheet, performer);
     em.persist(matchRequest);
   }
 
