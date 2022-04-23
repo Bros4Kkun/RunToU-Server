@@ -50,6 +50,9 @@ public class OrderSheet extends BaseTimeEntity {
   @Column(nullable = false)
   private LocalDateTime wishedDeadline;
 
+  @OneToMany(mappedBy = "orderSheet", fetch = FetchType.LAZY)
+  private List<MatchRequest> matchRequests = new ArrayList<>();
+
   public OrderSheet(Orderer orderer, String title, String content, OrderSheetCategory category, String destination, Integer cost, Boolean isPayed, LocalDateTime wishedDeadline) {
     this.orderer = orderer;
     this.title = title;
@@ -73,6 +76,11 @@ public class OrderSheet extends BaseTimeEntity {
 
   protected void setOrderer(Orderer orderer) {
     this.orderer = orderer;
+  }
+
+  public void addMatchRequest(MatchRequest matchRequest) {
+    matchRequest.setOrderSheet(this);
+    this.matchRequests.add(matchRequest);
   }
 
   /**

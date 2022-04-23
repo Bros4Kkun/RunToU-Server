@@ -32,9 +32,6 @@ public class Matching extends BaseTimeEntity {
   @OneToOne(mappedBy = "matching", fetch = FetchType.EAGER, orphanRemoval = true)
   private Review review;
 
-  @OneToMany(mappedBy = "matching")
-  private List<MatchRequest> matchRequests = new ArrayList<>();
-
   @Column(nullable = false)
   private Boolean isCompleted;
 
@@ -55,11 +52,6 @@ public class Matching extends BaseTimeEntity {
     }
     review.setMatching(this);
     this.review = review;
-  }
-
-  public void addMatchRequest(MatchRequest request) {
-    request.setMatching(this);
-    this.matchRequests.add(request);
   }
 
   protected void setPerformer(Performer performer) {
