@@ -4,6 +4,8 @@ import com.four.brothers.runtou.domain.*;
 import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.dto.model.*;
+import com.four.brothers.runtou.repository.ChatMessageRepository;
+import com.four.brothers.runtou.repository.ChatRoomRepository;
 import com.four.brothers.runtou.repository.user.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,9 @@ public class AdminService {
   private final FilterWordRepository filterWordRepository;
   private final ReportRepository reportRepository;
   private final MatchRequestRepository matchRequestRepository;
+  private final ChatRoomRepository chatRoomRepository;
+  private final ChatMessageRepository chatMessageRepository;
+
 
   @Transactional
   public List<OrdererDto> getAllOrderer() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -89,6 +94,18 @@ public class AdminService {
   }
 
   @Transactional
+  public List<ChatRoomDto> getAllChatRoomDto() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    List<ChatRoom> result = chatRoomRepository.findAll(1, 100);
+    return toDto(result, ChatRoomDto.class);
+  }
+
+  @Transactional
+  public List<ChatMessageDto> getAllChatMessageDto() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    List<ChatMessage> result = chatMessageRepository.findAll(1, 100);
+    return toDto(result, ChatMessageDto.class);
+  }
+
+  @Transactional
   public void deleteOrdererRow(long rowPk) {
     ordererRepository.deleteOrdererById(rowPk);
   }
@@ -131,6 +148,16 @@ public class AdminService {
   @Transactional
   public void deleteMatchRequestRow(long rowPk) {
     matchRequestRepository.deleteMatchingRequestById(rowPk);
+  }
+
+  @Transactional
+  public void deleteChatRoomRow(long rowPk) {
+    chatRoomRepository.deleteChatRoomById(rowPk);
+  }
+
+  @Transactional
+  public void deleteChatMessageRow(long rowPk) {
+    chatMessageRepository.deleteChatMessageById(rowPk);
   }
 
   /**

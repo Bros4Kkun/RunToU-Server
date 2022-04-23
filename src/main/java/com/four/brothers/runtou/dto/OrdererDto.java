@@ -15,7 +15,7 @@ public class OrdererDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class SignUpRequest {
+  public static class SignUpAsOrdererRequest {
     @NotEmpty
     @Length(max = 30)
     private String accountId;
@@ -40,7 +40,7 @@ public class OrdererDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class SignUpResponse {
+  public static class SignUpAsOrdererResponse {
     private boolean isSuccess;
     //프로필 사진 관련 내용은 추후에 작성
   }
