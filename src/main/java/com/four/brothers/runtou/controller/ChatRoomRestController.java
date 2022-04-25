@@ -36,15 +36,10 @@ public class ChatRoomRestController {
   @PostMapping("/ordersheet/{orderSheetPk}")
   public NewChatRoomResponse addNewChatRoom(
     @PathVariable long orderSheetPk,
-    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser,
-    @Validated @RequestBody NewChatRoomRequest request,
-    BindingResult bindingResult) throws CanNotAccessException {
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
+    ) throws CanNotAccessException {
 
-    if (bindingResult.hasFieldErrors()) {
-      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
-    }
-
-    NewChatRoomResponse newChatRoomResponse = chatRoomService.makeNewChatRoomByPerformer(request, loginUser);
+    NewChatRoomResponse newChatRoomResponse = chatRoomService.makeNewChatRoomByPerformer(orderSheetPk, loginUser);
 
     //만약 새로 생성된 채팅방이라면
     if (newChatRoomResponse.isNew()) {

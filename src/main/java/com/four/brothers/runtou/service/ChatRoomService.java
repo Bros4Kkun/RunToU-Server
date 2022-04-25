@@ -34,16 +34,16 @@ public class ChatRoomService {
   /**
    * 요청에 의해 채팅방을 새로 만드는 메서드
    * 만약 기존의 채팅방이 이미 존재한다면, 기존의 것을 반환한다.
-   * @param newChatRoomRequest
+   * @param orderSheetPk
    * @param loginUser
    * @return
    * @throws CanNotAccessException
    */
   @Transactional
-  public NewChatRoomResponse makeNewChatRoomByPerformer(NewChatRoomRequest newChatRoomRequest, LoginUser loginUser) throws CanNotAccessException {
+  public NewChatRoomResponse makeNewChatRoomByPerformer(long orderSheetPk, LoginUser loginUser) throws CanNotAccessException {
+    Optional<OrderSheet> orderSheet;
     Optional<Orderer> orderer;
     Optional<Performer> performer;
-    Optional<OrderSheet> orderSheet;
     boolean isNewRoom = false;
 
     //만약 채팅을 신청한 사람이 '심부름 수행자'가 아니라면
@@ -51,9 +51,14 @@ public class ChatRoomService {
       throw new CanNotAccessException(ChatRoomExceptionCode.REQUEST_USER_IS_NOT_PERFORMER, "오직 심부름 수행자만 채팅을 요청할 수 있습니다.");
     }
 
-    orderer = ordererRepository.findOrdererById(newChatRoomRequest.getOrdererPk());
-    performer = performerRepository.findPerformerById(newChatRoomRequest.getPerformerPk());
-    orderSheet = orderSheetRepository.findById(newChatRoomRequest.getOrderSheetPk());
+    orderSheet = orderSheetRepository.findById(orderSheetPk);
+
+    if (orderSheet.isEmpty()) {
+      throw new IllegalArgumentException("존재하지 않는 OrderSheet id입니다.");
+    }
+
+    orderer = Optional.ofNullable(orderSheet.get().getOrderer());
+    performer = performerRepository.findPerformerByAccountId(loginUser.getAccountId());
 
     isAllExistPkForNewChatRoom(orderer, performer, orderSheet); //실존하는 데이터인지 검사
 
@@ -64,9 +69,9 @@ public class ChatRoomService {
       isNewRoom = true;
     }
 
-    return new NewChatRoomResponse(newChatRoomRequest.getOrdererPk(),
-      newChatRoomRequest.getPerformerPk(),
-      newChatRoomRequest.getOrderSheetPk(),
+    return new NewChatRoomResponse(orderer.get().getId(),
+      performer.get().getId(),
+      orderSheetPk,
       sameChatRoomList.get(0).getId(),
       isNewRoom);
   }
