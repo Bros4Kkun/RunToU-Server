@@ -16,6 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.four.brothers.runtou.dto.ChatRoomDto.*;
 import static com.four.brothers.runtou.dto.LoginDto.*;
 
@@ -57,6 +59,16 @@ public class ChatRoomRestController {
   public ExistChatRoomResponse showChatRoom(@PathVariable long chatRoomPk) {
     ExistChatRoomResponse response = chatRoomService.loadExistChatRoomInfo(chatRoomPk);
     return response;
+  }
+
+  @Operation(
+    summary = "로그인된 사용자가 참여하는 모든 채팅방 정보 확인",
+    description = "채팅 내용을 포함한 여러 정보를 응답해준다."
+  )
+  @GetMapping
+  public List<SimpleChatRoomInfo> showAllChatRoom(@Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
+    List<SimpleChatRoomInfo> simpleChatRoomInfos = chatRoomService.loadAllChatRooms(loginUser);
+    return simpleChatRoomInfos;
   }
 
 }

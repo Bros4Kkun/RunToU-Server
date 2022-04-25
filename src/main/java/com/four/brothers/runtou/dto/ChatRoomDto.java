@@ -58,7 +58,7 @@ public class ChatRoomDto {
   @AllArgsConstructor
   public static class SimpleChatRoomInfo {
     private long chatRoomPk;
-    private ChatMessageResponse latestChatMessage;
+    private String latestChatMessage;
     private ChatOrdererInfo ordererInfo;
     private ChatPerformerInfo performerInfo;
     private long ordererSheetPk;

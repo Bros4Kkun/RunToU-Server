@@ -8,9 +8,7 @@ import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.exception.code.ChatRoomExceptionCode;
 import com.four.brothers.runtou.repository.ChatRoomRepository;
-import com.four.brothers.runtou.repository.user.OrderSheetRepository;
-import com.four.brothers.runtou.repository.user.OrdererRepository;
-import com.four.brothers.runtou.repository.user.PerformerRepository;
+import com.four.brothers.runtou.repository.user.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +32,7 @@ public class ChatRoomService {
   private final OrdererRepository ordererRepository;
   private final PerformerRepository performerRepository;
   private final OrderSheetRepository orderSheetRepository;
+  private final UserRepository userRepository;
 
   /**
    * 요청에 의해 채팅방을 새로 만드는 메서드
@@ -136,5 +135,41 @@ public class ChatRoomService {
     return response;
   }
 
+  /**
+   * 로그인된 사용자의 모든 채팅방 리스트를 반환하는 메서드
+   * @param loginUser 로그인된 사용자
+   * @return
+   */
+  public List<SimpleChatRoomInfo> loadAllChatRooms(LoginUser loginUser) {
+    User user = userRepository.findUserByAccountId(loginUser.getAccountId()).get();
+    List<ChatRoom> chatRoomByUser = chatRoomRepository.findChatRoomByUser(user);
+    List<SimpleChatRoomInfo> result = new ArrayList<>();
 
+    chatRoomListToDtoList(chatRoomByUser, result);
+
+    return result;
+  }
+
+  /**
+   * ChatRoom 리스트를 dto 타입인 SimpleChatRoomInfo 리스트로 변환하는 메서드
+   * @param chatRoomByUser
+   * @param result
+   */
+  private void chatRoomListToDtoList(List<ChatRoom> chatRoomByUser, List<SimpleChatRoomInfo> result) {
+    chatRoomByUser.stream().forEach(
+      (item) -> {
+        SimpleChatRoomInfo info = new SimpleChatRoomInfo();
+
+        if (item.getChatMessages().size() != 0) {
+          int lastMsgIndex = item.getChatMessages().size() - 1;
+          info.setLatestChatMessage(item.getChatMessages().get(lastMsgIndex).getContent());
+        }
+        info.setChatRoomPk(item.getId());
+        info.setOrdererInfo(new ChatOrdererInfo(item.getOrderer()));
+        info.setPerformerInfo(new ChatPerformerInfo(item.getPerformer()));
+        info.setOrdererSheetPk(item.getOrderSheet().getId());
+        result.add(info);
+      }
+    );
+  }
 }

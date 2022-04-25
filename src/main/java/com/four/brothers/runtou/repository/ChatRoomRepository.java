@@ -1,9 +1,6 @@
 package com.four.brothers.runtou.repository;
 
-import com.four.brothers.runtou.domain.ChatRoom;
-import com.four.brothers.runtou.domain.OrderSheet;
-import com.four.brothers.runtou.domain.Orderer;
-import com.four.brothers.runtou.domain.Performer;
+import com.four.brothers.runtou.domain.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -55,6 +52,19 @@ public class ChatRoomRepository {
     List<ChatRoom> resultList = em.createQuery(jpql, ChatRoom.class)
       .setFirstResult((nowPage - 1) * itemSize)
       .setMaxResults(itemSize)
+      .getResultList();
+
+    return resultList;
+  }
+
+  public List<ChatRoom> findChatRoomByUser(User user) {
+    String jpql = "select c from ChatRoom c " +
+      "where c.orderer.id = :id1 " +
+      "or c.performer.id = :id2";
+
+    List<ChatRoom> resultList = em.createQuery(jpql, ChatRoom.class)
+      .setParameter("id1", user.getId())
+      .setParameter("id2", user.getId())
       .getResultList();
 
     return resultList;
