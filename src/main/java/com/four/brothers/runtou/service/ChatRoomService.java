@@ -114,6 +114,19 @@ public class ChatRoomService {
 
     List<ChatMessage> chatMessages = chatRoom.get().getChatMessages();
     List<ChatMessageResponse> chatMessageDtoList = new ArrayList<>();
+    chatMessageListToDtoList(chatMessages, chatMessageDtoList);
+
+    response.setChatRoomPk(chatRoomPk);
+    response.setMessageList(chatMessageDtoList);
+    response.setOrdererInfo(new ChatOrdererInfo(chatRoom.get().getOrderer()));
+    response.setPerformerInfo(new ChatPerformerInfo(chatRoom.get().getPerformer()));
+    response.setOrdererSheetPk(chatRoom.get().getOrderSheet().getId());
+    response.setMatched(false);
+
+    return response;
+  }
+
+  private void chatMessageListToDtoList(List<ChatMessage> chatMessages, List<ChatMessageResponse> chatMessageDtoList) {
     chatMessages.stream().forEach((item) -> {
       ChatMessageResponse message = new ChatMessageResponse();
       message.setChatMessagePk(item.getId());
@@ -124,15 +137,6 @@ public class ChatRoomService {
       message.setCreatedDate(item.getCreatedDate());
       chatMessageDtoList.add(message);
     });
-
-    response.setChatRoomPk(chatRoomPk);
-    response.setMessageList(chatMessageDtoList);
-    response.setOrdererInfo(new ChatOrdererInfo(chatRoom.get().getOrderer()));
-    response.setPerformerInfo(new ChatPerformerInfo(chatRoom.get().getPerformer()));
-    response.setOrdererSheetPk(chatRoom.get().getOrderSheet().getId());
-    response.setMatched(false);
-
-    return response;
   }
 
   /**
