@@ -1,9 +1,9 @@
 package com.four.brothers.runtou.service;
 
-import com.four.brothers.runtou.domain.ChatRoom;
-import com.four.brothers.runtou.domain.OrderSheet;
-import com.four.brothers.runtou.domain.Orderer;
-import com.four.brothers.runtou.domain.Performer;
+import com.four.brothers.runtou.domain.*;
+import com.four.brothers.runtou.dto.ChatMessageDto;
+import com.four.brothers.runtou.dto.OrdererDto;
+import com.four.brothers.runtou.dto.PerformerDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.exception.code.ChatRoomExceptionCode;
@@ -16,11 +16,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.four.brothers.runtou.dto.ChatMessageDto.*;
 import static com.four.brothers.runtou.dto.ChatRoomDto.*;
 import static com.four.brothers.runtou.dto.LoginDto.*;
+import static com.four.brothers.runtou.dto.OrdererDto.*;
+import static com.four.brothers.runtou.dto.PerformerDto.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -94,6 +98,42 @@ public class ChatRoomService {
     if (orderSheet.isEmpty()) {
       throw new IllegalArgumentException("존재하지 않는 OrderSheet id입니다.");
     }
+  }
+
+  /**
+   * 해당 PK값을 갖는 채팅방 정보를 반환하는 메서드
+   * @param chatRoomPk 확인할 채팅방의 pk값
+   * @return
+   */
+  public ExistChatRoomResponse loadExistChatRoomInfo(long chatRoomPk) {
+    Optional<ChatRoom> chatRoom = chatRoomRepository.findChatRoomById(chatRoomPk);
+    ExistChatRoomResponse response = new ExistChatRoomResponse();
+
+    if (chatRoom.isEmpty()) {
+      throw new IllegalArgumentException("존재하지 않는 ChatRoom id입니다.");
+    }
+
+    List<ChatMessage> chatMessages = chatRoom.get().getChatMessages();
+    List<ChatMessageResponse> chatMessageDtoList = new ArrayList<>();
+    chatMessages.stream().forEach((item) -> {
+      ChatMessageResponse message = new ChatMessageResponse();
+      message.setChatMessagePk(item.getId());
+      message.setWriterAccountId(item.getUser().getAccountId());
+      message.setWriterNickname(item.getUser().getNickname());
+      message.setChatRoomPk(item.getChatRoom().getId());
+      message.setContent(item.getContent());
+      message.setCreatedDate(item.getCreatedDate());
+      chatMessageDtoList.add(message);
+    });
+
+    response.setChatRoomPk(chatRoomPk);
+    response.setMessageList(chatMessageDtoList);
+    response.setOrdererInfo(new ChatOrdererInfo(chatRoom.get().getOrderer()));
+    response.setPerformerInfo(new ChatPerformerInfo(chatRoom.get().getPerformer()));
+    response.setOrdererSheetPk(chatRoom.get().getOrderSheet().getId());
+    response.setMatched(false);
+
+    return response;
   }
 
 

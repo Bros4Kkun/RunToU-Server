@@ -49,4 +49,14 @@ public class ChatRoomRestController {
     return newChatRoomResponse;
   }
 
+  @Operation(
+    summary = "채팅방 정보 확인",
+    description = "채팅 내용을 포함한 여러 정보를 응답해준다."
+  )
+  @GetMapping("/{chatRoomPk}")
+  public ExistChatRoomResponse showChatRoom(@PathVariable long chatRoomPk) {
+    ExistChatRoomResponse response = chatRoomService.loadExistChatRoomInfo(chatRoomPk);
+    return response;
+  }
+
 }

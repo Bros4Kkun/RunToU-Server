@@ -1,6 +1,7 @@
 package com.four.brothers.runtou.dto;
 
 
+import com.four.brothers.runtou.domain.Orderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,5 +44,21 @@ public class OrdererDto {
   public static class SignUpAsOrdererResponse {
     private boolean isSuccess;
     //프로필 사진 관련 내용은 추후에 작성
+  }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class ChatOrdererInfo {
+    private long id;
+    private String accountId;
+    private String nickname;
+
+    public ChatOrdererInfo(Orderer orderer) {
+      this.id = orderer.getId();
+      this.accountId = orderer.getAccountId();
+      this.nickname = orderer.getNickname();
+    }
   }
 }
