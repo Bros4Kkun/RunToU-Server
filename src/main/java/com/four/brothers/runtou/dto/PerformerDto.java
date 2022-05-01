@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.dto;
 
+import com.four.brothers.runtou.domain.Performer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,5 +42,21 @@ public class PerformerDto {
   public static class SignUpAsPerformerResponse {
     private boolean isSuccess;
     //프로필 사진 관련 내용은 추후에 작성
+  }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class ChatPerformerInfo {
+    private Long id;
+    private String accountId;
+    private String nickname;
+
+    public ChatPerformerInfo(Performer performer) {
+      this.id = performer.getId();
+      this.accountId = performer.getAccountId();
+      this.nickname = performer.getNickname();
+    }
   }
 }

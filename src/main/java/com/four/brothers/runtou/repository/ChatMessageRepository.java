@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ChatMessageRepository {
@@ -46,6 +47,28 @@ public class ChatMessageRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  /**
+   * 특정 채팅방에서 '가장 늦게 보낸 메시지'를 내용을 통해 찾는 메서드
+   * @param chatRoom 찾을 메시지가 있는 채팅방 pk 값
+   * @param content 찾을 메시지의 내용
+   * @return
+   */
+    public Optional<ChatMessage> findLatestChatMsgFromChatRoom(ChatRoom chatRoom, String content) {
+    String jpql = "select c from ChatMessage c " +
+      "where c.chatRoom = :chatRoom " +
+      "and c.content = :content " +
+      "order by c.createdDate desc";
+
+    ChatMessage result = em.createQuery(jpql, ChatMessage.class)
+      .setParameter("chatRoom", chatRoom)
+      .setParameter("content", content)
+      .setFirstResult(0)
+      .setMaxResults(1)
+      .getSingleResult();
+
+    return Optional.ofNullable(result);
   }
 
   /**
