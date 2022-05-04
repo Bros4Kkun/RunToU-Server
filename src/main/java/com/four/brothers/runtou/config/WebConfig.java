@@ -5,7 +5,6 @@ import com.four.brothers.runtou.interceptor.LoginInterceptor;
 import com.four.brothers.runtou.interceptor.NoHandlerFoundInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class LoginConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
 
   private final LoginInterceptor loginInterceptor;
   private final AdminLoginInterceptor adminLoginInterceptor;
@@ -44,7 +43,6 @@ public class LoginConfig implements WebMvcConfigurer {
       .excludePathPatterns("/error")
       .excludePathPatterns("/ws-stomp")
       .order(3);
-
 
   }
 }

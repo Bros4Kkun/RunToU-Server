@@ -1,13 +1,19 @@
 package com.four.brothers.runtou.config;
 
+import com.four.brothers.runtou.interceptor.StompSessionChannelInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSocket
 @EnableWebSocketMessageBroker
 class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+  private final StompSessionChannelInterceptor stompSessionChannelInterceptor;
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -18,12 +24,22 @@ class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/ws-stomp").setAllowedOrigins("*").withSockJS(); //프론트에서 sockjs를 사용하는 경우
-    registry.addEndpoint("/ws-stomp").setAllowedOrigins("*"); //프론트에서 sockjs를 사용하지 않는 경우
+    registry.addEndpoint("/ws-stomp")
+      .setAllowedOrigins("*")
+      .withSockJS(); //프론트에서 sockjs를 사용하는 경우
+    registry.addEndpoint("/ws-stomp")
+      .setAllowedOrigins("*"); //프론트에서 sockjs를 사용하지 않는 경우
+
   }
 
   @Override
   public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
     registration.setMessageSizeLimit(8 * 1024);
   }
+
+//  @Override
+//  public void configureClientInboundChannel(ChannelRegistration registration) {
+//    registration.interceptors(stompSessionChannelInterceptor);
+//  }
+
 }
