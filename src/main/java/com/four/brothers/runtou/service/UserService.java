@@ -32,7 +32,7 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
 
   /**
-   * 회원가입 메서드
+   * 심부름 요청자 회원가입 메서드
    * 회원가입시 모든 사용자는 Orderer로서 가입하게 된다.
    * @param signUpAsOrdererRequest
    */
@@ -55,7 +55,7 @@ public class UserService {
   }
 
   /**
-   * 심부름 수행자 회원가입
+   * 심부름 수행자 회원가입 메서드
    * @param signUpAsPerformerRequest
    * @return
    */
