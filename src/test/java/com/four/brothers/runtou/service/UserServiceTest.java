@@ -1,8 +1,10 @@
 package com.four.brothers.runtou.service;
 
+import com.four.brothers.runtou.domain.User;
 import com.four.brothers.runtou.dto.AdminDto;
 import com.four.brothers.runtou.dto.OrdererDto;
 import com.four.brothers.runtou.dto.PerformerDto;
+import com.four.brothers.runtou.dto.UserDto;
 import com.four.brothers.runtou.repository.user.AdminRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
 import com.four.brothers.runtou.repository.user.PerformerRepository;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -170,4 +174,39 @@ class UserServiceTest {
       .saveAdmin(eq(accoundId1), anyString(), anyString(), anyString(), anyString(), anyString());
   }
 
+  @DisplayName("중복 아이디 확인")
+  @Test
+  void isDuplicatedAccountIdTest() {
+    //GIVEN
+    UserService userService = new UserService(ordererRepository,
+      performerRepository, adminRepository,
+      userRepository, passwordEncoder);
+
+    String existAccountId = "testAccountId1"; //이미 존재하는 아이디
+    String password1 = "testPassword1";
+    String realName1 = "testRealName1";
+    String nickname1 = "testNickname1";
+    String phoneNumber1 = "01012341234";
+    String accountNumber1 = "1234567890";
+
+    String newAccountId = "testAccountId2"; //새 아이디
+
+    UserDto.DuplicatedAccountIdRequest alreadyExistRequest = new UserDto.DuplicatedAccountIdRequest(); //이미 존재하는 아이디 사용
+    alreadyExistRequest.setAccountId(existAccountId);
+    UserDto.DuplicatedAccountIdRequest newRequest = new UserDto.DuplicatedAccountIdRequest(); //새 아이디 사용
+    newRequest.setAccountId(newAccountId);
+
+    //mock 행동 정의 - 이미 존재하는 accountId 일 때
+    given(userRepository.findUserByAccountId(eq(existAccountId))).willReturn(
+      Optional.of(new User(existAccountId, password1, realName1, nickname1, phoneNumber1, accountNumber1))
+    );
+
+    //WHEN
+    UserDto.DuplicatedAccountIdResponse duplicatedResult = userService.isDuplicatedAccountId(alreadyExistRequest);
+    UserDto.DuplicatedAccountIdResponse notDuplicatedResult = userService.isDuplicatedAccountId(newRequest);
+
+    //THEN
+    assertEquals(true, duplicatedResult.isDuplicatedAccountId());
+    assertEquals(false, notDuplicatedResult.isDuplicatedAccountId());
+  }
 }
