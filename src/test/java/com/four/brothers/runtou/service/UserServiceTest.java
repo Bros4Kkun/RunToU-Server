@@ -76,4 +76,53 @@ class UserServiceTest {
     //mock 객체 검증 - 총 2번 호출되었는지 검증
     then(ordererRepository).should(times(2)).saveOrderer(eq(accoundId1), anyString(), anyString(), anyString(), anyString(), anyString());
   }
+
+  @DisplayName("심부름 수행자 회원가입")
+  @Test
+  void signUpAsPerformer() {
+    //GIVEN
+    UserService userService = new UserService(ordererRepository,
+      performerRepository, adminRepository,
+      userRepository, passwordEncoder);
+
+    String accoundId1 = "testAccountId1";
+    String password1 = "testPassword1";
+    String realName1 = "testRealName1";
+    String nickname1 = "testNickname1";
+    String phoneNumber1 = "01012341234";
+    String accountNumber1 = "1234567890";
+
+    PerformerDto.SignUpAsPerformerRequest request = new PerformerDto.SignUpAsPerformerRequest();
+    request.setAccountId(accoundId1);
+    request.setPassword(password1);
+    request.setRealName(realName1);
+    request.setNickname(nickname1);
+    request.setPhoneNumber(phoneNumber1);
+    request.setAccountNumber(accountNumber1);
+
+    //mock 행동 정의
+    given(passwordEncoder.encode(anyString())).willReturn("encodedPasswordValue");
+    //mock 행동 정의 - 처음 호출시에는 정상동작, 두번째 호출시에는 예외 던짐 (accountId 중복)
+    willDoNothing().willThrow(new IllegalArgumentException())
+      .given(performerRepository).savePerformer(eq(accoundId1), anyString(), anyString(), anyString(), anyString(), anyString());
+
+    //WHEN
+    boolean result = userService.signUpAsPerformer(request);
+
+    //THEN
+    //Success Case
+    assertEquals(true, result);
+
+    //Fail Case - 중복 아이디로 회원가입 시
+    assertThrows(IllegalArgumentException.class,
+      () -> {
+        userService.signUpAsPerformer(request);
+      });
+
+    //mock 객체 검증 - 총 2번 호출되었는지
+    then(performerRepository).should(times(2))
+      .savePerformer(eq(accoundId1), anyString(), anyString(), anyString(), anyString(), anyString());
+  }
+
+
 }
