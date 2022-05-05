@@ -3,6 +3,7 @@ package com.four.brothers.runtou.service;
 import com.four.brothers.runtou.domain.Orderer;
 import com.four.brothers.runtou.domain.Performer;
 import com.four.brothers.runtou.domain.User;
+import com.four.brothers.runtou.dto.AdminDto;
 import com.four.brothers.runtou.dto.OrdererDto;
 import com.four.brothers.runtou.dto.PerformerDto;
 import com.four.brothers.runtou.dto.UserRole;
@@ -79,16 +80,16 @@ public class UserService {
 
   /**
    * 관리자 등록 메서드
-   * @param signUpAsOrdererRequest
+   * @param request
    */
   @Transactional
-  public boolean signUpAsAdmin(OrdererDto.SignUpAsOrdererRequest signUpAsOrdererRequest) {
-    String accountId = signUpAsOrdererRequest.getAccountId();
-    String realName = signUpAsOrdererRequest.getRealName();
-    String nickname = signUpAsOrdererRequest.getNickname();
-    String password = passwordEncoder.encode(signUpAsOrdererRequest.getPassword());
-    String phoneNumber = signUpAsOrdererRequest.getPhoneNumber();
-    String accountNumber = signUpAsOrdererRequest.getAccountNumber();
+  public boolean addNewAdmin(AdminDto.SignUpAsAdminRequest request) {
+    String accountId = request.getAccountId();
+    String realName = request.getRealName();
+    String nickname = request.getNickname();
+    String password = passwordEncoder.encode(request.getPassword());
+    String phoneNumber = request.getPhoneNumber();
+    String accountNumber = request.getAccountNumber();
 
     try {
       adminRepository.saveAdmin(accountId, password, realName, nickname, phoneNumber, accountNumber);

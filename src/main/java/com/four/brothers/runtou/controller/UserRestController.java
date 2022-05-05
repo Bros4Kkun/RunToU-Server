@@ -1,6 +1,6 @@
 package com.four.brothers.runtou.controller;
 
-import com.four.brothers.runtou.dto.PerformerDto;
+import com.four.brothers.runtou.dto.AdminDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.LoginExceptionCode;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import static com.four.brothers.runtou.dto.AdminDto.*;
 import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.OrdererDto.*;
 import static com.four.brothers.runtou.dto.PerformerDto.*;
@@ -159,7 +160,7 @@ public class UserRestController {
   @PostMapping("/admin")
   public SignUpAsOrdererResponse addAdmin(
     @Parameter(name = "회원 정보")
-    @Validated @RequestBody SignUpAsOrdererRequest request,
+    @Validated @RequestBody SignUpAsAdminRequest request,
     BindingResult bindingResult, HttpServletRequest requestMsg
   ) {
     boolean result = false;
@@ -169,7 +170,7 @@ public class UserRestController {
     }
 
     try {
-      result = userService.signUpAsAdmin(request);
+      result = userService.addNewAdmin(request);
     } catch (DataIntegrityViolationException e) {
       throw new BadRequestException(SignupExceptionCode.ALREADY_EXIST_INFO, "관리자 정보가 중복됩니다.");
     }
