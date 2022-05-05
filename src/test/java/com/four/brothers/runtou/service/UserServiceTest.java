@@ -209,4 +209,40 @@ class UserServiceTest {
     assertEquals(true, duplicatedResult.isDuplicatedAccountId());
     assertEquals(false, notDuplicatedResult.isDuplicatedAccountId());
   }
+
+  @DisplayName("중복 닉네임 확인")
+  @Test
+  void isDuplicatedNicknameTest() {
+    //GIVEN
+    UserService userService = new UserService(ordererRepository,
+      performerRepository, adminRepository,
+      userRepository, passwordEncoder);
+
+    String accountId1 = "testAccountId1";
+    String password1 = "testPassword1";
+    String realName1 = "testRealName1";
+    String alreadyExistNickname = "testNickname1"; //이미 존재하는 닉네임
+    String phoneNumber1 = "01012341234";
+    String accountNumber1 = "1234567890";
+
+    String newNickname = "testNickname2"; //새 아이디
+
+    UserDto.DuplicatedNicknameRequest alreadyExistRequest = new UserDto.DuplicatedNicknameRequest(); //이미 존재하는 아이디 사용
+    alreadyExistRequest.setNickname(alreadyExistNickname);
+    UserDto.DuplicatedNicknameRequest newRequest = new UserDto.DuplicatedNicknameRequest(); //새 아이디 사용
+    newRequest.setNickname(newNickname);
+
+    //mock 행동 정의 - 이미 존재하는 accountId 일 때
+    given(userRepository.findUserByNickname(eq(alreadyExistNickname))).willReturn(
+      Optional.of(new User(accountId1, password1, realName1, alreadyExistNickname, phoneNumber1, accountNumber1))
+    );
+
+    //WHEN
+    UserDto.DuplicatedNicknameResponse duplicatedResult = userService.isDuplicatedNickname(alreadyExistRequest);
+    UserDto.DuplicatedNicknameResponse notDuplicatedResult = userService.isDuplicatedNickname(newRequest);
+
+    //THEN
+    assertEquals(true, duplicatedResult.isDuplicatedNickname());
+    assertEquals(false, notDuplicatedResult.isDuplicatedNickname());
+  }
 }
