@@ -34,7 +34,7 @@ class UserServiceTest {
   @DisplayName("심부름 요청자 회원가입")
   @Test
   void signUpAsOrdererTest() {
-    //given
+    //GIVEN
     UserService userService = new UserService(ordererRepository,
       performerRepository, adminRepository,
       userRepository, passwordEncoder);
@@ -60,17 +60,20 @@ class UserServiceTest {
       );
     given(passwordEncoder.encode(password1)).willReturn("encodedPasswordValue");
 
-    //when
+    //WHEN
     boolean result = userService.signUpAsOrderer(request1);
 
-    //then
+    //THEN
     //Success Case
     assertEquals(true, result);
 
     //Fail Case - 중복 정보일 때
-    assertThrows(Exception.class,
+    assertThrows(IllegalArgumentException.class,
       () -> {
         userService.signUpAsOrderer(request1);
       });
+
+    //mock 객체 검증 - 총 2번 호출되었는지 검증
+    then(ordererRepository).should(times(2)).saveOrderer(eq(accoundId1), anyString(), anyString(), anyString(), anyString(), anyString());
   }
 }
