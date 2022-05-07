@@ -1,10 +1,8 @@
 package com.four.brothers.runtou.service;
 
+import com.four.brothers.runtou.domain.Orderer;
 import com.four.brothers.runtou.domain.User;
-import com.four.brothers.runtou.dto.AdminDto;
-import com.four.brothers.runtou.dto.OrdererDto;
-import com.four.brothers.runtou.dto.PerformerDto;
-import com.four.brothers.runtou.dto.UserDto;
+import com.four.brothers.runtou.dto.*;
 import com.four.brothers.runtou.repository.user.AdminRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
 import com.four.brothers.runtou.repository.user.PerformerRepository;
@@ -244,5 +242,67 @@ class UserServiceTest {
     //THEN
     assertEquals(true, duplicatedResult.isDuplicatedNickname());
     assertEquals(false, notDuplicatedResult.isDuplicatedNickname());
+  }
+
+  @DisplayName("요청자 로그인")
+  @Test
+  void loginAsOrdererTest() {
+    //GIVEN
+    UserService userService = new UserService(ordererRepository,
+      performerRepository, adminRepository,
+      userRepository, passwordEncoder);
+
+    String realName = "testRealName1";
+    String nickname = "testNickname1";
+    String phoneNumber = "01012341234";
+    String accountNumber = "1234567890";
+
+    String rightAccountId = "rightAccountId"; // 정확한 계정 ID
+    String rightRawPassword = "rightRawPassword"; // 정확한 비밀번호
+    String wrongAccountId = "wrongAccountId"; // 틀린 계정 ID
+    String wrongRawPassword = "wrongRawPassword"; // 틀린 비밀번호
+    String encodedRightPassword = "encodedRightPassword";
+    UserRole role = UserRole.ORDERER;
+
+    LoginDto.LoginRequest loginSuccRequest = new LoginDto.LoginRequest();
+    loginSuccRequest.setAccountId(rightAccountId);
+    loginSuccRequest.setRawPassword(rightRawPassword);
+    loginSuccRequest.setRole(role);
+
+    LoginDto.LoginRequest loginWrongIdRequest = new LoginDto.LoginRequest();
+    loginWrongIdRequest.setAccountId(wrongAccountId);
+    loginWrongIdRequest.setRawPassword(rightRawPassword);
+    loginWrongIdRequest.setRole(role);
+
+    LoginDto.LoginRequest loginWrongPasswordRequest = new LoginDto.LoginRequest();
+    loginWrongPasswordRequest.setAccountId(rightAccountId);
+    loginWrongPasswordRequest.setRawPassword(wrongRawPassword);
+    loginWrongPasswordRequest.setRole(role);
+
+    //mock 행동 정의
+    given(ordererRepository.findOrdererByAccountId(eq(rightAccountId))).willReturn(
+      Optional.of(new Orderer(rightAccountId, encodedRightPassword, realName, nickname, phoneNumber, accountNumber, false))
+      );
+    given(passwordEncoder.matches(eq(rightRawPassword), anyString())).willReturn(true);
+    given(passwordEncoder.matches(eq(wrongRawPassword), anyString())).willReturn(false);
+
+    //WHEN
+    LoginDto.LoginUser result1 = userService.loginAsOrderer(loginSuccRequest); //로그인 성공
+    LoginDto.LoginUser result2 = userService.loginAsOrderer(loginWrongIdRequest); //로그인 실패 (틀린 id)
+    LoginDto.LoginUser result3 = userService.loginAsOrderer(loginWrongPasswordRequest); //로그인 실패 (틀린 pw)
+
+    //THEN
+    assertAll(
+      () -> assertNotNull(result1),
+      () -> assertEquals(rightAccountId, result1.getAccountId()),
+      () -> assertEquals(nickname, result1.getNickname()),
+      () -> assertEquals(realName, result1.getRealName()),
+      () -> assertEquals(accountNumber, result1.getAccountNumber()),
+      () -> assertEquals(phoneNumber, result1.getPhoneNumber()),
+      () -> assertSame(role, result1.getRole()),
+      () -> assertNull(result2),
+      () -> assertNull(result3)
+    );
+
   }
 }
