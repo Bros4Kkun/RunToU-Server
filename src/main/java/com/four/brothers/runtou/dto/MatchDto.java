@@ -10,7 +10,7 @@ public class MatchDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class SimpMatchResponse {
+  public static class SimpMatchInfo {
     private long id;
     private OrderSheetDto.SimpOrderSheetInfo orderSheetInfo;
     private OrdererDto.SimpOrdererInfo ordererInfo;
