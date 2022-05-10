@@ -1,6 +1,7 @@
 package com.four.brothers.runtou.repository.user;
 
 import com.four.brothers.runtou.domain.FilterWord;
+import com.four.brothers.runtou.repository.FilterWordRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

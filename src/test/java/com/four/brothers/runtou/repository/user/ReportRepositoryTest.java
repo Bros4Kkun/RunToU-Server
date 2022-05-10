@@ -3,6 +3,7 @@ package com.four.brothers.runtou.repository.user;
 import com.four.brothers.runtou.domain.Report;
 import com.four.brothers.runtou.domain.ReportCategory;
 import com.four.brothers.runtou.domain.User;
+import com.four.brothers.runtou.repository.ReportRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
