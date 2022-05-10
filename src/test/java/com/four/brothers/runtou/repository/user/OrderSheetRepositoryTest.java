@@ -120,7 +120,6 @@ class OrderSheetRepositoryTest {
 
   @DisplayName("금액이 지불된 주문서 조회")
   @Test
-  @Disabled
   void findAllOnlyPayed(){
     //given
     String accountId = "test1";
