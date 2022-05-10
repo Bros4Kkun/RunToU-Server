@@ -3,14 +3,13 @@ package com.four.brothers.runtou.repository.user;
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.OrderSheetCategory;
 import com.four.brothers.runtou.domain.Orderer;
+import com.four.brothers.runtou.repository.OrderSheetRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;

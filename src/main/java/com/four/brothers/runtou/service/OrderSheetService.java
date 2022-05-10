@@ -6,7 +6,7 @@ import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.NoAuthorityException;
 import com.four.brothers.runtou.exception.code.OrderSheetExceptionCode;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
-import com.four.brothers.runtou.repository.user.OrderSheetRepository;
+import com.four.brothers.runtou.repository.OrderSheetRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

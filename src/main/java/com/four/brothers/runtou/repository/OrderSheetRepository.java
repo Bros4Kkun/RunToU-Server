@@ -1,4 +1,4 @@
-package com.four.brothers.runtou.repository.user;
+package com.four.brothers.runtou.repository;
 
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.OrderSheetCategory;
