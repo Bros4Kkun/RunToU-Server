@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,12 +54,18 @@ public class MatchingRepository {
   /**
    * 사용자 계정 id와 연관된 모든 매칭 조회
    * @param userAccountId
+   * @param onlyDuringJobNow true인 경우, 현재 수행 중인 매칭만 조회
    * @return
    */
-  public List<Matching> findAllMatchingByUserAccountId(String userAccountId) {
+  public List<Matching> findAllMatchingByUserAccountId(String userAccountId, boolean onlyDuringJobNow) {
     String jpql = "select m from Matching m " +
-      "where m.orderSheet.orderer.accountId = :userAccountIdAsOrderer " +
-      "or m.performer.accountId = :userAccountIdAsPerformer";
+      "where (m.orderSheet.orderer.accountId = :userAccountIdAsOrderer " +
+      "or m.performer.accountId = :userAccountIdAsPerformer)";
+
+    //수행 중인 매칭만 조회
+    if (onlyDuringJobNow) {
+      jpql += " and m.isCompleted = false";
+    }
 
     List<Matching> resultList = em.createQuery(jpql, Matching.class)
       .setParameter("userAccountIdAsOrderer", userAccountId)
