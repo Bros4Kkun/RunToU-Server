@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.dto;
 
+import com.four.brothers.runtou.domain.Matching;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,14 @@ public class MatchDto {
     private PerformerDto.SimpPerformerInfo performerInfo;
     private boolean isCompleted;
     private LocalDateTime completedDateTime;
+
+    public SimpMatchInfo(Matching entity) {
+      this.id = entity.getId();
+      this.orderSheetInfo = new OrderSheetDto.SimpOrderSheetInfo(entity.getOrderSheet());
+      this.ordererInfo = new OrdererDto.SimpOrdererInfo(entity.getOrderSheet().getOrderer());
+      this.performerInfo = new PerformerDto.SimpPerformerInfo(entity.getPerformer());
+      this.isCompleted = entity.getIsCompleted();
+      this.completedDateTime = entity.getCompletedDateTime();
+    }
   }
 }
