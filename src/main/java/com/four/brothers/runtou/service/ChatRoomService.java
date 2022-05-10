@@ -116,8 +116,8 @@ public class ChatRoomService {
 
     response.setChatRoomPk(chatRoomPk);
     response.setMessageList(chatMessageDtoList);
-    response.setOrdererInfo(new ChatOrdererInfo(chatRoom.get().getOrderer()));
-    response.setPerformerInfo(new ChatPerformerInfo(chatRoom.get().getPerformer()));
+    response.setOrdererInfo(new SimpOrdererInfo(chatRoom.get().getOrderer()));
+    response.setPerformerInfo(new SimpPerformerInfo(chatRoom.get().getPerformer()));
     response.setOrdererSheetPk(chatRoom.get().getOrderSheet().getId());
     response.setMatched(false);
 
@@ -167,8 +167,8 @@ public class ChatRoomService {
           info.setLatestChatMessage(item.getChatMessages().get(lastMsgIndex).getContent());
         }
         info.setChatRoomPk(item.getId());
-        info.setOrdererInfo(new ChatOrdererInfo(item.getOrderer()));
-        info.setPerformerInfo(new ChatPerformerInfo(item.getPerformer()));
+        info.setOrdererInfo(new SimpOrdererInfo(item.getOrderer()));
+        info.setPerformerInfo(new SimpPerformerInfo(item.getPerformer()));
         info.setOrdererSheetPk(item.getOrderSheet().getId());
         result.add(info);
       }

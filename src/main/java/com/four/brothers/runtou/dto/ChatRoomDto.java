@@ -1,6 +1,5 @@
 package com.four.brothers.runtou.dto;
 
-import com.four.brothers.runtou.domain.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,8 +45,8 @@ public class ChatRoomDto {
   public static class ExistChatRoomResponse {
     private long chatRoomPk;
     private List<ChatMessageResponse> messageList;
-    private ChatOrdererInfo ordererInfo;
-    private ChatPerformerInfo performerInfo;
+    private SimpOrdererInfo ordererInfo;
+    private SimpPerformerInfo performerInfo;
     private long ordererSheetPk;
     private boolean isMatched;
   }
@@ -59,8 +58,8 @@ public class ChatRoomDto {
   public static class SimpleChatRoomInfo {
     private long chatRoomPk;
     private String latestChatMessage;
-    private ChatOrdererInfo ordererInfo;
-    private ChatPerformerInfo performerInfo;
+    private SimpOrdererInfo ordererInfo;
+    private SimpPerformerInfo performerInfo;
     private long ordererSheetPk;
     private boolean isMatched;
   }
