@@ -3,6 +3,7 @@ package com.four.brothers.runtou.repository;
 import com.four.brothers.runtou.domain.Matching;
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Performer;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class MatchingRepository {
@@ -52,20 +54,35 @@ public class MatchingRepository {
   }
 
   /**
-   * 사용자 계정 id와 연관된 모든 매칭 조회
+   * 사용자 계정 id와 연관된 매칭 조회
    * @param userAccountId
-   * @param onlyDuringJobNow true인 경우, 현재 수행 중인 매칭만 조회
+   * @param onlyCompleted true인 경우 완료된 매칭만 조회, false인 경우 현재 수행 중인 매칭만 조회
    * @return
    */
-  public List<Matching> findAllMatchingByUserAccountId(String userAccountId, boolean onlyDuringJobNow) {
+  public List<Matching> findMatchingByUserAccountId(String userAccountId, boolean onlyCompleted) {
     String jpql = "select m from Matching m " +
       "where (m.orderSheet.orderer.accountId = :userAccountIdAsOrderer " +
-      "or m.performer.accountId = :userAccountIdAsPerformer)";
+      "or m.performer.accountId = :userAccountIdAsPerformer) " +
+      "and m.isCompleted = :isCompleted";
 
-    //수행 중인 매칭만 조회
-    if (onlyDuringJobNow) {
-      jpql += " and m.isCompleted = false";
-    }
+    List<Matching> resultList = em.createQuery(jpql, Matching.class)
+      .setParameter("userAccountIdAsOrderer", userAccountId)
+      .setParameter("userAccountIdAsPerformer", userAccountId)
+      .setParameter("isCompleted", onlyCompleted)
+      .getResultList();
+
+    return resultList;
+  }
+
+  /**
+   * 사용자 계정 id와 연관된 모든 매칭 조회
+   * @param userAccountId
+   * @return
+   */
+  public List<Matching> findMatchingByUserAccountId(String userAccountId) {
+    String jpql = "select m from Matching m " +
+      "where m.orderSheet.orderer.accountId = :userAccountIdAsOrderer " +
+      "or m.performer.accountId = :userAccountIdAsPerformer";
 
     List<Matching> resultList = em.createQuery(jpql, Matching.class)
       .setParameter("userAccountIdAsOrderer", userAccountId)

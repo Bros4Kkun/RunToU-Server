@@ -25,7 +25,7 @@ public class MatchingService {
   @Transactional
   public List<SimpMatchInfo> showAllMatches(LoginDto.LoginUser loginUser) {
     List<SimpMatchInfo> result = new ArrayList<>();
-    List<Matching> allMatchingByUserAccountId = matchingRepository.findAllMatchingByUserAccountId(loginUser.getAccountId(), false);
+    List<Matching> allMatchingByUserAccountId = matchingRepository.findMatchingByUserAccountId(loginUser.getAccountId());
     allMatchingByUserAccountId.stream().forEach((item) -> result.add(new SimpMatchInfo(item)));
     return result;
   }
@@ -36,9 +36,22 @@ public class MatchingService {
    * @return
    */
   @Transactional
-  public List<SimpMatchInfo> showAllMatchesDuringJob(LoginDto.LoginUser loginUser) {
+  public List<SimpMatchInfo> showMatchesDuringJob(LoginDto.LoginUser loginUser) {
     List<SimpMatchInfo> result = new ArrayList<>();
-    List<Matching> allMatchingByUserAccountId = matchingRepository.findAllMatchingByUserAccountId(loginUser.getAccountId(), true);
+    List<Matching> allMatchingByUserAccountId = matchingRepository.findMatchingByUserAccountId(loginUser.getAccountId(), false);
+    allMatchingByUserAccountId.stream().forEach((item) -> result.add(new SimpMatchInfo(item)));
+    return result;
+  }
+
+  /**
+   * 로그인한 사용자의 모든 매칭 정보 중, 완료된 것만 응답
+   * @param loginUser
+   * @return
+   */
+  @Transactional
+  public List<SimpMatchInfo> showDoneMatches(LoginDto.LoginUser loginUser) {
+    List<SimpMatchInfo> result = new ArrayList<>();
+    List<Matching> allMatchingByUserAccountId = matchingRepository.findMatchingByUserAccountId(loginUser.getAccountId(), true);
     allMatchingByUserAccountId.stream().forEach((item) -> result.add(new SimpMatchInfo(item)));
     return result;
   }

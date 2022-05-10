@@ -1,7 +1,5 @@
 package com.four.brothers.runtou.controller;
 
-import com.four.brothers.runtou.dto.LoginDto;
-import com.four.brothers.runtou.dto.MatchDto;
 import com.four.brothers.runtou.service.MatchingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,7 +32,14 @@ public class MatchingController {
   @Operation(summary = "자신과 연관된 모든 매칭 중, 현재 수행 중인 매칭만 조회")
   @GetMapping("/now")
   List<SimpMatchInfo> getMatchingInfoDuringJob(@Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
-    List<SimpMatchInfo> result = matchingService.showAllMatchesDuringJob(loginUser);
+    List<SimpMatchInfo> result = matchingService.showMatchesDuringJob(loginUser);
+    return result;
+  }
+
+  @Operation(summary = "자신과 연관된 모든 매칭 중, 완료된 매칭만 조회")
+  @GetMapping("/done")
+  List<SimpMatchInfo> getDoneMatchingInfo(@Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
+    List<SimpMatchInfo> result = matchingService.showDoneMatches(loginUser);
     return result;
   }
 }
