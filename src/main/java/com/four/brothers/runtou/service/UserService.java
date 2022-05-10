@@ -3,7 +3,9 @@ package com.four.brothers.runtou.service;
 import com.four.brothers.runtou.domain.Orderer;
 import com.four.brothers.runtou.domain.Performer;
 import com.four.brothers.runtou.domain.User;
+import com.four.brothers.runtou.dto.AdminDto;
 import com.four.brothers.runtou.dto.OrdererDto;
+import com.four.brothers.runtou.dto.PerformerDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.repository.user.AdminRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
+import static com.four.brothers.runtou.dto.PerformerDto.*;
 import static com.four.brothers.runtou.dto.UserDto.*;
 
 
@@ -30,18 +33,18 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
 
   /**
-   * 회원가입 메서드
+   * 심부름 요청자 회원가입 메서드
    * 회원가입시 모든 사용자는 Orderer로서 가입하게 된다.
-   * @param signUpRequest
+   * @param signUpAsOrdererRequest
    */
   @Transactional
-  public boolean signUpAsOrderer(OrdererDto.SignUpRequest signUpRequest) {
-    String accountId = signUpRequest.getAccountId();
-    String realName = signUpRequest.getRealName();
-    String nickname = signUpRequest.getNickname();
-    String password = passwordEncoder.encode(signUpRequest.getPassword());
-    String phoneNumber = signUpRequest.getPhoneNumber();
-    String accountNumber = signUpRequest.getAccountNumber();
+  public boolean signUpAsOrderer(OrdererDto.SignUpAsOrdererRequest signUpAsOrdererRequest) {
+    String accountId = signUpAsOrdererRequest.getAccountId();
+    String realName = signUpAsOrdererRequest.getRealName();
+    String nickname = signUpAsOrdererRequest.getNickname();
+    String password = passwordEncoder.encode(signUpAsOrdererRequest.getPassword());
+    String phoneNumber = signUpAsOrdererRequest.getPhoneNumber();
+    String accountNumber = signUpAsOrdererRequest.getAccountNumber();
 
     try {
       ordererRepository.saveOrderer(accountId, password, realName, nickname, phoneNumber, accountNumber);
@@ -53,17 +56,40 @@ public class UserService {
   }
 
   /**
-   * 관리자 등록 메서드
-   * @param signUpRequest
+   * 심부름 수행자 회원가입 메서드
+   * @param signUpAsPerformerRequest
+   * @return
    */
   @Transactional
-  public boolean signUpAsAdmin(OrdererDto.SignUpRequest signUpRequest) {
-    String accountId = signUpRequest.getAccountId();
-    String realName = signUpRequest.getRealName();
-    String nickname = signUpRequest.getNickname();
-    String password = passwordEncoder.encode(signUpRequest.getPassword());
-    String phoneNumber = signUpRequest.getPhoneNumber();
-    String accountNumber = signUpRequest.getAccountNumber();
+  public boolean signUpAsPerformer(SignUpAsPerformerRequest signUpAsPerformerRequest) {
+    String accountId = signUpAsPerformerRequest.getAccountId();
+    String realName = signUpAsPerformerRequest.getRealName();
+    String nickname = signUpAsPerformerRequest.getNickname();
+    String password = passwordEncoder.encode(signUpAsPerformerRequest.getPassword());
+    String phoneNumber = signUpAsPerformerRequest.getPhoneNumber();
+    String accountNumber = signUpAsPerformerRequest.getAccountNumber();
+
+    try {
+      performerRepository.savePerformer(accountId, password, realName, nickname, phoneNumber, accountNumber);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("이미 회원정보가 존재합니다.");
+    }
+
+    return true;
+  }
+
+  /**
+   * 관리자 등록 메서드
+   * @param request
+   */
+  @Transactional
+  public boolean addNewAdmin(AdminDto.SignUpAsAdminRequest request) {
+    String accountId = request.getAccountId();
+    String realName = request.getRealName();
+    String nickname = request.getNickname();
+    String password = passwordEncoder.encode(request.getPassword());
+    String phoneNumber = request.getPhoneNumber();
+    String accountNumber = request.getAccountNumber();
 
     try {
       adminRepository.saveAdmin(accountId, password, realName, nickname, phoneNumber, accountNumber);
