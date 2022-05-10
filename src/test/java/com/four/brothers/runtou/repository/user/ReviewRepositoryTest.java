@@ -153,7 +153,7 @@ class ReviewRepositoryTest {
     LocalDateTime wishedDeadline1 = LocalDateTime.now();
 
     orderSheetRepository.saveOrderSheet(orderer1, title1, content1, category1, destination1, cost1, isPayed1, wishedDeadline1);
-    OrderSheet orderSheet1 = orderSheetRepository.findAll(1,2).get(1);
+    OrderSheet orderSheet1 = orderSheetRepository.findAll(1,2).get(0);
 
     String accountIdP1 = "TestP1";
     String passwordP1 = "TestP1";
