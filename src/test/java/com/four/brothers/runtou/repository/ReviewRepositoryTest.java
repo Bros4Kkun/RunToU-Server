@@ -1,9 +1,11 @@
-package com.four.brothers.runtou.repository.user;
+package com.four.brothers.runtou.repository;
 
 import com.four.brothers.runtou.domain.*;
 import com.four.brothers.runtou.repository.MatchingRepository;
 import com.four.brothers.runtou.repository.OrderSheetRepository;
 import com.four.brothers.runtou.repository.ReviewRepository;
+import com.four.brothers.runtou.repository.user.OrdererRepository;
+import com.four.brothers.runtou.repository.user.PerformerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
