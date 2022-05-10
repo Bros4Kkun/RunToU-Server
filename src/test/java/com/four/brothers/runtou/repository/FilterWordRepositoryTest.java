@@ -1,4 +1,4 @@
-package com.four.brothers.runtou.repository.user;
+package com.four.brothers.runtou.repository;
 
 import com.four.brothers.runtou.domain.FilterWord;
 import com.four.brothers.runtou.repository.FilterWordRepository;

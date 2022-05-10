@@ -51,7 +51,8 @@ public class OrderSheetRepository {
       throw new IllegalArgumentException("한번에 조회할 수 있는 엔티티의 개수는 1 이상이어야 합니다.");
     }
 
-    String jpql = "select p from OrderSheet p";
+    String jpql = "select p from OrderSheet p " +
+      "order by p.createdDate desc";
     List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
       .setFirstResult((nowPage - 1) * itemSize)
       .setMaxResults(itemSize)
@@ -81,7 +82,8 @@ public class OrderSheetRepository {
     //category가 null이라면, 카테고리 조건없이 검색
     if (category == null) {
       jpql = "select p from OrderSheet p " +
-        "where p.isPayed = true";
+        "where p.isPayed = true " +
+        "order by p.createdDate desc";
 
       List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
         .setFirstResult((nowPage - 1) * itemSize)

@@ -1,8 +1,10 @@
-package com.four.brothers.runtou.repository.user;
+package com.four.brothers.runtou.repository;
 
 import com.four.brothers.runtou.domain.*;
 import com.four.brothers.runtou.repository.MatchingRepository;
 import com.four.brothers.runtou.repository.OrderSheetRepository;
+import com.four.brothers.runtou.repository.user.OrdererRepository;
+import com.four.brothers.runtou.repository.user.PerformerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +131,7 @@ class MatchingRepositoryTest {
     LocalDateTime wishedDeadline1 = LocalDateTime.now();
 
     orderSheetRepository.saveOrderSheet(orderer1, title1, content1, category1, destination1, cost1, isPayed1, wishedDeadline1);
-    OrderSheet orderSheet1  = orderSheetRepository.findAll(1,2).get(1);
+    OrderSheet orderSheet1  = orderSheetRepository.findAll(1,2).get(0);
 
     String accountIdP1 = "testP1";
     String passwordP1 = "testP1";
