@@ -51,6 +51,24 @@ public class MatchingRepository {
   }
 
   /**
+   * 사용자 계정 id와 연관된 모든 매칭 조회
+   * @param userAccountId
+   * @return
+   */
+  public List<Matching> findAllMatchingByUserAccountId(String userAccountId) {
+    String jpql = "select m from Matching m " +
+      "where m.orderSheet.orderer.accountId = :userAccountIdAsOrderer " +
+      "or m.performer.accountId = :userAccountIdAsPerformer";
+
+    List<Matching> resultList = em.createQuery(jpql, Matching.class)
+      .setParameter("userAccountIdAsOrderer", userAccountId)
+      .setParameter("userAccountIdAsPerformer", userAccountId)
+      .getResultList();
+
+    return resultList;
+  }
+
+  /**
    * pk값으로 삭제하는 메서드
    * @param pk
    */
