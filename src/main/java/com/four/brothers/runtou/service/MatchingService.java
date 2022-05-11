@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.four.brothers.runtou.dto.MatchDto.*;
 
@@ -54,5 +55,21 @@ public class MatchingService {
     List<Matching> allMatchingByUserAccountId = matchingRepository.findMatchingByUserAccountId(loginUser.getAccountId(), true);
     allMatchingByUserAccountId.stream().forEach((item) -> result.add(new SimpMatchInfo(item)));
     return result;
+  }
+
+  /**
+   * 해당 pk값을 갖는 매칭의 상세정보 반환
+   * @param matchingPk
+   * @return
+   */
+  @Transactional
+  public MatchInfo showMatchDetail(long matchingPk) {
+    Optional<Matching> matching = matchingRepository.findById(matchingPk);
+
+    if (matching.isEmpty()) {
+      throw new IllegalArgumentException("존재하지 않는 매칭 id입니다.");
+    }
+
+    return new MatchInfo(matching.get());
   }
 }
