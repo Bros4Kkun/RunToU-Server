@@ -48,12 +48,12 @@ public class PerformerDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class ChatPerformerInfo {
+  public static class SimpPerformerInfo {
     private Long id;
     private String accountId;
     private String nickname;
 
-    public ChatPerformerInfo(Performer performer) {
+    public SimpPerformerInfo(Performer performer) {
       this.id = performer.getId();
       this.accountId = performer.getAccountId();
       this.nickname = performer.getNickname();

@@ -39,7 +39,7 @@ public class OrderSheetDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class AllOrderSheetResponse {
-    private List<OrderSheetItemSample> orderSheetItemSampleList;
+    private List<SimpOrderSheetInfo> simpOrderSheetInfoList;
   }
 
   @Getter
@@ -99,7 +99,7 @@ public class OrderSheetDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class OrderSheetItemSample {
+  public static class SimpOrderSheetInfo {
     private long orderSheetId;
     private String ordererNickname;
     private String title;
@@ -108,7 +108,7 @@ public class OrderSheetDto {
     private String destination;
     private int cost;
 
-    public OrderSheetItemSample(OrderSheet entity) {
+    public SimpOrderSheetInfo(OrderSheet entity) {
       this.orderSheetId = entity.getId();
       this.ordererNickname = entity.getOrderer().getNickname();
       this.title = entity.getTitle();

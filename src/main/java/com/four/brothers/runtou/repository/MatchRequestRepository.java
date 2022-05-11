@@ -4,11 +4,15 @@ import com.four.brothers.runtou.domain.MatchRequest;
 import com.four.brothers.runtou.domain.Matching;
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Performer;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MatchRequestRepository {
@@ -46,6 +50,25 @@ public class MatchRequestRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  public Optional<MatchRequest> findByOrderSheetAndPerform(OrderSheet orderSheet, Performer performer) {
+    MatchRequest result;
+    String jpql = "select m from MatchRequest m " +
+      "where m.orderSheet = :orderSheet " +
+      "and m.performer = :performer";
+
+    TypedQuery<MatchRequest> query = em.createQuery(jpql, MatchRequest.class)
+      .setParameter("orderSheet", orderSheet)
+      .setParameter("performer", performer);
+
+    try {
+      result = query.getSingleResult();
+    } catch (NoResultException e1) {
+      return Optional.empty();
+    }
+
+    return Optional.of(result);
   }
 
   /**

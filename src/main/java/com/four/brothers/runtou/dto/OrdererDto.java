@@ -50,12 +50,12 @@ public class OrdererDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class ChatOrdererInfo {
+  public static class SimpOrdererInfo {
     private long id;
     private String accountId;
     private String nickname;
 
-    public ChatOrdererInfo(Orderer orderer) {
+    public SimpOrdererInfo(Orderer orderer) {
       this.id = orderer.getId();
       this.accountId = orderer.getAccountId();
       this.nickname = orderer.getNickname();

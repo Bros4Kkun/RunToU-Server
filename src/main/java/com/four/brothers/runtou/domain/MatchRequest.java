@@ -9,6 +9,14 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(
+  uniqueConstraints={
+    @UniqueConstraint(
+      name = "Constraint1234",
+      columnNames={"ORDER_SHEET_ID", "PERFORMER_ID"}
+    )
+  }
+)
 public class MatchRequest extends BaseTimeEntity {
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
   @Column

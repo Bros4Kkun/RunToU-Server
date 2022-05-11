@@ -15,6 +15,6 @@ public enum ChatRoomExceptionCode implements ExceptionCode {
 
   @Override
   public String getValue() {
-    return null;
+    return this.value;
   }
 }

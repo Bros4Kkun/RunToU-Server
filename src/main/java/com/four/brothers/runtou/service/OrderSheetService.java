@@ -55,11 +55,11 @@ public class OrderSheetService {
   public AllOrderSheetResponse lookUpAllOrderSheet(AllOrderSheetRequest request) throws IllegalArgumentException {
     List<OrderSheet> orderSheetList = orderSheetRepository.findAllOnlyPayed(request.getNowPage(),
                                                               request.getItemSize(), request.getCategory());
-    List<OrderSheetItemSample> result = new ArrayList<>();
+    List<SimpOrderSheetInfo> result = new ArrayList<>();
 
     //entity -> dto 변환 로직
     for (OrderSheet entity : orderSheetList) {
-      result.add(new OrderSheetItemSample(entity));
+      result.add(new SimpOrderSheetInfo(entity));
     }
 
     return new AllOrderSheetResponse(result);
