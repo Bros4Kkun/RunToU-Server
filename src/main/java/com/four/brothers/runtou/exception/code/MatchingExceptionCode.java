@@ -14,6 +14,6 @@ public enum MatchingExceptionCode implements ExceptionCode {
 
   @Override
   public String getValue() {
-    return null;
+    return this.value;
   }
 }
