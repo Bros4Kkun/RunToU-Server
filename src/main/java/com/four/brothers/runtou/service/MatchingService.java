@@ -161,7 +161,7 @@ public class MatchingService {
     String chatRoomPerformerAccountId;
     //잘못된 채팅방 id 일 경우
     if (chatRoom.isEmpty()) {
-      throw new IllegalArgumentException("존재하지 않는 채팅방 id입니다.");
+      throw new BadRequestException(ChatRoomExceptionCode.WRONG_NUMBER_OF_CHAT_ROOM,"존재하지 않는 채팅방 id입니다.");
     }
     //수행자가 요청한 것이 아닐 경우
     if (loginUser.getRole() != UserRole.PERFORMER) {

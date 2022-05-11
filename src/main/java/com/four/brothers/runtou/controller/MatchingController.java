@@ -54,7 +54,7 @@ public class MatchingController {
   @GetMapping("/chatroom/{chatRoomPk}")
   boolean requestMatching(
     @PathVariable long chatRoomPk,
-    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws CanNotAccessException {
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws Exception {
     boolean result = matchingService.requestMatching(chatRoomPk, loginUser);
     return result;
   }
