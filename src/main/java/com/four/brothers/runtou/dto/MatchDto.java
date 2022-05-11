@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class MatchDto {
   @Getter
@@ -50,7 +51,9 @@ public class MatchDto {
       this.performerInfo = new PerformerDto.SimpPerformerInfo(entity.getPerformer());
       this.isCompleted = entity.getIsCompleted();
       this.completedDateTime = entity.getCompletedDateTime();
-      this.reviewInfo = new ReviewDto.ReviewInfo(entity.getReview());
+      if (!Objects.isNull(entity.getReview())) {
+        this.reviewInfo = new ReviewDto.ReviewInfo(entity.getReview());
+      }
     }
   }
 }
