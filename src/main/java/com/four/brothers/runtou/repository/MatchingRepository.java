@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 public class MatchingRepository {
@@ -51,6 +52,15 @@ public class MatchingRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  /**
+   * pk값으로 Matching 찾는 메서드
+   * @param pk
+   * @return
+   */
+  public Optional<Matching> findById(long pk) {
+    return Optional.ofNullable(em.find(Matching.class, pk));
   }
 
   /**
