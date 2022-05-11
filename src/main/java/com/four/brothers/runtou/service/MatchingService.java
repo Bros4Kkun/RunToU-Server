@@ -2,6 +2,8 @@ package com.four.brothers.runtou.service;
 
 import com.four.brothers.runtou.domain.Matching;
 import com.four.brothers.runtou.dto.LoginDto;
+import com.four.brothers.runtou.exception.CanNotAccessException;
+import com.four.brothers.runtou.exception.code.MatchingExceptionCode;
 import com.four.brothers.runtou.repository.MatchingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.MatchDto.*;
 
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class MatchingService {
    * @return
    */
   @Transactional
-  public List<SimpMatchInfo> showAllMatches(LoginDto.LoginUser loginUser) {
+  public List<SimpMatchInfo> showAllMatches(LoginUser loginUser) {
     List<SimpMatchInfo> result = new ArrayList<>();
     List<Matching> allMatchingByUserAccountId = matchingRepository.findMatchingByUserAccountId(loginUser.getAccountId());
     allMatchingByUserAccountId.stream().forEach((item) -> result.add(new SimpMatchInfo(item)));
@@ -37,7 +40,7 @@ public class MatchingService {
    * @return
    */
   @Transactional
-  public List<SimpMatchInfo> showMatchesDuringJob(LoginDto.LoginUser loginUser) {
+  public List<SimpMatchInfo> showMatchesDuringJob(LoginUser loginUser) {
     List<SimpMatchInfo> result = new ArrayList<>();
     List<Matching> allMatchingByUserAccountId = matchingRepository.findMatchingByUserAccountId(loginUser.getAccountId(), false);
     allMatchingByUserAccountId.stream().forEach((item) -> result.add(new SimpMatchInfo(item)));
@@ -50,7 +53,7 @@ public class MatchingService {
    * @return
    */
   @Transactional
-  public List<SimpMatchInfo> showDoneMatches(LoginDto.LoginUser loginUser) {
+  public List<SimpMatchInfo> showDoneMatches(LoginUser loginUser) {
     List<SimpMatchInfo> result = new ArrayList<>();
     List<Matching> allMatchingByUserAccountId = matchingRepository.findMatchingByUserAccountId(loginUser.getAccountId(), true);
     allMatchingByUserAccountId.stream().forEach((item) -> result.add(new SimpMatchInfo(item)));
@@ -59,17 +62,37 @@ public class MatchingService {
 
   /**
    * 해당 pk값을 갖는 매칭의 상세정보 반환
-   * @param matchingPk
+   * @param matchingPk 확인할 매칭 PK 값
+   * @param loginUser
    * @return
    */
   @Transactional
-  public MatchInfo showMatchDetail(long matchingPk) {
+  public MatchInfo showMatchDetail(long matchingPk, LoginUser loginUser) throws CanNotAccessException {
     Optional<Matching> matching = matchingRepository.findById(matchingPk);
 
     if (matching.isEmpty()) {
       throw new IllegalArgumentException("존재하지 않는 매칭 id입니다.");
     }
 
+    checkRightAuthority(loginUser, matching);
+
     return new MatchInfo(matching.get());
+  }
+
+  /**
+   * 해당 매칭에 접근하려는 사용자가 접근 권한을 가지고 있는지 확인하는 메서드
+   * @param loginUser
+   * @param matching
+   * @throws CanNotAccessException
+   */
+  private void checkRightAuthority(LoginUser loginUser, Optional<Matching> matching) throws CanNotAccessException {
+    String ordererAccountId = matching.get().getOrderSheet().getOrderer().getAccountId();
+    String performerAccountId = matching.get().getPerformer().getAccountId();
+    String loginUserAccountId = loginUser.getAccountId();
+    //접근 권한이 있다면
+    if (ordererAccountId.equals(loginUserAccountId) || performerAccountId.equals(loginUserAccountId)) {
+      return;
+    }
+    throw new CanNotAccessException(MatchingExceptionCode.NO_AUTHORITY, "해당 매칭에 대한 접근 권한이 없습니다.");
   }
 }

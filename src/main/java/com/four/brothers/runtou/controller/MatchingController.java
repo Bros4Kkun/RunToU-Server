@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.controller;
 
+import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.service.MatchingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,8 +43,10 @@ public class MatchingController {
 
   @Operation(summary = "매칭 상세 정보 조회")
   @GetMapping("/{matchPk}")
-  MatchInfo getMatchingInfo(@PathVariable long matchPk) {
-    MatchInfo result = matchingService.showMatchDetail(matchPk);
+  MatchInfo getMatchingInfo(
+    @PathVariable long matchPk,
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws CanNotAccessException {
+    MatchInfo result = matchingService.showMatchDetail(matchPk, loginUser);
     return result;
   }
 }
