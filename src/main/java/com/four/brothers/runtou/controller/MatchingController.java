@@ -49,4 +49,13 @@ public class MatchingController {
     MatchInfo result = matchingService.showMatchDetail(matchPk, loginUser);
     return result;
   }
+
+  @Operation(summary = "매칭 요청")
+  @GetMapping("/chatroom/{chatRoomPk}")
+  boolean requestMatching(
+    @PathVariable long chatRoomPk,
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws CanNotAccessException {
+    boolean result = matchingService.requestMatching(chatRoomPk, loginUser);
+    return result;
+  }
 }
