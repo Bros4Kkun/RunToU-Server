@@ -1,19 +1,20 @@
 package com.four.brothers.runtou.service;
 
-import com.four.brothers.runtou.domain.ChatRoom;
-import com.four.brothers.runtou.domain.MatchRequest;
-import com.four.brothers.runtou.domain.Matching;
-import com.four.brothers.runtou.domain.Performer;
+import com.four.brothers.runtou.domain.*;
+import com.four.brothers.runtou.dto.ChatMessageDto;
 import com.four.brothers.runtou.dto.MatchRequestDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.CanNotAccessException;
+import com.four.brothers.runtou.exception.code.ChatRoomExceptionCode;
 import com.four.brothers.runtou.exception.code.MatchRequestExceptionCode;
 import com.four.brothers.runtou.exception.code.MatchingExceptionCode;
+import com.four.brothers.runtou.repository.ChatMessageRepository;
 import com.four.brothers.runtou.repository.ChatRoomRepository;
 import com.four.brothers.runtou.repository.MatchRequestRepository;
 import com.four.brothers.runtou.repository.MatchingRepository;
 import com.four.brothers.runtou.repository.user.PerformerRepository;
+import com.four.brothers.runtou.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.four.brothers.runtou.dto.ChatMessageDto.*;
 import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.MatchDto.*;
 
@@ -37,6 +39,8 @@ public class MatchingService {
   private final MatchRequestRepository matchRequestRepository;
   private final ChatRoomRepository chatRoomRepository;
   private final PerformerRepository performerRepository;
+  private final ChatMessageRepository chatMessageRepository;
+  private final UserRepository userRepository;
 
   private final SimpMessagingTemplate simpTemplate;
 
@@ -105,9 +109,13 @@ public class MatchingService {
    * @return
    */
   @Transactional
-  public boolean requestMatching(long chatRoomPk, LoginUser loginUser) throws CanNotAccessException {
+  public boolean requestMatching(long chatRoomPk, LoginUser loginUser) throws Exception {
     Optional<ChatRoom> chatRoom = chatRoomRepository.findChatRoomById(chatRoomPk);
     Optional<MatchRequest> matchRequest = null;
+    User matchRequestUser;
+    String matchRequestMsg;
+    ChatMessage currentMsg;
+    ChatMessageResponse response;
 
     isRightMatchRequest(loginUser, chatRoom);
 
@@ -124,7 +132,20 @@ public class MatchingService {
     MatchRequestDto.MatchRequestInfo matchRequestInfo = new MatchRequestDto.MatchRequestInfo(matchRequest.get());
 
     //매칭 요청 사실을 STOMP로 전달
-    simpTemplate.convertAndSend("/topic/match/chatroom/" + chatRoomPk, matchRequestInfo);
+    matchRequestUser = userRepository.findUserByAccountId(loginUser.getAccountId()).get();
+    matchRequestMsg = "본 심부름에 대한 매칭을 요청했습니다! 알림을 확인해주세요.";
+    chatMessageRepository.saveChatMessage(matchRequestUser, chatRoom.get(), matchRequestMsg);
+    currentMsg = chatMessageRepository.findLatestChatMsgFromChatRoom(chatRoom.get(), matchRequestMsg).get();
+    response = new ChatMessageResponse(
+      currentMsg.getId(),
+      loginUser.getAccountId(),
+      loginUser.getNickname(),
+      chatRoomPk,
+      matchRequestMsg,
+      currentMsg.getCreatedDate()
+    );
+    simpTemplate.convertAndSend("/topic/chatroom/" + chatRoomPk, response); //채팅방으로 전송
+    simpTemplate.convertAndSend("/topic/match/chatroom/" + chatRoomPk, matchRequestInfo); //알림용 topic으로 전송
 
     return true;
   }
@@ -135,7 +156,7 @@ public class MatchingService {
    * @param chatRoom
    * @throws CanNotAccessException
    */
-  private void isRightMatchRequest(LoginUser loginUser, Optional<ChatRoom> chatRoom) throws CanNotAccessException {
+  private void isRightMatchRequest(LoginUser loginUser, Optional<ChatRoom> chatRoom) throws Exception {
     Performer matchRequestedPerformer;
     String chatRoomPerformerAccountId;
     //잘못된 채팅방 id 일 경우
