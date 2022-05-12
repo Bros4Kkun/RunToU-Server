@@ -52,6 +52,12 @@ public class MatchRequestRepository {
     return resultList;
   }
 
+  /**
+   * '매칭을 요청할 요청서'와 '매칭을 요청한 수행자'로 매칭요청을 찾는 메서드
+   * @param orderSheet 매칭을 요청할 요청서
+   * @param performer 매칭을 요청한 수행자
+   * @return
+   */
   public Optional<MatchRequest> findByOrderSheetAndPerform(OrderSheet orderSheet, Performer performer) {
     MatchRequest result;
     String jpql = "select m from MatchRequest m " +
