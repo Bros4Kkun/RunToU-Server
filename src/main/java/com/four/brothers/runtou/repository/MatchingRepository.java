@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
@@ -52,6 +53,28 @@ public class MatchingRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  /**
+   * 유니크 키인 orderSheet로 찾는 메서드
+   * @param orderSheet
+   * @return
+   */
+  public Optional<Matching> findByOrderSheet(OrderSheet orderSheet) {
+    Matching result = null;
+    String jpql = "select m from Matching m " +
+      "where m.orderSheet = :orderSheet";
+
+    TypedQuery<Matching> query = em.createQuery(jpql, Matching.class)
+      .setParameter("orderSheet", orderSheet);
+
+    try {
+      result = query.getSingleResult();
+    } catch (NoResultException e) {
+      return Optional.empty();
+    }
+
+    return Optional.of(result);
   }
 
   /**
