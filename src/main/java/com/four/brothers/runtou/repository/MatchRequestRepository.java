@@ -63,6 +63,22 @@ public class MatchRequestRepository {
   }
 
   /**
+   * 해당 요청서에 대해 요청된 매칭요청을 모두 찾는 메서드
+   * @param orderSheet 매칭요청을 찾을 요청서
+   * @return
+   */
+  public List<MatchRequest> findByOrderSheet(OrderSheet orderSheet) {
+    String jpql = "select m from MatchRequest m " +
+      "where m.orderSheet = :orderSheet";
+
+    List<MatchRequest> result = em.createQuery(jpql, MatchRequest.class)
+      .setParameter("orderSheet", orderSheet)
+      .getResultList();
+
+    return result;
+  }
+
+  /**
    * '매칭을 요청할 요청서'와 '매칭을 요청한 수행자'로 매칭요청을 찾는 메서드
    * @param orderSheet 매칭을 요청할 요청서
    * @param performer 매칭을 요청한 수행자
