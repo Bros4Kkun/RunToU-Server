@@ -1,6 +1,7 @@
 package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.exception.CanNotAccessException;
+import com.four.brothers.runtou.service.MatchRequestService;
 import com.four.brothers.runtou.service.MatchingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,6 +20,7 @@ import static com.four.brothers.runtou.dto.MatchDto.*;
 @RestController
 public class MatchingController {
   private final MatchingService matchingService;
+  private final MatchRequestService matchRequestService;
 
   @Operation(summary = "자신과 연관된 모든 매칭정보 조회")
   @GetMapping
@@ -55,7 +57,8 @@ public class MatchingController {
   boolean requestMatching(
     @PathVariable long chatRoomPk,
     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws Exception {
-    boolean result = matchingService.requestMatching(chatRoomPk, loginUser);
+    boolean result = matchRequestService.requestMatching(chatRoomPk, loginUser);
     return result;
   }
+
 }
