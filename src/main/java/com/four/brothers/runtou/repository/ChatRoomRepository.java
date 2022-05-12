@@ -57,6 +57,11 @@ public class ChatRoomRepository {
     return resultList;
   }
 
+  /**
+   * 사용자가 속한 채팅방 찾기
+   * @param user
+   * @return
+   */
   public List<ChatRoom> findChatRoomByUser(User user) {
     String jpql = "select c from ChatRoom c " +
       "where c.orderer.id = :id1 " +
@@ -65,6 +70,22 @@ public class ChatRoomRepository {
     List<ChatRoom> resultList = em.createQuery(jpql, ChatRoom.class)
       .setParameter("id1", user.getId())
       .setParameter("id2", user.getId())
+      .getResultList();
+
+    return resultList;
+  }
+
+  /**
+   * 해당 요청서와 관련있는 모든 채팅방 찾는 메서드
+   * @param orderSheet
+   * @return
+   */
+  public List<ChatRoom> findByOrderSheet(OrderSheet orderSheet) {
+    String jpql = "select c from ChatRoom c " +
+      "where c.orderSheet = :orderSheet";
+
+    List<ChatRoom> resultList = em.createQuery(jpql, ChatRoom.class)
+      .setParameter("orderSheet", orderSheet)
       .getResultList();
 
     return resultList;
