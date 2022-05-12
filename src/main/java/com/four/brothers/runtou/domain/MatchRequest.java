@@ -30,9 +30,13 @@ public class MatchRequest extends BaseTimeEntity {
   @JoinColumn(name = "PERFORMER_ID", nullable = false)
   private Performer performer;
 
-  public MatchRequest(OrderSheet orderSheet, Performer performer) {
+  @Column(nullable = false)
+  private Boolean isAccepted;
+
+  public MatchRequest(OrderSheet orderSheet, Performer performer, boolean isAccepted) {
     this.orderSheet = orderSheet;
     this.performer = performer;
+    this.isAccepted = isAccepted;
   }
 
   protected void setOrderSheet(OrderSheet orderSheet) {
