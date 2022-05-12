@@ -53,6 +53,16 @@ public class MatchRequestRepository {
   }
 
   /**
+   * 매칭요청 pk값으로 매칭요청을 찾는 메서드
+   * @param matchRequestPk
+   * @return
+   */
+  public Optional<MatchRequest> findById(long matchRequestPk) {
+    MatchRequest matchRequest = em.find(MatchRequest.class, matchRequestPk);
+    return Optional.ofNullable(matchRequest);
+  }
+
+  /**
    * '매칭을 요청할 요청서'와 '매칭을 요청한 수행자'로 매칭요청을 찾는 메서드
    * @param orderSheet 매칭을 요청할 요청서
    * @param performer 매칭을 요청한 수행자
