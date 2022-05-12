@@ -51,7 +51,7 @@ public class MatchingController {
   }
 
   @Operation(summary = "매칭 요청")
-  @GetMapping("/chatroom/{chatRoomPk}")
+  @PostMapping("/chatroom/{chatRoomPk}")
   boolean requestMatching(
     @PathVariable long chatRoomPk,
     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws Exception {
