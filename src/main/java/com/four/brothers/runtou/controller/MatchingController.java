@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
-import static com.four.brothers.runtou.dto.MatchDto.*;
+import static com.four.brothers.runtou.dto.MatchingDto.*;
 
 @Tag(name = "MatchingController", description = "매칭 관련 API")
 @RequiredArgsConstructor
@@ -61,4 +61,12 @@ public class MatchingController {
     return result;
   }
 
+  @Operation(summary = "매칭 요청 수락")
+  @PostMapping("/request/{matchRequestPk}")
+  MatchInfo acceptMatchRequest(
+    @PathVariable long matchRequestPk,
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws Exception {
+    MatchInfo result = matchRequestService.acceptRequestedMatch(matchRequestPk, loginUser);
+    return result;
+  }
 }

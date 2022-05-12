@@ -25,7 +25,7 @@ public class MatchRequestRepository {
    * @param performer 매칭을 요청한 수행자
    */
   public void saveMatchRequest(OrderSheet orderSheet, Performer performer) {
-    MatchRequest matchRequest = new MatchRequest(orderSheet, performer, false);
+    MatchRequest matchRequest = new MatchRequest(orderSheet, performer, false, false);
     em.persist(matchRequest);
   }
 

@@ -63,17 +63,17 @@ public class ChatRoomService {
 
     isAllExistPkForNewChatRoom(orderer, performer, orderSheet); //실존하는 데이터인지 검사
 
-    List<ChatRoom> sameChatRoomList = chatRoomRepository.findSameChatRoom(orderer.get(), performer.get(), orderSheet.get());
-    if (sameChatRoomList.size() == 0) { //기존 채팅방이 존재하지 않는다면
+    Optional<ChatRoom> sameChatRoomOptional = chatRoomRepository.findByOrdererAndPerformerAndOrderSheet(orderer.get(), performer.get(), orderSheet.get());
+    if (sameChatRoomOptional.isEmpty()) { //기존 채팅방이 존재하지 않는다면
       chatRoomRepository.saveChatRoom(orderer.get(), performer.get(), orderSheet.get());
-      sameChatRoomList = chatRoomRepository.findSameChatRoom(orderer.get(), performer.get(), orderSheet.get());
+      sameChatRoomOptional = chatRoomRepository.findByOrdererAndPerformerAndOrderSheet(orderer.get(), performer.get(), orderSheet.get());
       isNewRoom = true;
     }
 
     return new NewChatRoomResponse(orderer.get().getId(),
       performer.get().getId(),
       orderSheetPk,
-      sameChatRoomList.get(0).getId(),
+      sameChatRoomOptional.get().getId(),
       isNewRoom);
   }
 

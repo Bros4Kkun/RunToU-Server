@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
-import static com.four.brothers.runtou.dto.MatchDto.*;
+import static com.four.brothers.runtou.dto.MatchingDto.*;
 
 @Slf4j
 @RequiredArgsConstructor

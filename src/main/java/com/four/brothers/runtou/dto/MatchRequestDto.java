@@ -17,6 +17,7 @@ public class MatchRequestDto {
     private OrdererDto.SimpOrdererInfo ordererInfo;
     private PerformerDto.SimpPerformerInfo performerInfo;
     private boolean isAccepted;
+    private boolean isOrderSheetMatched;
 
     public MatchRequestInfo(MatchRequest matchRequestEntity) {
       this.matchRequestId = matchRequestEntity.getId();
@@ -24,6 +25,7 @@ public class MatchRequestDto {
       this.ordererInfo = new OrdererDto.SimpOrdererInfo(matchRequestEntity.getOrderSheet().getOrderer());
       this.performerInfo = new PerformerDto.SimpPerformerInfo(matchRequestEntity.getPerformer());
       this.isAccepted = matchRequestEntity.getIsAccepted();
+      this.isOrderSheetMatched = matchRequestEntity.getIsOrderSheetMatched();
     }
   }
 }

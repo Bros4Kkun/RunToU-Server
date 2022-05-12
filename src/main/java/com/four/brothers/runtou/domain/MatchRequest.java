@@ -33,10 +33,30 @@ public class MatchRequest extends BaseTimeEntity {
   @Column(nullable = false)
   private Boolean isAccepted;
 
-  public MatchRequest(OrderSheet orderSheet, Performer performer, boolean isAccepted) {
+  @Column(nullable = false)
+  private Boolean isOrderSheetMatched;
+
+  public MatchRequest(OrderSheet orderSheet, Performer performer, boolean isAccepted, boolean isOrderSheetMatched) {
     this.orderSheet = orderSheet;
     this.performer = performer;
     this.isAccepted = isAccepted;
+    this.isOrderSheetMatched = isOrderSheetMatched;
+  }
+
+  /**
+   * 본 매칭요청이 받아들여졌을 때
+   */
+  public void accept() {
+    this.isAccepted = true;
+    this.isOrderSheetMatched = true;
+  }
+
+  /**
+   * 다른 매칭요청으로 마감되었을때
+   */
+  public void rejectByOtherMatchRequest() {
+    this.isAccepted = false;
+    this.isOrderSheetMatched = true;
   }
 
   protected void setOrderSheet(OrderSheet orderSheet) {

@@ -15,6 +15,7 @@ public class MatchRequestDto implements ModelDto<MatchRequestDto, MatchRequest> 
   private Long orderSheetId;
   private Long performerId;
   private Boolean isAccepted;
+  private Boolean isOrderSheetMatched;
 
   @Override
   public MatchRequestDto toDtoFromEntity(MatchRequest entity) {
@@ -22,6 +23,7 @@ public class MatchRequestDto implements ModelDto<MatchRequestDto, MatchRequest> 
     this.orderSheetId = entity.getOrderSheet().getId();
     this.performerId = entity.getPerformer().getId();
     this.isAccepted = entity.getIsAccepted();
+    this.isOrderSheetMatched = entity.getIsOrderSheetMatched();
     return this;
   }
 
@@ -36,6 +38,8 @@ public class MatchRequestDto implements ModelDto<MatchRequestDto, MatchRequest> 
         return String.valueOf(this.performerId);
       case "isAccepted":
         return String.valueOf(this.isAccepted);
+      case "isOrderSheetMatched":
+        return String.valueOf(this.isOrderSheetMatched);
     }
     return "";
   }
