@@ -173,16 +173,26 @@ public class MatchRequestService {
       Performer relatedPerformer = relatedChatRoom.getPerformer();
       //연관된 채팅방의 수행자 계정ID
       String relatedPerformerAccountId = relatedPerformer.getAccountId();
+      Optional<MatchRequest> otherMatchRequestOptional;
+      boolean noMatchRequestYet;
 
       //현재 수락된 수행인의 채팅방인 경우 생략
       if (relatedPerformerAccountId.equals(acceptedPerformerAccountId)) continue;
 
-      //매칭이 수락된 요청서와 연관있지만, 매칭되지 않은 '매칭요청' 엔티티
-      MatchRequest otherMatchRequest =
-        matchRequestRepository.findByOrderSheetAndPerform(orderSheetAccepted, relatedPerformer).get();
 
-      //연관된 매칭요청을 거절상태로 변경
-      otherMatchRequest.rejectByOtherMatchRequest();
+      otherMatchRequestOptional =  matchRequestRepository.findByOrderSheetAndPerform(orderSheetAccepted, relatedPerformer);
+      noMatchRequestYet = otherMatchRequestOptional.isEmpty();
+
+      //채팅방이 존재하고, 매칭을 요청한 적도 있다면
+      if (!noMatchRequestYet) {
+        //매칭이 수락된 요청서와 연관있지만, 매칭되지 않은 '매칭요청' 엔티티
+        MatchRequest otherMatchRequest =
+          otherMatchRequestOptional.get();
+
+        //연관된 매칭요청을 거절상태로 변경
+        otherMatchRequest.rejectByOtherMatchRequest();
+      }
+
       //다른 사용자와 매칭되었다고 알리기
       chatService.sendNewMsg(completedMsg, relatedChatRoom.getId(), loginUser);
     }
