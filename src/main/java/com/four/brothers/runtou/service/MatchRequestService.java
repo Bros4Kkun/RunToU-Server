@@ -93,7 +93,7 @@ public class MatchRequestService {
   /**
    * 매칭요청을 수락하는 메서드
    * @param matchRequestPk 수락할 매칭요청 pk 값
-   * @return 성공여부
+   * @return 생성된 매칭 정보
    */
   @Transactional
   public MatchInfo acceptRequestedMatch(long matchRequestPk, LoginUser loginUser) throws Exception {
