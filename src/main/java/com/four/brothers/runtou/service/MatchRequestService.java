@@ -99,32 +99,32 @@ public class MatchRequestService {
   public MatchInfo acceptRequestedMatch(long matchRequestPk, LoginUser loginUser) throws Exception {
     Optional<MatchRequest> matchRequestOptional = matchRequestRepository.findById(matchRequestPk);
     MatchRequest matchRequest;
-    OrderSheet orderSheetForAccept;
-    Performer performerForAccept;
+    OrderSheet orderSheetAccepted;
+    Performer performerAccepted;
     MatchInfo result;
 
     //매칭요청을 수락상태로 변경할 수 있는지 확인
-    checkMatchRequestToAccept(loginUser, matchRequestOptional);
+    checkMatchRequestCanAccept(loginUser, matchRequestOptional);
 
     //매칭요청을 수락상태로 변경
     matchRequest = matchRequestOptional.get();
     matchRequest.accept(); //isAccepted 와 isOrderSheetMatched 를 true로 변경
 
     //매칭 요청을 수락받은 '심부름 수행자'를 doingJob 상태로 변환
-    performerForAccept = matchRequest.getPerformer();
-    performerForAccept.doJob();
+    performerAccepted = matchRequest.getPerformer();
+    performerAccepted.doJob();
 
     //매칭 저장
-    orderSheetForAccept = matchRequest.getOrderSheet();
-    matchingRepository.saveMatching(orderSheetForAccept, performerForAccept, false, null);
-    Matching savedMatching = matchingRepository.findByOrderSheet(orderSheetForAccept).get();
+    orderSheetAccepted = matchRequest.getOrderSheet();
+    matchingRepository.saveMatching(orderSheetAccepted, performerAccepted, false, null);
+    Matching savedMatching = matchingRepository.findByOrderSheet(orderSheetAccepted).get();
     result = new MatchInfo(savedMatching);
 
     //매칭요청을 한 다른 수행자들에게 매칭이 완료되었음을 알려주기
     sendMsgToOtherMatchRequesters(loginUser, matchRequest);
 
     //요청이 수락된 사실을 관계자들에게 알려주기 (수락한 요청자, 수락받은 수행자)
-    sendMsgToAcceptUsers(loginUser, matchRequest);
+    sendMsgToAcceptedUsers(loginUser, matchRequest);
 
     return result;
   }
@@ -134,7 +134,7 @@ public class MatchRequestService {
    * @param loginUser 수락한 요청자 (로그인된 사용자)
    * @param matchRequest 수락된 매칭요청
    */
-  private void sendMsgToAcceptUsers(LoginUser loginUser, MatchRequest matchRequest) {
+  private void sendMsgToAcceptedUsers(LoginUser loginUser, MatchRequest matchRequest) {
     final String acceptMsg = "심부름 매칭 요청을 수락했습니다! 잘 부탁드려요 :)";
     OrderSheet acceptedOrderSheet = matchRequest.getOrderSheet();
     Orderer acceptOrderer = acceptedOrderSheet.getOrderer();
@@ -194,8 +194,8 @@ public class MatchRequestService {
    * @param matchRequestOptional
    * @throws Exception
    */
-  private void checkMatchRequestToAccept(LoginUser loginUser,
-                                         Optional<MatchRequest> matchRequestOptional) throws Exception {
+  private void checkMatchRequestCanAccept(LoginUser loginUser,
+                                          Optional<MatchRequest> matchRequestOptional) throws Exception {
     MatchRequest matchRequest; //매칭요청 엔티티
     String ordererAccountIdOfOrderSheet; //매칭요청을 받은 요청자의 계정ID
 
