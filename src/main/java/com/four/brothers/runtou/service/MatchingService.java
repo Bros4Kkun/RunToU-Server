@@ -3,15 +3,9 @@ package com.four.brothers.runtou.service;
 import com.four.brothers.runtou.domain.*;
 import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.exception.code.MatchingExceptionCode;
-import com.four.brothers.runtou.repository.ChatMessageRepository;
-import com.four.brothers.runtou.repository.ChatRoomRepository;
-import com.four.brothers.runtou.repository.MatchRequestRepository;
 import com.four.brothers.runtou.repository.MatchingRepository;
-import com.four.brothers.runtou.repository.user.PerformerRepository;
-import com.four.brothers.runtou.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +21,6 @@ import static com.four.brothers.runtou.dto.MatchingDto.*;
 @Service
 public class MatchingService {
   private final MatchingRepository matchingRepository;
-  private final MatchRequestRepository matchRequestRepository;
-  private final ChatRoomRepository chatRoomRepository;
-  private final PerformerRepository performerRepository;
-  private final ChatMessageRepository chatMessageRepository;
-  private final UserRepository userRepository;
-
-  private final SimpMessagingTemplate simpTemplate;
 
   /**
    * 로그인한 사용자의 모든 매칭 정보 응답
