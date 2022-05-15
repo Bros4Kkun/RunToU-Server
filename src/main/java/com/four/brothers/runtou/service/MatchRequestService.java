@@ -99,7 +99,6 @@ public class MatchRequestService {
   @Transactional
   public MatchInfo acceptRequestedMatch(long matchRequestPk, LoginUser loginUser) throws Exception {
     Optional<MatchRequest> matchRequestOptional = matchRequestRepository.findById(matchRequestPk);
-    LocalDateTime acceptTime = LocalDateTime.now();
     MatchRequest matchRequest;
     OrderSheet orderSheetForAccept;
     Performer performerForAccept;
@@ -112,9 +111,12 @@ public class MatchRequestService {
     matchRequest = matchRequestOptional.get();
     matchRequest.accept(); //isAccepted 와 isOrderSheetMatched 를 true로 변경
 
+    //매칭 요청을 수락받은 '심부름 수행자'를 doingJob 상태로 변환
+    performerForAccept = matchRequest.getPerformer();
+    performerForAccept.doJob();
+
     //매칭 저장
     orderSheetForAccept = matchRequest.getOrderSheet();
-    performerForAccept = matchRequest.getPerformer();
     matchingRepository.saveMatching(orderSheetForAccept, performerForAccept, false, null);
     Matching savedMatching = matchingRepository.findByOrderSheet(orderSheetForAccept).get();
     result = new MatchInfo(savedMatching);
