@@ -58,6 +58,10 @@ public class Matching extends BaseTimeEntity {
     this.review = review;
   }
 
+  public void requestCompletion() {
+    this.completionRequest = true;
+  }
+
   protected void setPerformer(Performer performer) {
     this.performer = performer;
   }
