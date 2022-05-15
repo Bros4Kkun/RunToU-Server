@@ -60,4 +60,22 @@ public class MatchingDto {
       }
     }
   }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class JobDoneResponse {
+    private long matchingId;
+    private String performerAccountId;
+    private String performerNickname;
+    private LocalDateTime doneRequestDateTime;
+
+    public JobDoneResponse(Matching entity) {
+      this.matchingId = entity.getId();
+      this.performerAccountId = entity.getPerformer().getAccountId();
+      this.performerNickname = entity.getPerformer().getNickname();
+      doneRequestDateTime = LocalDateTime.now();
+    }
+  }
 }
