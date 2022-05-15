@@ -38,7 +38,7 @@ public class MatchingDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class MatchInfo {
-    private long id;
+    private long matchingId;
     private OrderSheetDto.SimpOrderSheetInfo orderSheetInfo;
     private OrdererDto.SimpOrdererInfo ordererInfo;
     private PerformerDto.SimpPerformerInfo performerInfo;
@@ -48,7 +48,7 @@ public class MatchingDto {
     private ReviewDto.ReviewInfo reviewInfo;
 
     public MatchInfo(Matching entity) {
-      this.id = entity.getId();
+      this.matchingId = entity.getId();
       this.orderSheetInfo = new OrderSheetDto.SimpOrderSheetInfo(entity.getOrderSheet());
       this.ordererInfo = new OrdererDto.SimpOrdererInfo(entity.getOrderSheet().getOrderer());
       this.performerInfo = new PerformerDto.SimpPerformerInfo(entity.getPerformer());
