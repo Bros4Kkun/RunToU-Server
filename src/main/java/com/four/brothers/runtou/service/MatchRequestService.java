@@ -20,7 +20,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +38,7 @@ public class MatchRequestService {
   private final ChatMessageRepository chatMessageRepository;
   private final UserRepository userRepository;
 
-  private final SocketService socketService;
+  private final ChatService chatService;
 
   private final SimpMessagingTemplate simpTemplate;
 
@@ -144,7 +143,7 @@ public class MatchRequestService {
       .findByOrdererAndPerformerAndOrderSheet(acceptOrderer, acceptedPerformer, acceptedOrderSheet)
       .get();
 
-    socketService.sendNewMsg(acceptMsg, chatRoomOfAcceptedMatchRequest.getId(), loginUser);
+    chatService.sendNewMsg(acceptMsg, chatRoomOfAcceptedMatchRequest.getId(), loginUser);
   }
 
   /**
@@ -185,7 +184,7 @@ public class MatchRequestService {
       //연관된 매칭요청을 거절상태로 변경
       otherMatchRequest.rejectByOtherMatchRequest();
       //다른 사용자와 매칭되었다고 알리기
-      socketService.sendNewMsg(completedMsg, relatedChatRoom.getId(), loginUser);
+      chatService.sendNewMsg(completedMsg, relatedChatRoom.getId(), loginUser);
     }
   }
 
