@@ -4,7 +4,9 @@ import com.four.brothers.runtou.domain.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +59,11 @@ public class ChatRoomRepository {
     return resultList;
   }
 
+  /**
+   * 사용자가 속한 채팅방 찾기
+   * @param user
+   * @return
+   */
   public List<ChatRoom> findChatRoomByUser(User user) {
     String jpql = "select c from ChatRoom c " +
       "where c.orderer.id = :id1 " +
@@ -71,25 +78,48 @@ public class ChatRoomRepository {
   }
 
   /**
-   * 동일한 채팅방이 이미 존재하는지 확인하는 메서드
+   * 해당 요청서와 관련있는 모든 채팅방 찾는 메서드
+   * @param orderSheet
+   * @return
+   */
+  public List<ChatRoom> findByOrderSheet(OrderSheet orderSheet) {
+    String jpql = "select c from ChatRoom c " +
+      "where c.orderSheet = :orderSheet";
+
+    List<ChatRoom> resultList = em.createQuery(jpql, ChatRoom.class)
+      .setParameter("orderSheet", orderSheet)
+      .getResultList();
+
+    return resultList;
+  }
+
+  /**
+   * Orderer, Performer, OrderSheet 로 채팅방 찾는 메서드
+   * Orderer, Performer, OrderSheet 은 복합 유니크 키이다.
    * @param orderer
    * @param performer
    * @param orderSheet
    * @return
    */
-  public List<ChatRoom> findSameChatRoom(Orderer orderer, Performer performer, OrderSheet orderSheet) {
+  public Optional<ChatRoom> findByOrdererAndPerformerAndOrderSheet(Orderer orderer, Performer performer, OrderSheet orderSheet) {
+    ChatRoom result = null;
     String jpql = "select c from ChatRoom c " +
       "where c.orderer = :orderer and " +
       "c.performer = :performer and " +
       "c.orderSheet = :orderSheet";
 
-    List<ChatRoom> resultList = em.createQuery(jpql, ChatRoom.class)
+    TypedQuery<ChatRoom> query = em.createQuery(jpql, ChatRoom.class)
       .setParameter("orderer", orderer)
       .setParameter("performer", performer)
-      .setParameter("orderSheet", orderSheet)
-      .getResultList();
+      .setParameter("orderSheet", orderSheet);
 
-    return resultList;
+    try {
+      result = query.getSingleResult();
+    } catch (NoResultException e) {
+      return Optional.empty();
+    }
+
+    return Optional.of(result);
   }
 
   /**

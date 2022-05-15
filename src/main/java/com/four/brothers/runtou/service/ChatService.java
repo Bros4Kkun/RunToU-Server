@@ -24,7 +24,7 @@ import static com.four.brothers.runtou.dto.LoginDto.*;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class SocketService {
+public class ChatService {
   private final SimpMessagingTemplate simpTemplate;
   private final ChatMessageRepository chatMessageRepository;
   private final ChatRoomRepository chatRoomRepository;

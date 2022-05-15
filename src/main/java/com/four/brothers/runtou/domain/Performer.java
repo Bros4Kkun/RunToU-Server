@@ -44,4 +44,12 @@ public class Performer extends User {
     room.setPerformer(this);
     this.chatRooms.add(room);
   }
+
+  public void doJob() {
+    this.isDoingJobNow = true;
+  }
+
+  public void jobDone() {
+    this.isDoingJobNow = false;
+  }
 }

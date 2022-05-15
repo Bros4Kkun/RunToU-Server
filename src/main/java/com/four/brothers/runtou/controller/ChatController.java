@@ -1,6 +1,6 @@
 package com.four.brothers.runtou.controller;
 
-import com.four.brothers.runtou.service.SocketService;
+import com.four.brothers.runtou.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +19,7 @@ import static com.four.brothers.runtou.dto.LoginDto.*;
 @RequiredArgsConstructor
 @RestController
 public class ChatController {
-  private final SocketService socketService;
+  private final ChatService chatService;
 
   /**
    * 채팅
@@ -33,14 +33,14 @@ public class ChatController {
     log.info("Send Msg Authentication: {}", headerAccessor.getFirstNativeHeader("Authentication"));
 
     String token = (String) headerAccessor.getFirstNativeHeader("Authentication");
-    LoginUser loginUser = socketService.parseJwtToGetLoginUser(token);
+    LoginUser loginUser = chatService.parseJwtToGetLoginUser(token);
 
-    socketService.sendNewMsg(msg, chatRoomPk, loginUser);
+    chatService.sendNewMsg(msg, chatRoomPk, loginUser);
   }
 
   @Operation(summary = "채팅을 하기 위한 JWT 토큰 발급")
   @GetMapping("/api/chat/jwt")
   public JwtDtoResponse getJwtToken(@Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
-    return new JwtDtoResponse(socketService.createJwtForSocketConnection(loginUser));
+    return new JwtDtoResponse(chatService.createJwtForSocketConnection(loginUser));
   }
 }

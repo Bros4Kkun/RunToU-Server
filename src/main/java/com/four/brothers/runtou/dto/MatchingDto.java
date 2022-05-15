@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class MatchDto {
+public class MatchingDto {
   @Getter
   @Setter
   @NoArgsConstructor

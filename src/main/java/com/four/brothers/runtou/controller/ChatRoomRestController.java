@@ -1,19 +1,13 @@
 package com.four.brothers.runtou.controller;
 
-import com.four.brothers.runtou.dto.ChatRoomDto;
-import com.four.brothers.runtou.dto.LoginDto;
-import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.CanNotAccessException;
-import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.service.ChatRoomService;
-import com.four.brothers.runtou.service.SocketService;
+import com.four.brothers.runtou.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +22,7 @@ import static com.four.brothers.runtou.dto.LoginDto.*;
 @RestController
 public class ChatRoomRestController {
   private final ChatRoomService chatRoomService;
-  private final SocketService socketService;
+  private final ChatService chatService;
 
   @Operation(
     summary = "채팅방 요청",
@@ -45,7 +39,7 @@ public class ChatRoomRestController {
 
     //만약 새로 생성된 채팅방이라면
     if (newChatRoomResponse.isNew()) {
-      socketService.alertNewChatRoomToOrderer(newChatRoomResponse.getOrdererPk(), newChatRoomResponse.getChatRoomPk());
+      chatService.alertNewChatRoomToOrderer(newChatRoomResponse.getOrdererPk(), newChatRoomResponse.getChatRoomPk());
     }
 
     return newChatRoomResponse;

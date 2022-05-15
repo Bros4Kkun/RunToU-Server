@@ -1,6 +1,7 @@
 package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.exception.CanNotAccessException;
+import com.four.brothers.runtou.service.MatchRequestService;
 import com.four.brothers.runtou.service.MatchingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
-import static com.four.brothers.runtou.dto.MatchDto.*;
+import static com.four.brothers.runtou.dto.MatchingDto.*;
 
 @Tag(name = "MatchingController", description = "매칭 관련 API")
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ import static com.four.brothers.runtou.dto.MatchDto.*;
 @RestController
 public class MatchingController {
   private final MatchingService matchingService;
+  private final MatchRequestService matchRequestService;
 
   @Operation(summary = "자신과 연관된 모든 매칭정보 조회")
   @GetMapping
@@ -51,11 +53,20 @@ public class MatchingController {
   }
 
   @Operation(summary = "매칭 요청")
-  @GetMapping("/chatroom/{chatRoomPk}")
+  @PostMapping("/chatroom/{chatRoomPk}")
   boolean requestMatching(
     @PathVariable long chatRoomPk,
     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws Exception {
-    boolean result = matchingService.requestMatching(chatRoomPk, loginUser);
+    boolean result = matchRequestService.requestMatching(chatRoomPk, loginUser);
+    return result;
+  }
+
+  @Operation(summary = "매칭 요청 수락")
+  @PostMapping("/request/{matchRequestPk}")
+  MatchInfo acceptMatchRequest(
+    @PathVariable long matchRequestPk,
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws Exception {
+    MatchInfo result = matchRequestService.acceptRequestedMatch(matchRequestPk, loginUser);
     return result;
   }
 }

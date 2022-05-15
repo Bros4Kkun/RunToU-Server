@@ -25,7 +25,7 @@ public class MatchRequestRepository {
    * @param performer 매칭을 요청한 수행자
    */
   public void saveMatchRequest(OrderSheet orderSheet, Performer performer) {
-    MatchRequest matchRequest = new MatchRequest(orderSheet, performer);
+    MatchRequest matchRequest = new MatchRequest(orderSheet, performer, false, false);
     em.persist(matchRequest);
   }
 
@@ -52,6 +52,38 @@ public class MatchRequestRepository {
     return resultList;
   }
 
+  /**
+   * 매칭요청 pk값으로 매칭요청을 찾는 메서드
+   * @param matchRequestPk
+   * @return
+   */
+  public Optional<MatchRequest> findById(long matchRequestPk) {
+    MatchRequest matchRequest = em.find(MatchRequest.class, matchRequestPk);
+    return Optional.ofNullable(matchRequest);
+  }
+
+  /**
+   * 해당 요청서에 대해 요청된 매칭요청을 모두 찾는 메서드
+   * @param orderSheet 매칭요청을 찾을 요청서
+   * @return
+   */
+  public List<MatchRequest> findByOrderSheet(OrderSheet orderSheet) {
+    String jpql = "select m from MatchRequest m " +
+      "where m.orderSheet = :orderSheet";
+
+    List<MatchRequest> result = em.createQuery(jpql, MatchRequest.class)
+      .setParameter("orderSheet", orderSheet)
+      .getResultList();
+
+    return result;
+  }
+
+  /**
+   * '매칭을 요청할 요청서'와 '매칭을 요청한 수행자'로 매칭요청을 찾는 메서드
+   * @param orderSheet 매칭을 요청할 요청서
+   * @param performer 매칭을 요청한 수행자
+   * @return
+   */
   public Optional<MatchRequest> findByOrderSheetAndPerform(OrderSheet orderSheet, Performer performer) {
     MatchRequest result;
     String jpql = "select m from MatchRequest m " +
