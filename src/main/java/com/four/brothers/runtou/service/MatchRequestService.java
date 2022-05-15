@@ -116,7 +116,7 @@ public class MatchRequestService {
 
     //매칭 저장
     orderSheetAccepted = matchRequest.getOrderSheet();
-    matchingRepository.saveMatching(orderSheetAccepted, performerAccepted, false, null);
+    matchingRepository.saveMatching(orderSheetAccepted, performerAccepted, false, null, false);
     Matching savedMatching = matchingRepository.findByOrderSheet(orderSheetAccepted).get();
     result = new MatchInfo(savedMatching);
 

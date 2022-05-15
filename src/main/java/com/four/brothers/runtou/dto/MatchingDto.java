@@ -21,6 +21,7 @@ public class MatchingDto {
     private PerformerDto.SimpPerformerInfo performerInfo;
     private boolean isCompleted;
     private LocalDateTime completedDateTime;
+    private boolean completionRequest;
 
     public SimpMatchInfo(Matching entity) {
       this.id = entity.getId();
@@ -29,6 +30,7 @@ public class MatchingDto {
       this.performerInfo = new PerformerDto.SimpPerformerInfo(entity.getPerformer());
       this.isCompleted = entity.getIsCompleted();
       this.completedDateTime = entity.getCompletedDateTime();
+      this.completionRequest = entity.getCompletionRequest();
     }
   }
   @Getter
@@ -41,6 +43,7 @@ public class MatchingDto {
     private OrdererDto.SimpOrdererInfo ordererInfo;
     private PerformerDto.SimpPerformerInfo performerInfo;
     private boolean isCompleted;
+    private boolean completionRequest;
     private LocalDateTime completedDateTime;
     private ReviewDto.ReviewInfo reviewInfo;
 
@@ -50,6 +53,7 @@ public class MatchingDto {
       this.ordererInfo = new OrdererDto.SimpOrdererInfo(entity.getOrderSheet().getOrderer());
       this.performerInfo = new PerformerDto.SimpPerformerInfo(entity.getPerformer());
       this.isCompleted = entity.getIsCompleted();
+      this.completionRequest = entity.getCompletionRequest();
       this.completedDateTime = entity.getCompletedDateTime();
       if (!Objects.isNull(entity.getReview())) {
         this.reviewInfo = new ReviewDto.ReviewInfo(entity.getReview());

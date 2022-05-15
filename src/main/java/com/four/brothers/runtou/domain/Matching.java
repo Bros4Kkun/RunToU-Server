@@ -38,12 +38,16 @@ public class Matching extends BaseTimeEntity {
   @Column(nullable = true)
   private LocalDateTime completedDateTime;
 
+  @Column(nullable = false)
+  private Boolean completionRequest;
 
-  public Matching(Boolean isCompleted, @Nullable LocalDateTime completedDateTime, OrderSheet orderSheet, Performer performer) {
+
+  public Matching(Boolean isCompleted, @Nullable LocalDateTime completedDateTime, OrderSheet orderSheet, Performer performer, Boolean completionRequest) {
     this.isCompleted = isCompleted;
     this.completedDateTime = completedDateTime;
     this.orderSheet = orderSheet;
     this.performer = performer;
+    this.completionRequest = completionRequest;
   }
 
   public void updateReview(Review review) {

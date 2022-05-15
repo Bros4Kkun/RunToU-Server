@@ -27,8 +27,8 @@ public class MatchingRepository {
    * @param isCompleted 완료여부
    * @param completedDateTime 완료시간
    */
-  public void saveMatching(OrderSheet orderSheet, Performer performer, boolean isCompleted, LocalDateTime completedDateTime) {
-    Matching matching = new Matching(isCompleted, completedDateTime, orderSheet, performer);
+  public void saveMatching(OrderSheet orderSheet, Performer performer, boolean isCompleted, LocalDateTime completedDateTime, boolean completionRequest) {
+    Matching matching = new Matching(isCompleted, completedDateTime, orderSheet, performer, completionRequest);
     em.persist(matching);
   }
 
