@@ -153,8 +153,10 @@ public class MatchRequestService {
   private void sendMsgToOtherMatchRequesters(LoginUser loginUser,
                                              MatchRequest acceptedMatchRequest) throws CanNotAccessException {
     final String completedMsg = "다른 유저와 매칭되었습니다! 아쉽지만 다음에 부탁드릴게요. :)";
-    OrderSheet orderSheetForAccept = acceptedMatchRequest.getOrderSheet();
-    Performer performerForAccept = acceptedMatchRequest.getPerformer();
+    OrderSheet orderSheetAccepted = acceptedMatchRequest.getOrderSheet();
+    Performer performerAccepted = acceptedMatchRequest.getPerformer();
+    //매칭 수락된 수행자 계정ID
+    String acceptedPerformerAccountId = performerAccepted.getAccountId();
     //매칭을 완료한 현재 요청서와 연관된 모든 채팅방
     List<ChatRoom> chatRoomsWithCurrentOrderSheet;
 
@@ -162,20 +164,21 @@ public class MatchRequestService {
       throw new CanNotAccessException(MatchRequestExceptionCode.WRONG_USER, "매칭을 수락한 사용자는 '심부름 요청자'이어야 합니다.");
     }
 
-    chatRoomsWithCurrentOrderSheet = chatRoomRepository.findByOrderSheet(orderSheetForAccept);
+    chatRoomsWithCurrentOrderSheet = chatRoomRepository.findByOrderSheet(orderSheetAccepted);
 
     //현재 매칭 수락된 요청서와 연관된 모든 채팅방마다 반복
     for (ChatRoom relatedChatRoom : chatRoomsWithCurrentOrderSheet) {
+      //연관된 채팅방의 수행자
+      Performer relatedPerformer = relatedChatRoom.getPerformer();
       //연관된 채팅방의 수행자 계정ID
-      String relatedPerformerAccountId = relatedChatRoom.getPerformer().getAccountId();
-      //매칭 수락된 수행자 계정ID
-      String acceptedPerformerAccountId = performerForAccept.getAccountId();
+      String relatedPerformerAccountId = relatedPerformer.getAccountId();
 
       //현재 수락된 수행인의 채팅방인 경우 생략
       if (relatedPerformerAccountId.equals(acceptedPerformerAccountId)) continue;
 
+      //매칭이 수락된 요청서와 연관있지만, 매칭되지 않은 '매칭요청' 엔티티
       MatchRequest otherMatchRequest =
-        matchRequestRepository.findByOrderSheetAndPerform(orderSheetForAccept, performerForAccept).get();
+        matchRequestRepository.findByOrderSheetAndPerform(orderSheetAccepted, relatedPerformer).get();
 
       //연관된 매칭요청을 거절상태로 변경
       otherMatchRequest.rejectByOtherMatchRequest();
