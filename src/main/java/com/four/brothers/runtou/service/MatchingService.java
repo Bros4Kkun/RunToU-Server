@@ -126,7 +126,7 @@ public class MatchingService {
 
     //심부름 완료 요청을 알리기
     response = new JobDoneResponse(doneRequestedMatching);
-    simpTemplate.convertAndSend("/topic/match/done" + response.getMatchingId(), response);
+    simpTemplate.convertAndSend("/topic/match/done/" + response.getMatchingId(), response);
 
     //심부름 완료 요청 사실을 채팅방에 전달하기
     sendMatchingCompletionRequestMsg(loginPerformer, doneRequestedMatching);
