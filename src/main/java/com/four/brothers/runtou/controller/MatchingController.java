@@ -69,4 +69,13 @@ public class MatchingController {
     MatchInfo result = matchRequestService.acceptRequestedMatch(matchRequestPk, loginUser);
     return result;
   }
+
+  @Operation(summary = "심부름 완료 요청")
+  @PostMapping("/job/done/{matchingPk}")
+  JobDoneResponse requestJobDone(
+    @PathVariable long matchingPk,
+    @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws Exception {
+    JobDoneResponse response = matchingService.requestToFinishJob(matchingPk, loginUser);
+    return response;
+  }
 }

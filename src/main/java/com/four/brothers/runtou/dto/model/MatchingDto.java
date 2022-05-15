@@ -18,6 +18,7 @@ public class MatchingDto implements ModelDto<MatchingDto, Matching> {
   private Long performerId;
   private Boolean isCompleted;
   private LocalDateTime completedDateTime;
+  private Boolean completionRequest;
 
   @Override
   public MatchingDto toDtoFromEntity(Matching entity) {
@@ -26,6 +27,7 @@ public class MatchingDto implements ModelDto<MatchingDto, Matching> {
     this.performerId = entity.getPerformer().getId();
     this.isCompleted = entity.getIsCompleted();
     this.completedDateTime = entity.getCompletedDateTime();
+    this.completionRequest = entity.getCompletionRequest();
     return this;
   }
 
@@ -42,6 +44,8 @@ public class MatchingDto implements ModelDto<MatchingDto, Matching> {
         return String.valueOf(this.isCompleted);
       case "completedDateTime":
         return String.valueOf(this.completedDateTime);
+      case "completionRequest":
+        return String.valueOf(this.completionRequest);
     }
     return "";
   }

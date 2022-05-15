@@ -66,12 +66,13 @@ class MatchingRepositoryTest {
     Performer performer = performerRepository.findAll(1,1).get(0);
 
     boolean isCompleted = false;
+    boolean completionRequest = false;
     LocalDateTime completedDateTime = LocalDateTime.now();
 
     //when-then
     assertDoesNotThrow(
         ()->{
-          matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime);
+          matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime, completionRequest);
         }
     );
 
@@ -144,13 +145,14 @@ class MatchingRepositoryTest {
     Performer performer1 = performerRepository.findAll(1,2).get(1);
 
     boolean isCompleted = false;
+    boolean completionRequest = false;
     LocalDateTime completedDateTime = LocalDateTime.now();
 
     int nowPage = 1;
     int itemSize = 1;
     int itemSize2 = 2;
-    matchingRepository.saveMatching(orderSheet,performer,isCompleted,completedDateTime);
-    matchingRepository.saveMatching(orderSheet1,performer1,isCompleted,completedDateTime);
+    matchingRepository.saveMatching(orderSheet,performer,isCompleted,completedDateTime,completionRequest);
+    matchingRepository.saveMatching(orderSheet1,performer1,isCompleted,completedDateTime,completionRequest);
 
     //when-then
     assertAll(
@@ -202,11 +204,12 @@ class MatchingRepositoryTest {
     Performer performer = performerRepository.findAll(1,1).get(0);
 
     boolean isCompleted = false;
+    boolean completionRequest = false;
     LocalDateTime completedDateTime = LocalDateTime.now();
 
     long pk;
 
-    matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime);
+    matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime, completionRequest);
     matchingRepository.findAll(1,1);
 
     pk = matchingRepository.findAll(1,1).get(0).getId();

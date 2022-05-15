@@ -36,6 +36,7 @@ class ReviewRepositoryTest {
   void saveReviewTest(){
     //given
     Boolean isCompleted = false;
+    boolean completionRequest = false;
     LocalDateTime completedDateTime = LocalDateTime.now();
     String accountId = "test";
     String password = "test";
@@ -72,7 +73,7 @@ class ReviewRepositoryTest {
     performerRepository.savePerformer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP);
     Performer performer = performerRepository.findAll(1,1).get(0);
 
-    matchingRepository.saveMatching(findOrderSheet, performer, isCompleted, completedDateTime);
+    matchingRepository.saveMatching(findOrderSheet, performer, isCompleted, completedDateTime, completionRequest);
     Matching findmatching = matchingRepository.findAll(1,1).get(0);
 
     ReviewScore reviewScore = ReviewScore.EIGHT;
@@ -91,6 +92,7 @@ class ReviewRepositoryTest {
   void findAllTest(){
     //given
     Boolean isCompleted = false;
+    boolean completionRequest = false;
     LocalDateTime completedDateTime = LocalDateTime.now();
     String accountId = "test";
     String password = "test";
@@ -127,13 +129,14 @@ class ReviewRepositoryTest {
     performerRepository.savePerformer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP);
     Performer performer = performerRepository.findAll(1,1).get(0);
 
-    matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime);
+    matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime, completionRequest);
     Matching matching = matchingRepository.findAll(1,1).get(0);
 
     ReviewScore reviewScore = ReviewScore.EIGHT;
     String contentReview = "배달이 빨랐습니다.";
 
     Boolean isCompleted1 = false;
+    boolean completionRequest1 = false;
     LocalDateTime completedDateTime1 = LocalDateTime.now();
     String accountId1 = "test1";
     String password1 = "test1";
@@ -170,7 +173,7 @@ class ReviewRepositoryTest {
     performerRepository.savePerformer(accountIdP1, passwordP1, realNameP1, nicknameP1, phoneNumberP1, accountNumberP1);
     Performer performer1 = performerRepository.findAll(1,2).get(1);
 
-    matchingRepository.saveMatching(orderSheet1, performer1, isCompleted1, completedDateTime1);
+    matchingRepository.saveMatching(orderSheet1, performer1, isCompleted1, completedDateTime1, completionRequest);
     Matching matching1 = matchingRepository.findAll(1,2).get(1);
 
     ReviewScore reviewScore1 = ReviewScore.FIVE;
@@ -202,6 +205,7 @@ class ReviewRepositoryTest {
   void deleteReviewByIdTest(){
     //given
     Boolean isCompleted = false;
+    boolean completionRequest = false;
     LocalDateTime completedDateTime = LocalDateTime.now();
     String accountId = "test";
     String password = "test";
@@ -238,8 +242,8 @@ class ReviewRepositoryTest {
     performerRepository.savePerformer(accountIdP, passwordP, realNameP, nicknameP, phoneNumberP, accountNumberP);
     Performer performer = performerRepository.findAll(1,1).get(0);
 
-    Matching matching = new Matching(isCompleted, completedDateTime, orderSheet, performer );
-    matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime);
+    Matching matching = new Matching(isCompleted, completedDateTime, orderSheet, performer, completionRequest);
+    matchingRepository.saveMatching(orderSheet, performer, isCompleted, completedDateTime, completionRequest);
     Matching findmatching = matchingRepository.findAll(1,1).get(0);
 
     ReviewScore reviewScore = ReviewScore.EIGHT;
