@@ -127,11 +127,8 @@ public class ChatRoomRepository {
    * @param pk
    */
   public void deleteChatRoomById(long pk) {
-    String jpql = "delete from ChatRoom c " +
-      "where c.id = :pk";
-    em.createQuery(jpql)
-      .setParameter("pk", pk)
-      .executeUpdate();
+    ChatRoom chatRoom = em.find(ChatRoom.class, pk);
+    em.remove(chatRoom);
   }
 
 }
