@@ -1,6 +1,8 @@
 package com.four.brothers.runtou.domain;
 
 import com.four.brothers.runtou.domain.base.BaseTimeEntity;
+import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.code.MatchingExceptionCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -60,6 +62,15 @@ public class Matching extends BaseTimeEntity {
 
   public void requestCompletion() {
     this.completionRequest = true;
+  }
+
+  public void complete() {
+    if (this.completionRequest == false) {
+      throw new BadRequestException(MatchingExceptionCode.COMPLETE_BEFORE_REQUEST, "Completion Request 가 먼저 true여야 합니다.");
+    }
+
+    this.completedDateTime = LocalDateTime.now();
+    this.isCompleted = true;
   }
 
   protected void setPerformer(Performer performer) {
