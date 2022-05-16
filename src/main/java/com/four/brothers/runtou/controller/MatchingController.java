@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.controller;
 
+import com.four.brothers.runtou.dto.MatchRequestDto;
 import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.service.MatchRequestService;
 import com.four.brothers.runtou.service.MatchingService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
+import static com.four.brothers.runtou.dto.MatchRequestDto.*;
 import static com.four.brothers.runtou.dto.MatchingDto.*;
 
 @Tag(name = "MatchingController", description = "매칭 관련 API")
@@ -61,10 +63,10 @@ public class MatchingController {
 
   @Operation(summary = "매칭 요청")
   @PostMapping("/chatroom/{chatRoomPk}")
-  boolean requestMatching(
+  MatchRequestInfo requestMatching(
     @PathVariable long chatRoomPk,
     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) throws Exception {
-    boolean result = matchRequestService.requestMatching(chatRoomPk, loginUser);
+    MatchRequestInfo result = matchRequestService.requestMatching(chatRoomPk, loginUser);
     return result;
   }
 

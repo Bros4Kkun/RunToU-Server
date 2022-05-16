@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static com.four.brothers.runtou.dto.ChatMessageDto.*;
 import static com.four.brothers.runtou.dto.LoginDto.*;
+import static com.four.brothers.runtou.dto.MatchRequestDto.*;
 import static com.four.brothers.runtou.dto.MatchingDto.*;
 
 @Slf4j
@@ -49,7 +50,7 @@ public class MatchRequestService {
    * @return
    */
   @Transactional
-  public boolean requestMatching(long chatRoomPk, LoginUser loginUser) throws Exception {
+  public MatchRequestInfo requestMatching(long chatRoomPk, LoginUser loginUser) throws Exception {
     Optional<ChatRoom> chatRoom = chatRoomRepository.findChatRoomById(chatRoomPk);
     Optional<MatchRequest> matchRequest = null;
     User matchRequestUser;
@@ -69,7 +70,7 @@ public class MatchRequestService {
       );
     }
 
-    MatchRequestDto.MatchRequestInfo matchRequestInfo = new MatchRequestDto.MatchRequestInfo(matchRequest.get());
+    MatchRequestInfo matchRequestInfo = new MatchRequestInfo(matchRequest.get());
 
     //매칭 요청 사실을 STOMP로 전달
     matchRequestUser = userRepository.findUserByAccountId(loginUser.getAccountId()).get();
@@ -87,7 +88,7 @@ public class MatchRequestService {
     simpTemplate.convertAndSend("/topic/chatroom/" + chatRoomPk, response); //채팅방으로 전송
     simpTemplate.convertAndSend("/topic/match/chatroom/" + chatRoomPk, matchRequestInfo); //알림용 topic으로 전송
 
-    return true;
+    return matchRequestInfo;
   }
 
   /**
@@ -101,6 +102,7 @@ public class MatchRequestService {
     MatchRequest matchRequest;
     OrderSheet orderSheetAccepted;
     Performer performerAccepted;
+    MatchRequestAcceptInfo matchRequestAcceptInfo;
     MatchInfo result;
 
     //매칭요청을 수락상태로 변경할 수 있는지 확인
@@ -123,8 +125,12 @@ public class MatchRequestService {
     //매칭요청을 한 다른 수행자들에게 매칭이 완료되었음을 알려주기
     sendMsgToOtherMatchRequesters(loginUser, matchRequest);
 
-    //요청이 수락된 사실을 관계자들에게 알려주기 (수락한 요청자, 수락받은 수행자)
+    //요청이 수락된 사실을 관계자들에게 채팅방으로 알려주기 (수락한 요청자, 수락받은 수행자)
     sendMsgToAcceptedUsers(loginUser, matchRequest);
+
+    //요청이 수락된 사실을 수락받은 수행자에게 다른 채널로도 알려주기
+    matchRequestAcceptInfo = new MatchRequestAcceptInfo(matchRequest, savedMatching);
+    simpTemplate.convertAndSend("/topic/match/request/" + matchRequest.getId(), matchRequestAcceptInfo);
 
     return result;
   }
