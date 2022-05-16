@@ -112,10 +112,10 @@ public class MatchingService {
    * @return
    */
   @Transactional
-  public JobDoneResponse requestToFinishJob(long matchingId, LoginUser loginPerformer) throws CanNotAccessException {
+  public JobDoneRequestInfo requestToFinishJob(long matchingId, LoginUser loginPerformer) throws CanNotAccessException {
     Optional<Matching> doneRequestedMatchingOptional = matchingRepository.findById(matchingId);
     Matching doneRequestedMatching;
-    JobDoneResponse response;
+    JobDoneRequestInfo response;
 
     //심부름을 완료한다고 요청하는 사람이 수행자인지 확인
     if (loginPerformer.getRole() != UserRole.PERFORMER) {
@@ -138,7 +138,7 @@ public class MatchingService {
     doneRequestedMatching.requestCompletion();
 
     //심부름 완료 요청을 알리기
-    response = new JobDoneResponse(doneRequestedMatching);
+    response = new JobDoneRequestInfo(doneRequestedMatching);
     simpTemplate.convertAndSend("/topic/match/done/" + response.getMatchingId(), response);
 
     //심부름 완료 요청 사실을 채팅방에 전달하기

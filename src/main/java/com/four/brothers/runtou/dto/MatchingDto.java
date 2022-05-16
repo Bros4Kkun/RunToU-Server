@@ -65,13 +65,13 @@ public class MatchingDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class JobDoneResponse {
+  public static class JobDoneRequestInfo {
     private long matchingId;
     private String performerAccountId;
     private String performerNickname;
     private LocalDateTime doneRequestDateTime;
 
-    public JobDoneResponse(Matching entity) {
+    public JobDoneRequestInfo(Matching entity) {
       this.matchingId = entity.getId();
       this.performerAccountId = entity.getPerformer().getAccountId();
       this.performerNickname = entity.getPerformer().getNickname();
