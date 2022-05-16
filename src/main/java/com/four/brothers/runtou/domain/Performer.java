@@ -49,7 +49,7 @@ public class Performer extends User {
     this.isDoingJobNow = true;
   }
 
-  public void jobDone() {
+  public void finishJob() {
     this.isDoingJobNow = false;
   }
 }

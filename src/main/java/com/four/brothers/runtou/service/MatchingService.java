@@ -4,6 +4,7 @@ import com.four.brothers.runtou.domain.*;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.CanNotAccessException;
+import com.four.brothers.runtou.exception.NoAuthorityException;
 import com.four.brothers.runtou.exception.code.MatchingExceptionCode;
 import com.four.brothers.runtou.repository.ChatMessageRepository;
 import com.four.brothers.runtou.repository.ChatRoomRepository;
@@ -113,8 +114,10 @@ public class MatchingService {
    */
   @Transactional
   public JobDoneRequestInfo requestToFinishJob(long matchingId, LoginUser loginPerformer) throws CanNotAccessException {
+    final String requestMsg = "심부름을 완료했습니다! 심부름 완료 요청을 받아주세요.";
     Optional<Matching> doneRequestedMatchingOptional = matchingRepository.findById(matchingId);
     Matching doneRequestedMatching;
+    Performer performer;
     JobDoneRequestInfo response;
 
     //심부름을 완료한다고 요청하는 사람이 수행자인지 확인
@@ -142,35 +145,77 @@ public class MatchingService {
     simpTemplate.convertAndSend("/topic/match/done/" + response.getMatchingId(), response);
 
     //심부름 완료 요청 사실을 채팅방에 전달하기
-    sendMatchingCompletionRequestMsg(loginPerformer, doneRequestedMatching);
+    performer = doneRequestedMatching.getPerformer();
+    sendMsgToMatchingChatRoom(doneRequestedMatching, performer, requestMsg);
 
     return response;
   }
 
-  /**
-   * 채팅방에 '심부름 수행 완료 요청 사실'을 전달하는 메서드
-   * @param loginPerformer 심부름을 수행 완료한 로그인된 '심부름 수행자'
-   * @param doneRequestedMatching 심부름 완료 처리를 할 매칭
-   */
-  private void sendMatchingCompletionRequestMsg(LoginUser loginPerformer, Matching doneRequestedMatching) {
-    final String msg = "심부름을 완료했습니다! 심부름 완료 요청을 받아주세요.";
+  @Transactional
+  public MatchingFinishInfo acceptJobDoneRequest(long matchingPk, LoginUser loginOrderer) throws CanNotAccessException, NoAuthorityException {
+    final String acceptMsg = "업무 완료 요청을 수락했습니다! 고생 많으셨습니다. 감사합니다!";
+    Optional<Matching> matchingOptional = matchingRepository.findById(matchingPk);
+    Matching matching;
+    Performer performer;
+    Orderer orderer;
+    MatchingFinishInfo response;
 
-    String ordererAccountId = doneRequestedMatching.getOrderSheet().getOrderer().getAccountId();
-    String performerAccountId = loginPerformer.getAccountId(); //로그인된 사용자(완료 요청을 한 사용자)가 수행자이므로
+    //유효한 매칭pk값인지 확인
+    checkExistMatching(matchingOptional);
+    matching = matchingOptional.get();
+
+    //해당 매칭에 대해 접근권한이 있는 사용자인지 확인
+    checkRightAuthority(loginOrderer, matching);
+
+    //심부름 요청자가 매칭 완료 요청을 승인하는지 확인
+    if (loginOrderer.getRole() != UserRole.ORDERER) {
+      throw new NoAuthorityException(MatchingExceptionCode.PERFORMER_CANNOT_ACCEPT_COMPLETION, "수행자는 매칭을 완료처리하지 못합니다.");
+    }
+
+    //중복된 승인인지 확인
+    if (matching.getIsCompleted() == true) {
+      throw new BadRequestException(MatchingExceptionCode.ALREADY_ACCEPTED_COMPLETION, "이미 수행 완료 요청을 수락했습니다.");
+    }
+
+    //매칭 업무 최종 완료 처리
+    matching.complete();
+    //심부름 수행자를 다시 업무 가능 상태로 변경
+    performer = matching.getPerformer();
+    performer.finishJob();
+    //채팅방에 알림
+    orderer = matching.getOrderSheet().getOrderer();
+    sendMsgToMatchingChatRoom(matching, orderer, acceptMsg);
+
+    /*TODO - 수행자 포인트 적립*/
+
+    response = new MatchingFinishInfo(matching);
+    return response;
+  }
+
+  /**
+   * 해당 요청서와 연관된 사용자들의 채팅방에 메시지를 전달하는 메서드
+   * '매칭' 과 연관된 채팅방 (unique) 에 메시지를 전달한다.
+   * @param matching 연관된 매칭
+   * @param writer 채팅 메시지 작성자
+   * @param msg 메시지 내용
+   */
+  private void sendMsgToMatchingChatRoom(Matching matching, User writer, String msg) {
+    String ordererAccountId = matching.getOrderSheet().getOrderer().getAccountId();
+    String performerAccountId = matching.getPerformer().getAccountId(); //로그인된 사용자(완료 요청을 한 사용자)가 수행자이므로
 
     Orderer orderer = ordererRepository.findOrdererByAccountId(ordererAccountId).get();
     Performer performer = performerRepository.findPerformerByAccountId(performerAccountId).get();
-    OrderSheet orderSheet = doneRequestedMatching.getOrderSheet();
+    OrderSheet orderSheet = matching.getOrderSheet();
     ChatRoom chatRoom = chatRoomRepository.findByOrdererAndPerformerAndOrderSheet(orderer, performer, orderSheet).get();
     ChatMessage chatMessage;
 
-    chatMessageRepository.saveChatMessage(performer, chatRoom, msg);
+    chatMessageRepository.saveChatMessage(writer, chatRoom, msg);
     chatMessage = chatMessageRepository.findLatestChatMsgFromChatRoom(chatRoom, msg).get();
 
     ChatMessageResponse response = new ChatMessageResponse(
       chatMessage.getId(),
-      performer.getAccountId(),
-      performer.getNickname(),
+      writer.getAccountId(),
+      writer.getNickname(),
       chatRoom.getId(),
       msg,
       chatMessage.getCreatedDate()
