@@ -65,17 +65,49 @@ public class MatchingDto {
   @Setter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class JobDoneResponse {
+  public static class JobDoneRequestInfo {
     private long matchingId;
     private String performerAccountId;
     private String performerNickname;
     private LocalDateTime doneRequestDateTime;
 
-    public JobDoneResponse(Matching entity) {
+    public JobDoneRequestInfo(Matching entity) {
       this.matchingId = entity.getId();
       this.performerAccountId = entity.getPerformer().getAccountId();
       this.performerNickname = entity.getPerformer().getNickname();
       doneRequestDateTime = LocalDateTime.now();
+    }
+  }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class MatchingFinishInfo {
+    private long matchingId;
+    private long orderSheetId;
+    private String ordererAccountId;
+    private String ordererNickname;
+    private String performerAccountId;
+    private String performerNickname;
+    private LocalDateTime doneRequestDateTime;
+    private LocalDateTime finishedDateTime;
+
+    public MatchingFinishInfo(Matching entity) {
+      this.matchingId = entity.getId();
+      this.orderSheetId = entity.getOrderSheet().getId();
+      this.ordererAccountId = entity.getOrderSheet().getOrderer().getAccountId();
+      this.ordererNickname = entity.getOrderSheet().getOrderer().getNickname();
+      this.performerAccountId = entity.getPerformer().getAccountId();
+      this.performerNickname = entity.getPerformer().getNickname();
+
+      LocalDateTime completedDateTime = entity.getCompletedDateTime();
+      if (Objects.isNull(completedDateTime)) {
+        entity.complete();
+      }
+
+      this.finishedDateTime = entity.getCompletedDateTime();
+      this.doneRequestDateTime = LocalDateTime.now();
     }
   }
 }

@@ -126,6 +126,25 @@ public class MatchingRepository {
   }
 
   /**
+   * 업무 완료 요청을 한 매칭을 사용자 계정ID로 조회하는 메서드
+   * @param userAccountId
+   * @return
+   */
+  public List<Matching> findCompletionRequestedMatchingByUserAccountId(String userAccountId) {
+    String jpql = "select m from Matching m " +
+      "where (m.orderSheet.orderer.accountId = :userAccountIdAsOrderer " +
+      "or m.performer.accountId = :userAccountIdAsPerformer) " +
+      "and m.completionRequest = true";
+
+    List<Matching> resultList = em.createQuery(jpql, Matching.class)
+      .setParameter("userAccountIdAsOrderer", userAccountId)
+      .setParameter("userAccountIdAsPerformer", userAccountId)
+      .getResultList();
+
+    return resultList;
+  }
+
+  /**
    * pk값으로 삭제하는 메서드
    * @param pk
    */
