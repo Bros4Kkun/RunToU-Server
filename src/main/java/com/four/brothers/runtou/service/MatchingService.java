@@ -76,6 +76,19 @@ public class MatchingService {
   }
 
   /**
+   * 로그인한 사용자의 모든 매칭 정보 중, 업무 완료 요청이 된 것만 응답
+   * @param loginUser
+   * @return
+   */
+  @Transactional
+  public List<SimpMatchInfo> showCompletionRequestedMatches(LoginUser loginUser) {
+    List<SimpMatchInfo> result = new ArrayList<>();
+    List<Matching> completionRequestedMatchings = matchingRepository.findCompletionRequestedMatchingByUserAccountId(loginUser.getAccountId());
+    completionRequestedMatchings.stream().forEach((item) -> result.add(new SimpMatchInfo(item)));
+    return result;
+  }
+
+  /**
    * 해당 pk값을 갖는 매칭의 상세정보 반환
    * @param matchingPk 확인할 매칭 PK 값
    * @param loginUser

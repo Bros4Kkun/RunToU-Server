@@ -43,6 +43,13 @@ public class MatchingController {
     return result;
   }
 
+  @Operation(summary = "자신과 연관된 모든 매칭 중, 업무 완료가 요청된 매칭만 조회")
+  @GetMapping("/done/request")
+  List<SimpMatchInfo> getCompletionRequestedMatchingInfo(@Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
+    List<SimpMatchInfo> result = matchingService.showCompletionRequestedMatches(loginUser);
+    return result;
+  }
+
   @Operation(summary = "매칭 상세 정보 조회")
   @GetMapping("/{matchPk}")
   MatchInfo getMatchingInfo(
