@@ -36,7 +36,7 @@ public class ChatRoom extends BaseTimeEntity {
   @JoinColumn(name = "ORDER_SHEET_ID", nullable = false)
   private OrderSheet orderSheet;
 
-  @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ChatMessage> chatMessages = new ArrayList<>();
 
   public ChatRoom(Orderer orderer, Performer performer, OrderSheet orderSheet) {
