@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @DiscriminatorValue("ORDERER")
 @Entity
 public class Orderer extends User {

@@ -1,6 +1,7 @@
 package com.four.brothers.runtou.domain;
 
 import com.four.brothers.runtou.domain.base.BaseTimeEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class ChatMessage extends BaseTimeEntity {
   @Id @GeneratedValue(strategy = GenerationType.AUTO)

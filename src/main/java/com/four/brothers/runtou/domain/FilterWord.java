@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class FilterWord {
   @Id @GeneratedValue
