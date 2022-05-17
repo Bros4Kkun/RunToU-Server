@@ -1,6 +1,7 @@
 package com.four.brothers.runtou.domain;
 
 import com.four.brothers.runtou.domain.base.BaseTimeEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class OrderSheet extends BaseTimeEntity {
   @Id @GeneratedValue

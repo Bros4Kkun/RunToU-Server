@@ -3,6 +3,7 @@ package com.four.brothers.runtou.domain;
 import com.four.brothers.runtou.domain.base.BaseTimeEntity;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.MatchingExceptionCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Matching extends BaseTimeEntity {
   @Id @GeneratedValue(strategy = GenerationType.AUTO)

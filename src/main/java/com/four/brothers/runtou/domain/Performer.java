@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @DiscriminatorValue("PERFORMER")
 @Entity
 public class Performer extends User {
