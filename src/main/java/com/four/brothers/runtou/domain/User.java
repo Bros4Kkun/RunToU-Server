@@ -42,6 +42,9 @@ public class User {
   @Column
   private String selfIntroduction;
 
+  @Column(nullable = false)
+  private int point;
+
   //내가 신고한 신고리스트
   @OneToMany(mappedBy = "reportUser")
   private List<Report> myReportList = new ArrayList<>();
@@ -62,6 +65,7 @@ public class User {
     this.phoneNumber = phoneNumber;
     this.accountNumber = accountNumber;
   }
+
 
   public User(String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber) {
     this.accountId = accountId;
@@ -89,5 +93,20 @@ public class User {
 
   public void changeNickname(String nickname) {
     this.nickname = nickname;
+  }
+
+  public void earnPoint(int earnedPoint) {
+    this.point += earnedPoint;
+  }
+
+  public void spendPoint(int spentPoint) {
+    final String errMsg = "사용하려는 포인트가 보유 포인트보다 클 수 없습니다.";
+    boolean canSpendPoint = (this.point - spentPoint) >= 0;
+
+    if (canSpendPoint) {
+      this.point -= spentPoint;
+    } else {
+      throw new IllegalArgumentException(errMsg);
+    }
   }
 }
