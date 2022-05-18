@@ -187,7 +187,7 @@ public class UserRestController {
   PointChargeResponse chargePoint(@RequestBody @Validated PointChargeRequest request,
                                   BindingResult bindingResult,
                                   @Parameter(hidden = true)
-                                  @SessionAttribute LoginUser loginUser) throws Exception {
+                                  @SessionAttribute LoginUser loginUser) {
     if (bindingResult.hasErrors())  {
       throw new BadRequestException(PointExceptionCode.WRONG_CHARGE_VALUE, "충전 금액은 1000 이상, 100000 이하입니다.");
     }
@@ -195,4 +195,5 @@ public class UserRestController {
     PointChargeResponse response = pointService.chargeUserPoint(request.getEarnPoint(), loginUser);
     return response;
   }
+
 }
