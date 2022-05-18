@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 public class UserDto {
@@ -44,6 +47,15 @@ public class UserDto {
   @AllArgsConstructor
   public static class DuplicatedNicknameResponse {
     private boolean isDuplicatedNickname;
+  }
+
+  @Setter
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class PointChargeRequest {
+    @Range(min = 1000, max = 100000)
+    private int earnPoint;
   }
 
   @Setter

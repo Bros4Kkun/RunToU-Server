@@ -5,6 +5,7 @@ import com.four.brothers.runtou.dto.UserDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.LoginExceptionCode;
+import com.four.brothers.runtou.exception.code.PointExceptionCode;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.exception.code.SignupExceptionCode;
 import com.four.brothers.runtou.service.PointService;
@@ -182,11 +183,16 @@ public class UserRestController {
   }
 
   @Operation(summary = "포인트 충전")
-  @GetMapping("/point")
-  PointChargeResponse chargePoint(int earnPoint,
+  @PostMapping("/point")
+  PointChargeResponse chargePoint(@RequestBody @Validated PointChargeRequest request,
+                                  BindingResult bindingResult,
                                   @Parameter(hidden = true)
-                                  @SessionAttribute LoginUser loginUser) {
-    PointChargeResponse response = pointService.chargeUserPoint(earnPoint, loginUser);
+                                  @SessionAttribute LoginUser loginUser) throws Exception {
+    if (bindingResult.hasErrors())  {
+      throw new BadRequestException(PointExceptionCode.WRONG_CHARGE_VALUE, "충전 금액은 1000 이상, 100000 이하입니다.");
+    }
+
+    PointChargeResponse response = pointService.chargeUserPoint(request.getEarnPoint(), loginUser);
     return response;
   }
 }
