@@ -196,4 +196,11 @@ public class UserRestController {
     return response;
   }
 
+  @Operation(summary = "내 포인트 조회")
+  @GetMapping("/point")
+  PointInfo chargePoint(@Parameter(hidden = true)
+                        @SessionAttribute LoginUser loginUser) {
+    PointInfo response = pointService.showPointInfo(loginUser);
+    return response;
+  }
 }

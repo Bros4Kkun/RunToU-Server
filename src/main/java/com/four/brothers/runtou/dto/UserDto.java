@@ -66,4 +66,14 @@ public class UserDto {
     private boolean isSucceed;
   }
 
+  @Setter
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class PointInfo {
+    private String accountId;
+    private String nickname;
+    private int point;
+  }
+
 }

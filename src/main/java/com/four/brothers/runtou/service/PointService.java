@@ -38,5 +38,12 @@ public class PointService {
     return new PointChargeResponse(true);
   }
 
+  @Transactional
+  public PointInfo showPointInfo(LoginUser loginUser) {
+    String loginUserAccountId = loginUser.getAccountId();
+    User user = userRepository.findUserByAccountId(loginUserAccountId).get();
+
+    return new PointInfo(user.getAccountId(), user.getNickname(), user.getPoint());
+  }
 
 }
