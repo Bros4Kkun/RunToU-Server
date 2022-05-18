@@ -21,6 +21,7 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
   private String accountNumber;
   private Boolean isDoingJobNow;
   private String selfIntroduction;
+  private Integer point;
 
   @Override
   public OrdererDto toDtoFromEntity(Orderer entity) {
@@ -32,6 +33,8 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
     this.accountNumber = entity.getAccountNumber();
     this.isDoingJobNow = entity.getIsDoingJobNow();
     this.selfIntroduction = entity.getSelfIntroduction();
+    this.point = entity.getPoint();
+
     return this;
   }
 
@@ -54,6 +57,8 @@ public class OrdererDto implements ModelDto<OrdererDto, Orderer> {
         return String.valueOf(this.isDoingJobNow);
       case "selfIntroduction":
         return this.selfIntroduction;
+      case "point":
+        return String.valueOf(this.point);
     }
     return "";
   }
