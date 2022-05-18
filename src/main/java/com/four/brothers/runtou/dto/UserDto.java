@@ -46,7 +46,12 @@ public class UserDto {
     private boolean isDuplicatedNickname;
   }
 
-
-
+  @Setter
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class PointChargeResponse {
+    private boolean isSucceed;
+  }
 
 }
