@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @DiscriminatorValue("ORDERER")
 @Entity
 public class Orderer extends User {
@@ -23,11 +22,18 @@ public class Orderer extends User {
   @OneToMany(mappedBy = "orderer", fetch = FetchType.LAZY)
   private List<ChatRoom> chatRooms = new ArrayList<>();
 
+  public Orderer(long id, String accountId, String password, String realName, String nickname,
+                 String phoneNumber, String accountNumber, Boolean isDoingJobNow) {
+    super(id, accountId, password, realName, nickname, phoneNumber, accountNumber);
+    this.isDoingJobNow = isDoingJobNow;
+  }
+
   public Orderer(String accountId, String password, String realName, String nickname,
                  String phoneNumber, String accountNumber, Boolean isDoingJobNow) {
     super(accountId, password, realName, nickname, phoneNumber, accountNumber);
     this.isDoingJobNow = isDoingJobNow;
   }
+
 
   public void addOrderSheet(OrderSheet orderSheet) {
     orderSheet.setOrderer(this);

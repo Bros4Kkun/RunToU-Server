@@ -53,6 +53,16 @@ public class User {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<ChatMessage> chatMessages = new ArrayList<>();
 
+  public User(long id, String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber) {
+    this.id = id;
+    this.accountId = accountId;
+    this.password = password;
+    this.realName = realName;
+    this.nickname = nickname;
+    this.phoneNumber = phoneNumber;
+    this.accountNumber = accountNumber;
+  }
+
   public User(String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber) {
     this.accountId = accountId;
     this.password = password;
