@@ -179,7 +179,9 @@ public class AdminService {
       return null;
     }
 
-    return new LoginUser(admin.get().getAccountId(),
+    return new LoginUser(
+          admin.get().getId(),
+          admin.get().getAccountId(),
           admin.get().getRealName(),
           admin.get().getNickname(),
           admin.get().getPhoneNumber(),

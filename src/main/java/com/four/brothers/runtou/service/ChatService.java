@@ -79,6 +79,7 @@ public class ChatService {
 
   public LoginUser parseJwtToGetLoginUser(String tokenValue) {
     Claims claims = jwtFactory.parseJwtToken(tokenValue);
+    long userPk = 1L;
     String accountId = (String) claims.get("accountId");
     String realName = (String) claims.get("realName");
     String nickname = (String) claims.get("nickname");
@@ -86,7 +87,7 @@ public class ChatService {
     String accountNumber = (String) claims.get("accountNumber");
     String role = (String) claims.get("role");
 
-    LoginUser loginUser = new LoginUser(accountId, realName, nickname, phoneNumber, accountNumber, UserRole.valueOf(role));
+    LoginUser loginUser = new LoginUser(userPk, accountId, realName, nickname, phoneNumber, accountNumber, UserRole.valueOf(role));
 
     return loginUser;
   }

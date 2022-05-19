@@ -109,6 +109,7 @@ public class UserRestController {
     session.setAttribute("loginUser", loginUser);
 
     return new LoginResponse(true,
+      loginUser.getUserPk(),
       loginUser.getAccountId(),
       loginUser.getRealName(),
       loginUser.getNickname(),
