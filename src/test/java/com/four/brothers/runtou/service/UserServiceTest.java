@@ -259,6 +259,7 @@ class UserServiceTest {
     String phoneNumber = "01012341234";
     String accountNumber = "1234567890";
 
+    long userPk = 1L;
     String rightAccountId = "rightAccountId"; // 정확한 계정 ID
     String rightRawPassword = "rightRawPassword"; // 정확한 비밀번호
     String wrongAccountId = "wrongAccountId"; // 틀린 계정 ID
@@ -283,7 +284,7 @@ class UserServiceTest {
 
     //mock 행동 정의
     given(ordererRepository.findOrdererByAccountId(eq(rightAccountId))).willReturn(
-      Optional.of(new Orderer(rightAccountId, encodedRightPassword, realName, nickname, phoneNumber, accountNumber, false))
+      Optional.of(new Orderer(userPk, rightAccountId, encodedRightPassword, realName, nickname, phoneNumber, accountNumber, false))
       );
     given(passwordEncoder.matches(eq(rightRawPassword), anyString())).willReturn(true);
     given(passwordEncoder.matches(eq(wrongRawPassword), anyString())).willReturn(false);
@@ -321,6 +322,7 @@ class UserServiceTest {
     String phoneNumber = "01012341234";
     String accountNumber = "1234567890";
 
+    long userPk = 1L; //사용자 pk 값
     String rightAccountId = "rightAccountId"; // 정확한 계정 ID
     String rightRawPassword = "rightRawPassword"; // 정확한 비밀번호
     String wrongAccountId = "wrongAccountId"; // 틀린 계정 ID
@@ -345,7 +347,7 @@ class UserServiceTest {
 
     //mock 행동 정의
     given(performerRepository.findPerformerByAccountId(eq(rightAccountId))).willReturn(
-      Optional.of(new Performer(rightAccountId, encodedRightPassword, realName, nickname, phoneNumber, accountNumber, false, LocalDateTime.now(), 0L))
+      Optional.of(new Performer(userPk, rightAccountId, encodedRightPassword, realName, nickname, phoneNumber, accountNumber, false, LocalDateTime.now(), 0L))
     );
     given(passwordEncoder.matches(eq(rightRawPassword), anyString())).willReturn(true);
     given(passwordEncoder.matches(eq(wrongRawPassword), anyString())).willReturn(false);

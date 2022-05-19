@@ -148,7 +148,9 @@ public class UserService {
       return null;
     }
 
-    return new LoginUser(orderer.get().getAccountId(),
+    return new LoginUser(
+            orderer.get().getId(),
+            orderer.get().getAccountId(),
             orderer.get().getRealName(),
             orderer.get().getNickname(),
             orderer.get().getPhoneNumber(),
@@ -178,7 +180,9 @@ public class UserService {
       return null;
     }
 
-    return new LoginUser(performer.get().getAccountId(),
+    return new LoginUser(
+      performer.get().getId(),
+      performer.get().getAccountId(),
       performer.get().getRealName(),
       performer.get().getNickname(),
       performer.get().getPhoneNumber(),

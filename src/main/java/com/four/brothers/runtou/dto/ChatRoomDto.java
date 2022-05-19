@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.four.brothers.runtou.dto.ChatMessageDto.*;
@@ -58,6 +59,7 @@ public class ChatRoomDto {
   public static class SimpleChatRoomInfo {
     private long chatRoomPk;
     private String latestChatMessage;
+    private LocalDateTime latestMsgSentDateTime;
     private SimpOrdererInfo ordererInfo;
     private SimpPerformerInfo performerInfo;
     private long ordererSheetPk;
