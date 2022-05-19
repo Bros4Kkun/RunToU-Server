@@ -22,7 +22,6 @@ public class OrderSheetDto implements ModelDto<OrderSheetDto, OrderSheet> {
   private OrderSheetCategory category;
   private String destination;
   private Integer cost;
-  private Boolean isPayed;
   private LocalDateTime wishedDeadLine;
 
   @Override
@@ -37,7 +36,6 @@ public class OrderSheetDto implements ModelDto<OrderSheetDto, OrderSheet> {
     this.category = entity.getCategory();
     this.destination = entity.getDestination();
     this.cost = entity.getCost();
-    this.isPayed = entity.getIsPayed();
     this.wishedDeadLine = entity.getWishedDeadline();
     return this;
   }
@@ -61,8 +59,6 @@ public class OrderSheetDto implements ModelDto<OrderSheetDto, OrderSheet> {
         return destination;
       case "cost":
         return String.valueOf(this.cost);
-      case "isPayed":
-        return String.valueOf(this.isPayed);
       case "wishedDeadLine":
         return String.valueOf(this.wishedDeadLine);
     }

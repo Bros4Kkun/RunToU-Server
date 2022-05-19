@@ -41,19 +41,18 @@ public class OrderSheetService {
       request.getCategory(),
       request.getDestination(),
       request.getCost(),
-      false,
       request.getWishedDeadline()
     );
   }
 
   /**
-   * 결제가 완료된 모든 주문서를 조회하는 메서드 (페이징처리 O)
+   * 모든 주문서를 조회하는 메서드 (페이징처리 O)
    * @param request
    * @return OrderSheetItem이 담긴 List형 변수
    */
   @Transactional
   public AllOrderSheetResponse lookUpAllOrderSheet(AllOrderSheetRequest request) throws IllegalArgumentException {
-    List<OrderSheet> orderSheetList = orderSheetRepository.findAllOnlyPayed(request.getNowPage(),
+    List<OrderSheet> orderSheetList = orderSheetRepository.findAllWithCategory(request.getNowPage(),
                                                               request.getItemSize(), request.getCategory());
     List<SimpOrderSheetInfo> result = new ArrayList<>();
 
@@ -90,21 +89,6 @@ public class OrderSheetService {
   }
 
   /**
-   * 해당 pk값을 갖는 주문서를 결제완료 상태로 전환시키는 메서드
-   * @param id
-   */
-  @Transactional
-  public void updateOrderSheetIsPayed(long id) {
-    Optional<OrderSheet> foundOrderSheet = orderSheetRepository.findById(id);
-
-    if (foundOrderSheet.isEmpty()) {
-      throw new IllegalArgumentException("존재하지 않는 주문서 id입니다.");
-    }
-
-    foundOrderSheet.get().payComplete();
-  }
-
-  /**
    * 해당 주문서의 내용을 수정하는 메서드
    * @param orderSheetId 수정할 주문서의 pk값
    * @param request 수정할 내용
@@ -125,9 +109,9 @@ public class OrderSheetService {
       throw new NoAuthorityException(RequestExceptionCode.NO_AUTHORITY, "현재 로그인한 사용자가 작성하지 않은 게시글입니다."); //본인이 작성하지 않은 글을 수정하려고 하면, 예외 발생
     }
 
-    //이미 수행 중인 심부름인지 확인
-    if (orderSheet.getIsPayed()) {
-      throw new BadRequestException(OrderSheetExceptionCode.ALREADY_MATCHED, "이미 결제가 완료된 요청서입니다.");
+    //이미 매칭이 요청된 '심부름 요청서'인지 확인
+    if (orderSheet.getMatchRequests().size() != 0) {
+      throw new BadRequestException(OrderSheetExceptionCode.ALREADY_MATCH_REQUESTED, "이미 매칭이 요청되었다면, 수정이 불가능합니다.");
     }
 
     orderSheet.update(request.getTitle(), request.getContent(), request.getCategory(), request.getDestination(), request.getCost(), request.getWishedDeadline());

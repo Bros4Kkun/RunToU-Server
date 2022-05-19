@@ -52,9 +52,8 @@ class MatchRequestRepositoryTest {
     OrderSheetCategory category =  OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "test";
     Integer cost = 2000;
-    Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, wishedDeadline);
     OrderSheet findOrderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "testP";
@@ -100,9 +99,8 @@ class MatchRequestRepositoryTest {
     OrderSheetCategory category =  OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "test";
     Integer cost = 2000;
-    Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, wishedDeadline);
     OrderSheet findOrderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "testP";
@@ -161,9 +159,8 @@ class MatchRequestRepositoryTest {
     OrderSheetCategory category =  OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "test";
     Integer cost = 2000;
-    Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
-    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(findOrderer, title, content, category, destination, cost, wishedDeadline);
     OrderSheet findOrderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "testP";

@@ -47,22 +47,18 @@ public class OrderSheet extends BaseTimeEntity {
   private Integer cost;
 
   @Column(nullable = false)
-  private Boolean isPayed;
-
-  @Column(nullable = false)
   private LocalDateTime wishedDeadline;
 
   @OneToMany(mappedBy = "orderSheet", fetch = FetchType.LAZY)
   private List<MatchRequest> matchRequests = new ArrayList<>();
 
-  public OrderSheet(Orderer orderer, String title, String content, OrderSheetCategory category, String destination, Integer cost, Boolean isPayed, LocalDateTime wishedDeadline) {
+  public OrderSheet(Orderer orderer, String title, String content, OrderSheetCategory category, String destination, Integer cost, LocalDateTime wishedDeadline) {
     this.orderer = orderer;
     this.title = title;
     this.content = content;
     this.category = category;
     this.destination = destination;
     this.cost = cost;
-    this.isPayed = isPayed;
     this.wishedDeadline = wishedDeadline;
   }
 
@@ -83,20 +79,6 @@ public class OrderSheet extends BaseTimeEntity {
   public void addMatchRequest(MatchRequest matchRequest) {
     matchRequest.setOrderSheet(this);
     this.matchRequests.add(matchRequest);
-  }
-
-  /**
-   * 결제 완료 상태로 변환하는 메서드
-   */
-  public void payComplete() {
-    this.isPayed = true;
-  }
-
-  /**
-   * 결제 비완료 상태로 변환하는 메서드
-   */
-  public void payNotComplete() {
-    this.isPayed = false;
   }
 
   public void update(String title, String content, OrderSheetCategory category, String destination, int cost, LocalDateTime wishedDeadline) {

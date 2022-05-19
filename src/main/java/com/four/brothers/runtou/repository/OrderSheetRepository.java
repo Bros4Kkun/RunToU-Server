@@ -26,14 +26,13 @@ public class OrderSheetRepository {
    * @param category 요청 카테고리
    * @param destination 목적지
    * @param cost 비용
-   * @param isPayed 결제가 완료되었는지
    * @param wishedDeadline 희망 완료기간
    */
   public void saveOrderSheet(Orderer orderer, String title, String content,
                              OrderSheetCategory category, String destination,
-                             int cost, boolean isPayed, LocalDateTime wishedDeadline) {
+                             int cost, LocalDateTime wishedDeadline) {
     OrderSheet orderSheet = new OrderSheet(orderer, title, content, category, destination,
-                                            cost, isPayed, wishedDeadline);
+                                            cost, wishedDeadline);
     em.persist(orderSheet);
   }
 
@@ -62,14 +61,13 @@ public class OrderSheetRepository {
   }
 
   /**
-   * 금액 지불이 완료된 주문서만 조회하는 메서드.
-   * 또한 category 기준으로 조건을 걸어 조회한다.
+   * category 기준으로 조건을 걸어 조회한다.
    * @param nowPage 현재 페이지
    * @param itemSize 페이지당 출력할 개수
    * @param category 조회할 카테고리 (null인 경우, 카테고리 상관 X)
    * @return
    */
-  public List<OrderSheet> findAllOnlyPayed(int nowPage, int itemSize, @Nullable OrderSheetCategory category) throws IllegalArgumentException {
+  public List<OrderSheet> findAllWithCategory(int nowPage, int itemSize, @Nullable OrderSheetCategory category) throws IllegalArgumentException {
     if (nowPage < 1) {
       throw new IllegalArgumentException("조회할 현재 페이지는 1 이상이어야 합니다.");
     }
@@ -82,7 +80,6 @@ public class OrderSheetRepository {
     //category가 null이라면, 카테고리 조건없이 검색
     if (category == null) {
       jpql = "select p from OrderSheet p " +
-        "where p.isPayed = true " +
         "order by p.createdDate desc";
 
       List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
@@ -93,8 +90,7 @@ public class OrderSheetRepository {
       return resultList;
     } else {
       jpql = "select p from OrderSheet p " +
-        "where p.isPayed = true " +
-        "and p.category = :category";
+        "where p.category = :category";
 
       List<OrderSheet> resultList = em.createQuery(jpql, OrderSheet.class)
         .setParameter("category", category)
