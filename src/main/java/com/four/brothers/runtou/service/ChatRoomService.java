@@ -165,6 +165,7 @@ public class ChatRoomService {
         if (item.getChatMessages().size() != 0) {
           int lastMsgIndex = item.getChatMessages().size() - 1;
           info.setLatestChatMessage(item.getChatMessages().get(lastMsgIndex).getContent());
+          info.setLatestMsgSentDateTime(item.getChatMessages().get(lastMsgIndex).getCreatedDate());
         }
         info.setChatRoomPk(item.getId());
         info.setOrdererInfo(new SimpOrdererInfo(item.getOrderer()));
