@@ -151,6 +151,15 @@ public class MatchingService {
     return response;
   }
 
+  /**
+   * 심부름 업무 최종 완료 메서드
+   * 요청된 '심부름 완료 요청'을 수락하는 메서드
+   * @param matchingPk
+   * @param loginOrderer
+   * @return
+   * @throws CanNotAccessException
+   * @throws NoAuthorityException
+   */
   @Transactional
   public MatchingFinishInfo acceptJobDoneRequest(long matchingPk, LoginUser loginOrderer) throws CanNotAccessException, NoAuthorityException {
     final String acceptMsg = "업무 완료 요청을 수락했습니다! 고생 많으셨습니다. 감사합니다!";
