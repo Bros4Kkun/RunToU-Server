@@ -1,11 +1,14 @@
 package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.dto.AdminDto;
+import com.four.brothers.runtou.dto.UserDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.LoginExceptionCode;
+import com.four.brothers.runtou.exception.code.PointExceptionCode;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.exception.code.SignupExceptionCode;
+import com.four.brothers.runtou.service.PointService;
 import com.four.brothers.runtou.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,6 +36,7 @@ import static com.four.brothers.runtou.dto.UserDto.*;
 @RequestMapping("/api/user")
 public class UserRestController {
   private final UserService userService;
+  private final PointService pointService;
 
   @Operation(summary = "심부름 요청자 회원가입")
   @PostMapping("/signup/orderer")
@@ -177,5 +181,27 @@ public class UserRestController {
     }
 
     return new SignUpAsOrdererResponse(result);
+  }
+
+  @Operation(summary = "포인트 충전")
+  @PostMapping("/point")
+  PointChargeResponse chargePoint(@RequestBody @Validated PointChargeRequest request,
+                                  BindingResult bindingResult,
+                                  @Parameter(hidden = true)
+                                  @SessionAttribute LoginUser loginUser) {
+    if (bindingResult.hasErrors())  {
+      throw new BadRequestException(PointExceptionCode.WRONG_CHARGE_VALUE, "충전 금액은 1000 이상, 100000 이하입니다.");
+    }
+
+    PointChargeResponse response = pointService.chargeUserPoint(request.getEarnPoint(), loginUser);
+    return response;
+  }
+
+  @Operation(summary = "내 포인트 조회")
+  @GetMapping("/point")
+  PointInfo chargePoint(@Parameter(hidden = true)
+                        @SessionAttribute LoginUser loginUser) {
+    PointInfo response = pointService.showPointInfo(loginUser);
+    return response;
   }
 }

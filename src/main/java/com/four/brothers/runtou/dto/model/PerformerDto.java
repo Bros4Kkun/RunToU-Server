@@ -22,6 +22,7 @@ public class PerformerDto implements ModelDto<PerformerDto, Performer> {
   private Boolean isDoingJobNow;
   private LocalDateTime becamePerformerDateTime;
   private String selfIntroduction;
+  private Integer point;
 
   @Override
   public PerformerDto toDtoFromEntity(Performer entity) {
@@ -34,6 +35,8 @@ public class PerformerDto implements ModelDto<PerformerDto, Performer> {
     this.isDoingJobNow = entity.getIsDoingJobNow();
     this.becamePerformerDateTime = entity.getBecamePerformerDateTime();
     this.selfIntroduction = entity.getSelfIntroduction();
+    this.point = entity.getPoint();
+
     return this;
   }
 
@@ -58,6 +61,8 @@ public class PerformerDto implements ModelDto<PerformerDto, Performer> {
         return String.valueOf(this.becamePerformerDateTime);
       case "selfIntroduction":
         return this.selfIntroduction;
+      case "point":
+        return String.valueOf(this.point);
     }
     return "";
   }
