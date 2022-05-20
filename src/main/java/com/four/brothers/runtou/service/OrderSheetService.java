@@ -3,8 +3,10 @@ package com.four.brothers.runtou.service;
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.Orderer;
 import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.exception.NoAuthorityException;
 import com.four.brothers.runtou.exception.code.OrderSheetExceptionCode;
+import com.four.brothers.runtou.exception.code.PointExceptionCode;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.repository.OrderSheetRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
@@ -32,10 +34,20 @@ public class OrderSheetService {
    * @param writerAccountId 작성자 계정 Id
    */
   @Transactional
-  public void saveOrderSheet(OrderSheetSaveRequest request, String writerAccountId) {
-    Optional<Orderer> orderer = ordererRepository.findOrdererByAccountId(writerAccountId);
+  public void saveOrderSheet(OrderSheetSaveRequest request, String writerAccountId) throws CanNotAccessException {
+    Orderer orderSheetWriter = ordererRepository.findOrdererByAccountId(writerAccountId).get();
+    int writersPoint = orderSheetWriter.getPoint();
+
+    //심부름 요청자의 포인트가 충분히 있는지 확인
+    if (writersPoint < request.getCost()) {
+      throw new CanNotAccessException(PointExceptionCode.LOW_POINT, "보유한 포인트가 적어서, 요청서 등록이 불가능합니다.");
+    }
+
+    //심부름 요청자의 포인트 사용
+    orderSheetWriter.spendPoint(request.getCost());
+
     orderSheetRepository.saveOrderSheet(
-      orderer.get(),
+      orderSheetWriter,
       request.getTitle(),
       request.getContent(),
       request.getCategory(),

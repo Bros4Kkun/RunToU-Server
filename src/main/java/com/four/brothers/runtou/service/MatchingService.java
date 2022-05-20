@@ -165,6 +165,7 @@ public class MatchingService {
     final String acceptMsg = "업무 완료 요청을 수락했습니다! 고생 많으셨습니다. 감사합니다!";
     Optional<Matching> matchingOptional = matchingRepository.findById(matchingPk);
     Matching matching;
+    OrderSheet orderSheet;
     Performer performer;
     Orderer orderer;
     MatchingFinishInfo response;
@@ -191,11 +192,12 @@ public class MatchingService {
     //심부름 수행자를 다시 업무 가능 상태로 변경
     performer = matching.getPerformer();
     performer.finishJob();
+    //심부름 수행자에게 포인트 지급
+    orderSheet = matching.getOrderSheet();
+    performer.earnPoint(orderSheet.getCost());
     //채팅방에 알림
     orderer = matching.getOrderSheet().getOrderer();
     sendMsgToMatchingChatRoom(matching, orderer, acceptMsg);
-
-    /*TODO - 수행자 포인트 적립*/
 
     response = new MatchingFinishInfo(matching);
     return response;

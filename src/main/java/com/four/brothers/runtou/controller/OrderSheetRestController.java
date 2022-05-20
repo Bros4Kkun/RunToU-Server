@@ -2,6 +2,7 @@ package com.four.brothers.runtou.controller;
 
 import com.four.brothers.runtou.domain.OrderSheetCategory;
 import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.exception.NoAuthorityException;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.service.OrderSheetService;
@@ -40,7 +41,7 @@ public class OrderSheetRestController {
     @Validated @RequestBody OrderSheetSaveRequest request,
     BindingResult bindingResult,
     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser
-    ) {
+    ) throws CanNotAccessException {
 
     if (bindingResult.hasFieldErrors()) {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
