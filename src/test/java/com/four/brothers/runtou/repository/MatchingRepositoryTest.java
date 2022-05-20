@@ -49,10 +49,9 @@ class MatchingRepositoryTest {
     OrderSheetCategory category = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "강남";
     Integer cost = 1000;
-    Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, wishedDeadline);
     OrderSheet orderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "testP";
@@ -97,10 +96,9 @@ class MatchingRepositoryTest {
     OrderSheetCategory category = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "강남";
     Integer cost = 1000;
-    Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, wishedDeadline);
     OrderSheet orderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "testP";
@@ -128,10 +126,9 @@ class MatchingRepositoryTest {
     OrderSheetCategory category1 = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination1 = "강남";
     Integer cost1 = 10000;
-    Boolean isPayed1 = true;
     LocalDateTime wishedDeadline1 = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(orderer1, title1, content1, category1, destination1, cost1, isPayed1, wishedDeadline1);
+    orderSheetRepository.saveOrderSheet(orderer1, title1, content1, category1, destination1, cost1, wishedDeadline1);
     OrderSheet orderSheet1  = orderSheetRepository.findAll(1,2).get(0);
 
     String accountIdP1 = "testP1";
@@ -187,10 +184,9 @@ class MatchingRepositoryTest {
     OrderSheetCategory category = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "강남";
     Integer cost = 1000;
-    Boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, wishedDeadline);
     OrderSheet orderSheet = orderSheetRepository.findAll(1,1).get(0);
 
     String accountIdP = "testP";

@@ -3,9 +3,7 @@ package com.four.brothers.runtou.repository;
 import com.four.brothers.runtou.domain.OrderSheet;
 import com.four.brothers.runtou.domain.OrderSheetCategory;
 import com.four.brothers.runtou.domain.Orderer;
-import com.four.brothers.runtou.repository.OrderSheetRepository;
 import com.four.brothers.runtou.repository.user.OrdererRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +45,12 @@ class OrderSheetRepositoryTest {
     OrderSheetCategory category = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "강서구";
     int cost = 10000;
-    boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
     //when-then
     assertDoesNotThrow(
         ()->{
-          orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost
-              , isPayed, wishedDeadline);
+          orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, wishedDeadline);
         }
     );
   }
@@ -78,10 +74,9 @@ class OrderSheetRepositoryTest {
     OrderSheetCategory category = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "강서구";
     int cost = 10000;
-    boolean isPayed = false;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, wishedDeadline);
 
     String accountId2 = "test2";
     String password2 = "test2";
@@ -98,10 +93,9 @@ class OrderSheetRepositoryTest {
     OrderSheetCategory category2 = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination2 = "강서구1";
     int cost2 = 10000;
-    boolean isPayed2 = false;
     LocalDateTime wishedDeadline2 = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(orderer2, title2, content2, category2, destination2, cost2, isPayed2, wishedDeadline2);
+    orderSheetRepository.saveOrderSheet(orderer2, title2, content2, category2, destination2, cost2, wishedDeadline2);
 
     int nowpage = 1;
     int itemSize1 = 1;
@@ -138,10 +132,9 @@ class OrderSheetRepositoryTest {
     OrderSheetCategory category = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "강서구";
     int cost = 10000;
-    boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
 
-    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, wishedDeadline);
 
     int nowpage = 1;
     int itemSize = 1;
@@ -149,11 +142,11 @@ class OrderSheetRepositoryTest {
     //when
     assertAll(
         ()->{
-          List<OrderSheet> result = orderSheetRepository.findAllOnlyPayed(nowpage, itemSize, category);
+          List<OrderSheet> result = orderSheetRepository.findAllWithCategory(nowpage, itemSize, category);
           assertSame(1,result.size());
         },
         ()->{
-          List<OrderSheet> result = orderSheetRepository.findAllOnlyPayed(nowpage, itemSize, null);
+          List<OrderSheet> result = orderSheetRepository.findAllWithCategory(nowpage, itemSize, null);
     assertSame(1,result.size());
         }
     );
@@ -178,11 +171,10 @@ class OrderSheetRepositoryTest {
     OrderSheetCategory category = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "강서구";
     int cost = 10000;
-    boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
     long pk;
 
-    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, wishedDeadline);
 
     pk = orderSheetRepository.findAll(1,1).get(0).getId();
 
@@ -213,10 +205,9 @@ class OrderSheetRepositoryTest {
     OrderSheetCategory category = OrderSheetCategory.DELIVERY_AND_SHOPPING;
     String destination = "강서구";
     int cost = 10000;
-    boolean isPayed = true;
     LocalDateTime wishedDeadline = LocalDateTime.now();
     long pk;
-    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, isPayed, wishedDeadline);
+    orderSheetRepository.saveOrderSheet(orderer, title, content, category, destination, cost, wishedDeadline);
     orderSheetRepository.findAll(1,1);
 
     pk = orderSheetRepository.findAll(1,1).get(0).getId();

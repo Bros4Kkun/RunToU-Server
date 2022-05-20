@@ -51,7 +51,7 @@ public class OrderSheetRestController {
     return new OrderSheetSaveResponse(true);
   }
 
-  @Operation(summary = "결제가 완료된 모든 요청서 조회", parameters = {
+  @Operation(summary = "모든 요청서 조회", parameters = {
     @Parameter(name = "category",
       description = "- ALL : 모든 카테고리\n" +
       "- DELIVERY_AND_SHOPPING: 배달 및 장보기\n" +

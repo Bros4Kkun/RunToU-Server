@@ -5,7 +5,7 @@ package com.four.brothers.runtou.exception.code;
  */
 public enum OrderSheetExceptionCode implements ExceptionCode {
   
-  ALREADY_MATCHED("이미 매칭된 요청서입니다."),
+  ALREADY_MATCH_REQUESTED("이미 매칭이 요청된 심부름 요청서입니다."),
   ALREADY_PAYED("이미 결제된 요청서입니다.");
   
   private String value;
