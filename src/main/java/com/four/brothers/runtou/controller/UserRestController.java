@@ -204,4 +204,18 @@ public class UserRestController {
     PointInfo response = pointService.showPointInfo(loginUser);
     return response;
   }
+
+  @Operation(summary = "자기소개글 변경")
+  @PostMapping("/profile")
+  boolean updateUserSelfIntroduction(@RequestBody @Validated SelfIntroductionUpdateRequest request,
+                                     BindingResult bindingResult,
+                                     @SessionAttribute LoginUser loginUser) {
+    if (bindingResult.hasErrors()) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
+    }
+
+    userService.updateUserSelfIntroduction(request, loginUser);
+
+    return true;
+  }
 }
