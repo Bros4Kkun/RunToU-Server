@@ -190,4 +190,20 @@ public class UserService {
       UserRole.PERFORMER);
   }
 
+  /**
+   * 사용자의 자기소개글을 변경하는 메서드
+   * @param request 변경할 자기소개글 내용
+   * @param loginUser
+   * @return
+   */
+  @Transactional
+  public boolean updateUserSelfIntroduction(SelfIntroductionUpdateRequest request, LoginUser loginUser) {
+    User user = userRepository.findUserByAccountId(loginUser.getAccountId()).get();
+    String requestedIntroduction = request.getSelfIntroduction();
+
+    user.changeSelfIntroduction(requestedIntroduction);
+
+    return true;
+  }
+
 }

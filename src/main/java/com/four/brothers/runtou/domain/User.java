@@ -95,6 +95,10 @@ public class User {
     this.nickname = nickname;
   }
 
+  public void changeSelfIntroduction(String selfIntroduction) {
+    this.selfIntroduction = selfIntroduction;
+  }
+
   public void earnPoint(int earnedPoint) {
     this.point += earnedPoint;
   }

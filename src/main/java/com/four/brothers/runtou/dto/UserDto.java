@@ -53,6 +53,15 @@ public class UserDto {
   @Getter
   @NoArgsConstructor
   @AllArgsConstructor
+  public static class SelfIntroductionUpdateRequest {
+    @NotEmpty
+    private String selfIntroduction;
+  }
+
+  @Setter
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
   public static class PointChargeRequest {
     @Range(min = 1000, max = 100000)
     private int earnPoint;
