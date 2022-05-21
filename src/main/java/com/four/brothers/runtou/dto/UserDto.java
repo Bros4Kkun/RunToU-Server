@@ -53,9 +53,9 @@ public class UserDto {
   @Getter
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class ProfileUpdateRequest {
+  public static class SelfIntroductionUpdateRequest {
     @NotEmpty
-    private String updatedProfile;
+    private String selfIntroduction;
   }
 
   @Setter
