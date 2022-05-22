@@ -58,6 +58,7 @@ public class CostRecommendService {
     int spendMinutes = request.getMinutes();
     float q1 = 0; //거리 가중치
     float q2 = 0; //시간 가중치
+    float q3 = 0; //최저시급 가중치
 
     if (level == 1) {
       q1 = 0.1f;
@@ -73,17 +74,22 @@ public class CostRecommendService {
 
     if (spendMinutes <= 30) {
       q2 = 0.1f;
+      q3 = 0.5f;
     } else if (spendMinutes <= 60) {
       q2 = 0.3f;
+      q3 = 1f;
     } else if (spendMinutes <= 90) {
       q2 = 0.5f;
+      q3 = 1.5f;
     } else if (spendMinutes <= 120) {
       q2 = 0.7f;
+      q3 = 2f;
     } else if (spendMinutes <= 150) {
       q2 = 0.9f;
+      q3 = 2.5f;
     }
 
-    int recommendCost = (int) (minWage + (minWage * q1 * q2));
+    int recommendCost = (int) (minWage * q3 + (minWage * q1 * q2));
 
     return new CostRecommendResponse(recommendCost);
   }
@@ -98,6 +104,7 @@ public class CostRecommendService {
     int spendMinutes = request.getMinutes();
     float q1 = 0; //거리 가중치
     float q2 = 0; //시간 가중치
+    float q3 = 0; //최저시급 가중치
 
     if (level == 1) {
       q1 = 0.1f;
@@ -113,17 +120,22 @@ public class CostRecommendService {
 
     if (spendMinutes <= 30) {
       q2 = 0.1f;
+      q3 = 0.5f;
     } else if (spendMinutes <= 60) {
       q2 = 0.3f;
+      q3 = 1f;
     } else if (spendMinutes <= 90) {
       q2 = 0.5f;
+      q3 = 1.5f;
     } else if (spendMinutes <= 120) {
       q2 = 0.7f;
+      q3 = 2f;
     } else if (spendMinutes <= 150) {
       q2 = 0.9f;
+      q3 = 2.5f;
     }
 
-    int recommendCost = (int) (minWage + (minWage * q1 * q2));
+    int recommendCost = (int) (minWage * q3 + (minWage * q1 * q2));
 
     return new CostRecommendResponse(recommendCost);
   }
@@ -138,6 +150,7 @@ public class CostRecommendService {
     int spendMinutes = request.getMinutes();
     float q1 = 0; //거리 가중치
     float q2 = 0; //시간 가중치
+    float q3 = 0; //최저시급 가중치
 
     if (level == 1) {
       q1 = 0.1f;
@@ -153,13 +166,16 @@ public class CostRecommendService {
 
     if (spendMinutes <= 60) {
       q2 = 0.3f;
+      q3 = 1f;
     } else if (spendMinutes <= 120) {
       q2 = 0.6f;
+      q3 = 2f;
     } else if (spendMinutes <= 180) {
       q2 = 0.9f;
+      q3 = 3f;
     }
 
-    int recommendCost = (int) (minWage + (minWage * q1 * q2));
+    int recommendCost = (int) (minWage * q3 + (minWage * q1 * q2));
 
     return new CostRecommendResponse(recommendCost);
   }
