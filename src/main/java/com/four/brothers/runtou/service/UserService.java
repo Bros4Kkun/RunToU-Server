@@ -206,4 +206,10 @@ public class UserService {
     return true;
   }
 
+  @Transactional
+  public ProfileInfo showUserProfileInfo(String accountId) {
+    User user = userRepository.findUserByAccountId(accountId).get();
+    return new ProfileInfo(user);
+  }
+
 }
