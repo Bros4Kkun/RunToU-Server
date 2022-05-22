@@ -14,7 +14,7 @@ public class CostDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class DeliveryShoppingRequest {
-    @Range(min = 0, max = 5)
+    @Range(min = -1, max = 5)
     private int distance; //중간지점과 최종지점 사이의 거리 (km)
     @Range(min = 0, max = 90)
     private int minutes; //소요시간 (분)
