@@ -1,7 +1,5 @@
 package com.four.brothers.runtou.controller;
 
-import com.four.brothers.runtou.dto.AdminDto;
-import com.four.brothers.runtou.dto.UserDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.LoginExceptionCode;
@@ -218,4 +216,13 @@ public class UserRestController {
 
     return true;
   }
+
+  @Operation(summary = "프로필 조회")
+  @GetMapping("/profile/{accountId}")
+  ProfileInfo getUserProfile(@RequestParam String accountId,
+                             @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
+    ProfileInfo result = userService.showUserProfileInfo(accountId);
+    return result;
+  }
+
 }

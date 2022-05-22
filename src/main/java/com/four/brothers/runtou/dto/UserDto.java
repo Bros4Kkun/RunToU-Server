@@ -1,5 +1,6 @@
 package com.four.brothers.runtou.dto;
 
+import com.four.brothers.runtou.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,6 +84,28 @@ public class UserDto {
     private String accountId;
     private String nickname;
     private int point;
+  }
+
+  @Setter
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class ProfileInfo {
+    private String accountId;
+    private String nickname;
+    private String realName;
+    private String phoneNumber;
+    private String selfIntroduction;
+    private int point;
+
+    public ProfileInfo(User entity) {
+      this.accountId = entity.getAccountId();
+      this.nickname = entity.getNickname();
+      this.realName = entity.getRealName();
+      this.phoneNumber = entity.getPhoneNumber();
+      this.selfIntroduction = entity.getSelfIntroduction();
+      this.point = entity.getPoint();
+    }
   }
 
 }
