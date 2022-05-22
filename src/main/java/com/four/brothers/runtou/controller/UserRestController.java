@@ -209,7 +209,7 @@ public class UserRestController {
   @PostMapping("/profile")
   boolean updateUserSelfIntroduction(@RequestBody @Validated SelfIntroductionUpdateRequest request,
                                      BindingResult bindingResult,
-                                     @SessionAttribute LoginUser loginUser) {
+                                     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
     if (bindingResult.hasErrors()) {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
     }
