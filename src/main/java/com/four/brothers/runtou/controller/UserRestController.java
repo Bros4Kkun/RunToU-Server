@@ -206,7 +206,7 @@ public class UserRestController {
   }
 
   @Operation(summary = "자기소개글 변경")
-  @PostMapping("/profile")
+  @PostMapping("/profile/introduction")
   boolean updateUserSelfIntroduction(@RequestBody @Validated SelfIntroductionUpdateRequest request,
                                      BindingResult bindingResult,
                                      @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
