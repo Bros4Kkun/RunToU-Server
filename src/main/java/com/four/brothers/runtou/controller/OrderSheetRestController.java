@@ -138,7 +138,7 @@ public class OrderSheetRestController {
 
   @Operation(summary = "'배달 및 장보기' 가격 추천")
   @PostMapping("/delivery-shopping/cost")
-  public CostRecommendResponse recommendGoodCostForDeliveryShopping(@Validated @ModelAttribute DeliveryShoppingRequest request,
+  public CostRecommendResponse recommendGoodCostForDeliveryShopping(@Validated @RequestBody DeliveryShoppingRequest request,
                                                  BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
@@ -150,7 +150,7 @@ public class OrderSheetRestController {
 
   @Operation(summary = "'청소 및 집안일' 가격 추천")
   @PostMapping("/cleaning-housework/cost")
-  public CostRecommendResponse recommendGoodCostForCleaningHousework(@Validated @ModelAttribute CleaningHouseworkRequest request,
+  public CostRecommendResponse recommendGoodCostForCleaningHousework(@Validated @RequestBody CleaningHouseworkRequest request,
                                                                     BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
@@ -162,7 +162,7 @@ public class OrderSheetRestController {
 
   @Operation(summary = "'설치 조립 및 운반' 가격 추천")
   @PostMapping("/delivery-installation/cost")
-  public CostRecommendResponse recommendGoodCostForDeliveryInstallation(@Validated @ModelAttribute DeliveryInstallationRequest request,
+  public CostRecommendResponse recommendGoodCostForDeliveryInstallation(@Validated @RequestBody DeliveryInstallationRequest request,
                                                                      BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
@@ -174,7 +174,7 @@ public class OrderSheetRestController {
 
   @Operation(summary = "'동행 및 돌봄, 역할 대행' 가격 추천")
   @PostMapping("/accompany-role-acting/cost")
-  public CostRecommendResponse recommendGoodCostForAccompanyRoleActing(@Validated @ModelAttribute AccompanyRoleActingRequest request,
+  public CostRecommendResponse recommendGoodCostForAccompanyRoleActing(@Validated @RequestBody AccompanyRoleActingRequest request,
                                                                         BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
