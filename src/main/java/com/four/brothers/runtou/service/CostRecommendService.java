@@ -25,7 +25,9 @@ public class CostRecommendService {
     float q1 = 0; //거리 가중치
     float q2 = 0; //시간 가중치
 
-    if (distance <= 1) {
+    if (distance == -1) { //임시 처리 TODO - 수정필요
+      q1 = 0.6f;
+    } else if (distance <= 1) {
       q1 = 0.3f;
     } else if (distance <= 3) {
       q1 = 0.6f;
