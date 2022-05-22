@@ -219,7 +219,7 @@ public class UserRestController {
 
   @Operation(summary = "프로필 조회")
   @GetMapping("/profile/{accountId}")
-  ProfileInfo getUserProfile(@RequestParam String accountId,
+  ProfileInfo getUserProfile(@PathVariable String accountId,
                              @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
     ProfileInfo result = userService.showUserProfileInfo(accountId);
     return result;
