@@ -137,7 +137,7 @@ public class OrderSheetRestController {
   }
 
   @Operation(summary = "'배달 및 장보기' 가격 추천")
-  @GetMapping("/delivery-shopping/cost")
+  @PostMapping("/delivery-shopping/cost")
   public CostRecommendResponse recommendGoodCostForDeliveryShopping(@Validated @ModelAttribute DeliveryShoppingRequest request,
                                                  BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
@@ -149,7 +149,7 @@ public class OrderSheetRestController {
   }
 
   @Operation(summary = "'청소 및 집안일' 가격 추천")
-  @GetMapping("/cleaning-housework/cost")
+  @PostMapping("/cleaning-housework/cost")
   public CostRecommendResponse recommendGoodCostForCleaningHousework(@Validated @ModelAttribute CleaningHouseworkRequest request,
                                                                     BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
@@ -161,7 +161,7 @@ public class OrderSheetRestController {
   }
 
   @Operation(summary = "'설치 조립 및 운반' 가격 추천")
-  @GetMapping("/delivery-installation/cost")
+  @PostMapping("/delivery-installation/cost")
   public CostRecommendResponse recommendGoodCostForDeliveryInstallation(@Validated @ModelAttribute DeliveryInstallationRequest request,
                                                                      BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
@@ -173,7 +173,7 @@ public class OrderSheetRestController {
   }
 
   @Operation(summary = "'동행 및 돌봄, 역할 대행' 가격 추천")
-  @GetMapping("/accompany-role-acting/cost")
+  @PostMapping("/accompany-role-acting/cost")
   public CostRecommendResponse recommendGoodCostForAccompanyRoleActing(@Validated @ModelAttribute AccompanyRoleActingRequest request,
                                                                         BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
