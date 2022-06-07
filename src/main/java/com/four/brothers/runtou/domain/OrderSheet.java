@@ -19,7 +19,7 @@ public class OrderSheet extends BaseTimeEntity {
   @Column
   private Long id;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "ORDERER_ID", nullable = false)
   private Orderer orderer;
 

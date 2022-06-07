@@ -27,7 +27,7 @@ public class Performer extends User {
   @OneToMany(mappedBy = "performer")
   private List<Matching> matchings = new ArrayList<>();
 
-  @OneToMany(mappedBy = "performer", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "performer")
   private List<ChatRoom> chatRooms = new ArrayList<>();
 
   public Performer(long id, String accountId, String password, String realName, String nickname, String phoneNumber, String accountNumber, Boolean isDoingJobNow, LocalDateTime becamePerformerDateTime, Long earnedMoney) {
