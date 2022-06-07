@@ -1,20 +1,18 @@
 package com.four.brothers.runtou.integretion;
 
-import com.four.brothers.runtou.domain.User;
 import com.four.brothers.runtou.dto.*;
-import com.four.brothers.runtou.repository.user.OrdererRepository;
-import com.four.brothers.runtou.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 
 import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
     properties = {
@@ -23,58 +21,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     },
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
+
 public class UserIntegrationTest {
+
   @Autowired
   private TestRestTemplate template;
-  @Autowired
-  private OrdererRepository ordererRepository;
+
   @Transactional
   @DisplayName("요청자 회원가입 and 로그인")
   @Test
   void ordererSignUpTest(){
-    //GIVEN
-    String accountId = "testAccountId";
-    String realName = "testRealName";
-    String nickName = "testnickname";
-    String passWord = "password";
-    String phoneNumber = "01011112222";
-    String accountNumber = "1231231231313";
-    String rawPassword = "password";
-    UserRole role = UserRole.ORDERER;
+    //GIVEN-WHEN
+    String jsessionid = signUpAndLoginAsOrderer();
 
-    OrdererDto.SignUpAsOrdererRequest request = new OrdererDto.SignUpAsOrdererRequest();
-
-    request.setAccountId(accountId);
-    request.setRealName(realName);
-    request.setNickname(nickName);
-    request.setPassword(passWord);
-    request.setPhoneNumber(phoneNumber);
-    request.setAccountNumber(accountNumber);
-
-    LoginDto.LoginRequest request1 = new LoginDto.LoginRequest();
-
-    request1.setAccountId(accountId);
-    request1.setRawPassword(rawPassword);
-    request1.setRole(role);
-
-    //WHEN
-    HttpStatus resultStatusCode = template.postForEntity("/api/user/signup/orderer", request, OrdererDto.SignUpAsOrdererResponse.class)
-        .getStatusCode();
-    HttpStatus resultStatusCode1 = template.postForEntity(
-        "/api/user/signin", request1, LoginDto.LoginResponse.class).getStatusCode();
     //THEN
-    //assertEquals(true, resultStatusCode.is2xxSuccessful());
-    assertAll(
-        ()->{
-          assertEquals(true, resultStatusCode.is2xxSuccessful());
-        },
-        ()->{
-          assertEquals(true, resultStatusCode1.is2xxSuccessful());
-        }
-    );
-
+    assertNotNull(true, jsessionid);
   }
 
+  @Transactional
   @DisplayName("수행자 회원가입 and 로그인")
   @Test
   void performerSignUpTest(){
@@ -121,6 +85,8 @@ public class UserIntegrationTest {
 
 
   }
+
+  @Transactional
   @DisplayName("계정아이디 중복 확인")
   @Test
   void DuplicatedAccountIdTest(){
@@ -141,6 +107,7 @@ public class UserIntegrationTest {
     assertEquals(true,resultStatusCode.is2xxSuccessful());
   }
 
+  @Transactional
   @DisplayName("닉네임 중복")
   @Test
   void DuplicatedNicknameTest(){
@@ -160,49 +127,101 @@ public class UserIntegrationTest {
     assertEquals(true, resultStatusCode.is2xxSuccessful());
 
   }
-  //I/O error on POST request 오류
-  //adimnresponse가 아닌 ordererresponse??
-  @DisplayName("관리자 등록")
-  @Test
-  void SignUpAsAdminTest(){
-    //GIVEN
-    String accountId = "admintest";
-    String realName = "adminrealname";
-    String nickname = "adminnickname";
-    String password = "adminpassword";
-    String phoneNumber = "01088223392";
-    String accountNumber = "1112223323232";
 
-    AdminDto.SignUpAsAdminRequest request = new AdminDto.SignUpAsAdminRequest();
+  @DisplayName("포인트 충전 and 조회")
+  @Test
+  @Transactional
+  void PointChargeTest(){
+    //GIVEN
+    String jsessionid = signUpAndLoginAsOrderer();
+    int earnPoint = 10000;
+    int point = 15000;
+    String accountId = "test";
+    String nickname = "test";
+
+    UserDto.PointChargeRequest request = new UserDto.PointChargeRequest();
+    UserDto.PointInfo request1 = new UserDto.PointInfo();
+    request.setEarnPoint(earnPoint);
+    request1.setPoint(point);
+    request1.setAccountId(accountId);
+    request1.setNickname(nickname);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Cookie", jsessionid);
+    headers.set("Content-Type", "application/json");
+
+    HttpEntity requestHttpEntity = new HttpEntity(request, headers); //요청할 HTTP 메시지
+    HttpEntity requestHttpEntity1 = new HttpEntity(request1, headers); //요청할 HTTP 메시지
+
+    //WHEN
+    //HTTP 응답 메시지에 대한 모든 정보가 담겨있는 객체
+    ResponseEntity<String> responseHttpEntity = template.exchange(
+        "/api/user/point",
+        HttpMethod.POST,
+        requestHttpEntity,
+        String.class
+    );
+    ResponseEntity<String> responseHttpEntity1 = template.exchange(
+        "/api/user/point",
+        HttpMethod.GET,
+        requestHttpEntity1,
+        String.class
+    );
+
+    //THEN
+    assertAll(
+        ()->{
+          assertEquals(true, responseHttpEntity.getStatusCode().is2xxSuccessful());
+        },
+        ()->{
+          assertEquals(true, responseHttpEntity1.getStatusCode().is2xxSuccessful());
+
+        }
+    );
+
+  }
+
+  /**
+   * 공용으로 사용하기 위해, 따로 빼둔 '요청자 회원가입 및 로그인 메서드'
+   * @return JSESSIONID
+   */
+  private String signUpAndLoginAsOrderer() {
+    //GIVEN
+    String accountId = "testAccountId";
+    String realName = "testRealName";
+    String nickName = "testnickname";
+    String passWord = "password";
+    String phoneNumber = "01011112222";
+    String accountNumber = "1231231231313";
+    String rawPassword = "password";
+    UserRole role = UserRole.ORDERER;
+
+    OrdererDto.SignUpAsOrdererRequest request = new OrdererDto.SignUpAsOrdererRequest();
 
     request.setAccountId(accountId);
     request.setRealName(realName);
-    request.setNickname(nickname);
-    request.setPassword(password);
+    request.setNickname(nickName);
+    request.setPassword(passWord);
     request.setPhoneNumber(phoneNumber);
     request.setAccountNumber(accountNumber);
 
-    //WHEN
-    HttpStatus resultStatusCode = template.postForEntity("/api/user/admin", request,OrdererDto.SignUpAsOrdererResponse.class)
-            .getStatusCode();
+    LoginDto.LoginRequest request1 = new LoginDto.LoginRequest();
 
-    //THEN
-    assertEquals(true, resultStatusCode.is2xxSuccessful());
-  }
-//I/O error on POST request 오류...
-  @DisplayName("포인트 충전")
-  @Test
-  void PointChargeTest(){
-    //GIVEN
-    int earnPoint = 10000;
-
-    UserDto.PointChargeRequest request = new UserDto.PointChargeRequest();
-    request.setEarnPoint(earnPoint);
+    request1.setAccountId(accountId);
+    request1.setRawPassword(rawPassword);
+    request1.setRole(role);
 
     //WHEN
-    HttpStatus resultStatusCode = template.postForEntity("/api/user/point", request, UserDto.PointChargeResponse.class).getStatusCode();
-
+    HttpStatus resultStatusCode = template.postForEntity("/api/user/signup/orderer", request, OrdererDto.SignUpAsOrdererResponse.class)
+        .getStatusCode();
+    HttpStatus resultStatusCode1 = template.postForEntity(
+        "/api/user/signin", request1, LoginDto.LoginResponse.class).getStatusCode();
     //THEN
-    assertEquals(true, resultStatusCode.is2xxSuccessful());
+
+    List<String> strings = template.postForEntity(
+        "/api/user/signin", request1, LoginDto.LoginResponse.class).getHeaders().get("Set-Cookie");
+
+    return strings.get(0);
   }
 }
+

@@ -1,7 +1,5 @@
 package com.four.brothers.runtou.controller;
 
-import com.four.brothers.runtou.dto.AdminDto;
-import com.four.brothers.runtou.dto.UserDto;
 import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
 import com.four.brothers.runtou.exception.code.LoginExceptionCode;
@@ -204,4 +202,27 @@ public class UserRestController {
     PointInfo response = pointService.showPointInfo(loginUser);
     return response;
   }
+
+  @Operation(summary = "자기소개글 변경")
+  @PostMapping("/profile/introduction")
+  boolean updateUserSelfIntroduction(@RequestBody @Validated SelfIntroductionUpdateRequest request,
+                                     BindingResult bindingResult,
+                                     @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
+    if (bindingResult.hasErrors()) {
+      throw new BadRequestException(RequestExceptionCode.WRONG_FORMAT, bindingResult.getFieldError().getDefaultMessage());
+    }
+
+    userService.updateUserSelfIntroduction(request, loginUser);
+
+    return true;
+  }
+
+  @Operation(summary = "프로필 조회")
+  @GetMapping("/profile/{accountId}")
+  ProfileInfo getUserProfile(@PathVariable String accountId,
+                             @Parameter(hidden = true) @SessionAttribute LoginUser loginUser) {
+    ProfileInfo result = userService.showUserProfileInfo(accountId);
+    return result;
+  }
+
 }
