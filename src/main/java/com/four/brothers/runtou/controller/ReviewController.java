@@ -59,4 +59,10 @@ public class ReviewController {
     return result;
   }
 
+  @Operation(summary = "해당 수행자가 받은 모든 리뷰 조회")
+  @GetMapping("/performer/{performerPk}")
+  public List<ReviewInfo> getReceivedReviews(@PathVariable long performerPk) {
+    List<ReviewInfo> result = reviewService.showReceivedReviews(performerPk);
+    return result;
+  }
 }

@@ -103,6 +103,23 @@ public class ReviewRepository {
   }
 
   /**
+   * 수행자가 받은 리뷰 조회
+   * @param performerPk
+   * @return
+   */
+  public List<Review> findByPerformerId(long performerPk) {
+    String jpql = "select r from Review r " +
+        "join r.matching.performer p " +
+        "where p.id = :performerPk";
+
+    List<Review> result = em.createQuery(jpql, Review.class)
+        .setParameter("performerPk", performerPk)
+        .getResultList();
+
+    return result;
+  }
+
+  /**
    * pk값으로 삭제하는 메서드
    * @param pk
    */

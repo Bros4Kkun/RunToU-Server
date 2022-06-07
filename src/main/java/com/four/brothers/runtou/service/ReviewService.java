@@ -1,6 +1,7 @@
 package com.four.brothers.runtou.service;
 
 import com.four.brothers.runtou.domain.Matching;
+import com.four.brothers.runtou.domain.Performer;
 import com.four.brothers.runtou.domain.Review;
 import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.ReviewDto;
@@ -11,6 +12,7 @@ import com.four.brothers.runtou.exception.code.MatchingExceptionCode;
 import com.four.brothers.runtou.exception.code.ReviewExceptionCode;
 import com.four.brothers.runtou.repository.MatchingRepository;
 import com.four.brothers.runtou.repository.ReviewRepository;
+import com.four.brothers.runtou.repository.user.PerformerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ import static com.four.brothers.runtou.dto.ReviewDto.*;
 public class ReviewService {
   private final ReviewRepository reviewRepository;
   private final MatchingRepository matchingRepository;
+  private final PerformerRepository performerRepository;
 
   /**
    * 리뷰를 추가하는 메서드
@@ -70,6 +73,22 @@ public class ReviewService {
 
     long reviewerPk = loginUser.getUserPk();
     List<Review> resultEntityList = reviewRepository.findByOrdererId(reviewerPk);
+    List<ReviewInfo> response = new ArrayList<>();
+
+    resultEntityList.stream().forEach(item -> response.add(new ReviewInfo(item)));
+
+    return response;
+  }
+
+  @Transactional
+  public List<ReviewInfo> showReceivedReviews(long performerPk) {
+    Optional<Performer> performerOptional = performerRepository.findPerformerById(performerPk);
+
+    if (performerOptional.isEmpty()) {
+      throw new IllegalArgumentException("존재하지 않는 수행자 pk 값입니다.");
+    }
+
+    List<Review> resultEntityList = reviewRepository.findByPerformerId(performerPk);
     List<ReviewInfo> response = new ArrayList<>();
 
     resultEntityList.stream().forEach(item -> response.add(new ReviewInfo(item)));
