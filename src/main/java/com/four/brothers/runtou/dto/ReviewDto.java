@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class ReviewDto {
@@ -28,5 +30,16 @@ public class ReviewDto {
       this.score = entity.getScore();
       this.content = entity.getContent();
     }
+  }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class NewReview {
+    @NotNull
+    private ReviewScore score;
+    @NotEmpty
+    private String content;
   }
 }
