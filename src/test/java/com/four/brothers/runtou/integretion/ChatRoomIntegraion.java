@@ -137,9 +137,10 @@ public class ChatRoomIntegraion {
         requestHttpEntity,
         String.class
     );
+    System.out.println(responseHttpEntity);
 
     //THEN
-    assertNotNull(true, String.valueOf(responseHttpEntity.getStatusCode().is2xxSuccessful()));
+    assertEquals(true, responseHttpEntity.getStatusCode().is2xxSuccessful());
 
   }
   @Transactional
