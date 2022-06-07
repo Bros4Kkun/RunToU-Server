@@ -17,12 +17,12 @@ public class Report extends BaseTimeEntity {
   private Long id;
 
   //신고한 사람
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "REPORT_USER_ID", nullable = false)
   private User reportUser;
 
   //신고받은 사람
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "REPORTED_USER_ID", nullable = false)
   private User haveReportedUser;
 

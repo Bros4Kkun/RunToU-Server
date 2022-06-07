@@ -25,15 +25,15 @@ public class Matching extends BaseTimeEntity {
   @Column
   private Long id;
 
-  @OneToOne(fetch = FetchType.EAGER, optional = false)
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "ORDER_SHEET_ID", nullable = false, unique = true)
   private OrderSheet orderSheet;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "PERFORMER_ID", nullable = false)
   private Performer performer;
 
-  @OneToOne(mappedBy = "matching", fetch = FetchType.EAGER, orphanRemoval = true)
+  @OneToOne(mappedBy = "matching", orphanRemoval = true)
   private Review review;
 
   @Column(nullable = false)

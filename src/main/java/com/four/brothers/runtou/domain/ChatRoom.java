@@ -26,15 +26,15 @@ public class ChatRoom extends BaseTimeEntity {
   @Column
   private Long id;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "ORDERER_ID", nullable = false)
   private Orderer orderer;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "PERFORMER_ID", nullable = false)
   private Performer performer;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "ORDER_SHEET_ID", nullable = false)
   private OrderSheet orderSheet;
 

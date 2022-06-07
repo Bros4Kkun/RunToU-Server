@@ -16,11 +16,11 @@ public class ChatMessage extends BaseTimeEntity {
   @Column
   private Long id;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "USER_ID", nullable = false)
   private User user;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "CHAT_ROOM_ID", nullable = false)
   private ChatRoom chatRoom;
 
