@@ -150,7 +150,7 @@ public class OrderSheetIntegraionTest {
         String.class
     );
     ResponseEntity<String> reponseHttpEntity3 = template.exchange(
-        "/api/ordersheet" + orderSheetId,
+        "/api/ordersheet/" + orderSheetId,
         HttpMethod.POST,
         requestHttpEntity3,
         String.class
@@ -207,13 +207,13 @@ public class OrderSheetIntegraionTest {
 
     //WHEN
     ResponseEntity<String> responseHttpEntity = template.exchange(
-        "/api/ordersheet/delivert-shpping/cost",
+        "/api/ordarsheet/delivery-shopping/cost",
         HttpMethod.POST,
         requestHttpEntity,
         String.class
     );
     ResponseEntity<String> responseHttpEntity1 = template.exchange(
-        "/api,ordersheet/cleaning-house/cost",
+        "/api/ordersheet/cleaning-housework/cost",
         HttpMethod.POST,
         requestHttpEntity1,
         String.class
