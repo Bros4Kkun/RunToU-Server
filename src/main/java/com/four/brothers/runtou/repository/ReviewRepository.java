@@ -8,8 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReviewRepository {
@@ -48,6 +51,38 @@ public class ReviewRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  /**
+   * 매칭으로 리뷰를 찾는 메서드
+   * @param matching
+   * @return
+   */
+  public Optional<Review> findByMatching(Matching matching) {
+    String jpql = "select r from Review r " +
+        "where r.matching = :matching";
+    Review entity = null;
+
+    TypedQuery<Review> query = em.createQuery(jpql, Review.class)
+        .setParameter("matching", matching);
+
+    try {
+      entity = query.getSingleResult();
+    } catch (NoResultException e) {
+      return Optional.empty();
+    }
+
+    return Optional.of(entity);
+  }
+
+  /**
+   * 리뷰 pk 값으로 리뷰를 찾는 메서드
+   * @param pk
+   * @return
+   */
+  public Optional<Review> findById(long pk) {
+    Review review = em.find(Review.class, pk);
+    return Optional.ofNullable(review);
   }
 
   /**
