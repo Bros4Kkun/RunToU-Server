@@ -27,8 +27,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ChatRoomIntegraion {
 
+    @Autowired
+    private TestRestTemplate template;
   /**
-   * 공용으로 사용하기 위해, 따로 빼둔 '요청자 회원가입 및 로그인 메서드'
+   * 공용으로 사용하기 위해, 따로 빼둔 '수행자 회원가입 및 로그인 메서드'
    * @return JSESSIONID
    */
   private String signUpAndLoginAsPerformer() {
@@ -70,9 +72,6 @@ public class ChatRoomIntegraion {
     return strings.get(0);
   }
 
-  @Autowired
-  private TestRestTemplate template;
-
   @Transactional
   @DisplayName("채팅방 요청")
   @Test
@@ -96,7 +95,7 @@ public class ChatRoomIntegraion {
 
     //WHEN
     ResponseEntity<String> responseHttpEntity = template.exchange(
-        "/api/chatroom/ordersheet" + orderSheetPk,
+        "/api/chatroom/ordersheet/" + orderSheetPk,
         HttpMethod.POST,
         requestHttpEntity,
         String.class
