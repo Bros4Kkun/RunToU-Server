@@ -193,7 +193,7 @@ public class OrderSheetIntegraionTest {
 
     costdeliveryrequest.setDistance(distance);
     costdeliveryrequest.setMinutes(deliveryminutes);
-    costdeliveryrequest.setDistance(deliverycost);
+    costdeliveryrequest.setCost(deliverycost);
 
     costcleanrequest.setMinutes(cleanminute);
     costcleanrequest.setLevel(cleanlevel);
@@ -207,25 +207,25 @@ public class OrderSheetIntegraionTest {
 
     //WHEN
     ResponseEntity<String> responseHttpEntity = template.exchange(
-        "/api/ordarsheet/delivery-shopping/cost",
+        "/api/ordersheet/delivery-shopping/cost",
         HttpMethod.POST,
         requestHttpEntity,
         String.class
     );
+    System.out.println(responseHttpEntity);
     ResponseEntity<String> responseHttpEntity1 = template.exchange(
         "/api/ordersheet/cleaning-housework/cost",
         HttpMethod.POST,
         requestHttpEntity1,
         String.class
     );
-
     //THEN
     assertAll(
         ()->{
-            assertNotNull(true, String.valueOf(responseHttpEntity.getStatusCode().is2xxSuccessful()));
+            assertEquals(true,responseHttpEntity.getStatusCode().is2xxSuccessful());
         },
         ()->{
-          assertNotNull(true, String.valueOf(responseHttpEntity1.getStatusCode().is2xxSuccessful()));
+          assertEquals(true,responseHttpEntity1.getStatusCode().is2xxSuccessful());
         }
     );
   }
