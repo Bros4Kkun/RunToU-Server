@@ -2,8 +2,11 @@ package com.four.brothers.runtou.service;
 
 import com.four.brothers.runtou.domain.Matching;
 import com.four.brothers.runtou.domain.Review;
+import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.ReviewDto;
+import com.four.brothers.runtou.dto.UserRole;
 import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.exception.code.MatchingExceptionCode;
 import com.four.brothers.runtou.exception.code.ReviewExceptionCode;
 import com.four.brothers.runtou.repository.MatchingRepository;
@@ -12,8 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.ReviewDto.*;
 
 @RequiredArgsConstructor
@@ -48,6 +54,27 @@ public class ReviewService {
     }
 
     return new ReviewInfo(reviewOptional.get());
+  }
+
+  /**
+   * 사용자(심부름 요청자)가 작성한 모든 리뷰 조회
+   * @param loginUser
+   * @return
+   */
+  @Transactional
+  public List<ReviewInfo> showReviewsByReviewer(LoginUser loginUser) throws CanNotAccessException {
+
+    if (loginUser.getRole() != UserRole.ORDERER) {
+      throw new CanNotAccessException(ReviewExceptionCode.NOT_ORDERER, "오직 심부름 요청자만 자신이 작성한 리뷰를 확인할 수 있습니다.");
+    }
+
+    long reviewerPk = loginUser.getUserPk();
+    List<Review> resultEntityList = reviewRepository.findByOrdererId(reviewerPk);
+    List<ReviewInfo> response = new ArrayList<>();
+
+    resultEntityList.stream().forEach(item -> response.add(new ReviewInfo(item)));
+
+    return response;
   }
 
   private Matching getMatching(long matchingId) {

@@ -3,6 +3,7 @@ package com.four.brothers.runtou.controller;
 import com.four.brothers.runtou.dto.LoginDto;
 import com.four.brothers.runtou.dto.ReviewDto;
 import com.four.brothers.runtou.exception.BadRequestException;
+import com.four.brothers.runtou.exception.CanNotAccessException;
 import com.four.brothers.runtou.exception.code.RequestExceptionCode;
 import com.four.brothers.runtou.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.four.brothers.runtou.dto.LoginDto.*;
 import static com.four.brothers.runtou.dto.ReviewDto.*;
@@ -47,4 +50,13 @@ public class ReviewController {
     ReviewInfo result = reviewService.showReviewByMatchingId(matchingId);
     return result;
   }
+
+  @Operation(summary = "로그인한 유저(요청자)가 작성한 모든 리뷰 조회")
+  @GetMapping("/orderer/own")
+  public List<ReviewInfo> getReviewsByReviewer(@Parameter(hidden = true) @SessionAttribute LoginUser loginUser)
+      throws CanNotAccessException {
+    List<ReviewInfo> result = reviewService.showReviewsByReviewer(loginUser);
+    return result;
+  }
+
 }

@@ -86,6 +86,23 @@ public class ReviewRepository {
   }
 
   /**
+   * 리뷰 작성자(심부름 요청자)가 작성한 리뷰 조회
+   * @param ordererPk
+   * @return
+   */
+  public List<Review> findByOrdererId(long ordererPk) {
+    String jpql = "select r from Review r " +
+        "join r.matching.orderSheet.orderer o " +
+        "where o.id = :ordererPk";
+
+    List<Review> result = em.createQuery(jpql, Review.class)
+        .setParameter("ordererPk", ordererPk)
+        .getResultList();
+
+    return result;
+  }
+
+  /**
    * pk값으로 삭제하는 메서드
    * @param pk
    */
