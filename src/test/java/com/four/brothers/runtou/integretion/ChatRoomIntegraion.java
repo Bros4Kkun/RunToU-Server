@@ -103,46 +103,7 @@ public class ChatRoomIntegraion {
     //THEN
     assertTrue(true, String.valueOf(responseHttpEntity.getStatusCode().is2xxSuccessful()));
   }
-
-  @Transactional
-  @DisplayName("채팅방 정보 확인(existchatroom)")
-  @Test
-  void showChatRoomTest(){
-    //GIVEN
-    String jsessionid = signUpAndLoginAsPerformer();
-
-    long chatRoomPk = 6;
-    List<ChatMessageDto.ChatMessageResponse> messageList = new ArrayList<ChatMessageDto.ChatMessageResponse>() {
-      long chatMessagepk = 4;
-      String writerAccountId = "testid";
-      String writerNickname = "testnickname";
-      long chatRoompk = 6;
-      String content = "lololo";
-      LocalDateTime createdDate = LocalDateTime.now();
-    };
-
-    ChatRoomDto.ExistChatRoomResponse existChatRoomResponse = new ChatRoomDto.ExistChatRoomResponse();
-    existChatRoomResponse.setChatRoomPk(chatRoomPk);
-    existChatRoomResponse.setMessageList(messageList);
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("Cookie", jsessionid);
-    headers.set("Content-Type", "application/json");
-
-    HttpEntity requestHttpEntity = new HttpEntity(existChatRoomResponse, headers);
-
-    ResponseEntity<String> responseHttpEntity = template.exchange(
-        "/api/chatroom/" + chatRoomPk,
-        HttpMethod.GET,
-        requestHttpEntity,
-        String.class
-    );
-    System.out.println(responseHttpEntity);
-
-    //THEN
-    assertEquals(true, responseHttpEntity.getStatusCode().is2xxSuccessful());
-
-  }
+  
   @Transactional
   @DisplayName("로그인 된 사용자가 참여하는 모든 채팅방 정보 확인(simpleChatRoomInfo)")
   @Test
