@@ -71,51 +71,6 @@ public class chatcontrollerIntegrationTest {
 
     return strings.get(0);
   }
-/*
-  @Transactional
-  @DisplayName("메세지보내기")
-  @Test
-  void sendChatTest(){
-    //GIVEN
-    String msg = "hi";
-    long chatRoomPk = 33;
-    String jsessionid = signUpAndLoginAsOrderer();
-    long userpk = 22;
-    String accountId = "test";
-    String realName = "testre";
-    String nickname = "testni";
-    String phoneNumber = "0000001101";
-    String accountNumber = "22223241414";
-    UserRole role = UserRole.ORDERER;
-
-    LoginDto.LoginUser loginUser = new LoginDto.LoginUser();
-    loginUser.setUserPk(userpk);
-    loginUser.setAccountId(accountId);
-    loginUser.setRealName(realName);
-    loginUser.setNickname(nickname);
-    loginUser.setPhoneNumber(phoneNumber);
-    loginUser.setAccountNumber(accountNumber);
-    loginUser.setRole(role);
-
-    //ChatMessageDto.ChatMessageResponse response = new ChatMessageDto.ChatMessageResponse();
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("Cookie", jsessionid);
-    headers.set("Content-Type", "application/json");
-
-    HttpEntity requestHttpEntity = new HttpEntity(msg, headers);
-
-    ResponseEntity<String> responseHttpEntity = template.exchange(
-        "/api/chat/chatroom/" + chatRoomPk,
-        HttpMethod.POST,
-        requestHttpEntity,
-        String.class
-    );
-    System.out.println(responseHttpEntity);
-    //THEN
-    assertEquals(true,responseHttpEntity.getStatusCode().is2xxSuccessful());
-
-  }*/
 
   @Transactional
   @DisplayName("jwt토큰발급")
