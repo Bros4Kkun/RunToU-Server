@@ -24,11 +24,11 @@ public class MatchRequest extends BaseTimeEntity {
   @Column
   private Long id;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "ORDER_SHEET_ID", nullable = false)
   private OrderSheet orderSheet;
 
-  @OneToOne(fetch = FetchType.EAGER, optional = false)
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "PERFORMER_ID", nullable = false)
   private Performer performer;
 

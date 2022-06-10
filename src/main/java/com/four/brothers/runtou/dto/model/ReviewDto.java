@@ -20,7 +20,7 @@ public class ReviewDto implements ModelDto<ReviewDto, Review> {
   @Override
   public ReviewDto toDtoFromEntity(Review entity) {
     this.id = entity.getId();
-    this.matchingId = matchingId;
+    this.matchingId = entity.getMatching().getId();
     this.score = entity.getScore();
     this.content = entity.getContent();
     return this;

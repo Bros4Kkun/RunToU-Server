@@ -16,7 +16,7 @@ public class Review extends BaseTimeEntity {
   @Column
   private Long id;
 
-  @OneToOne(fetch = FetchType.EAGER, optional = false)
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "MATCHING_ID", nullable = false, unique = true)
   private Matching matching;
 

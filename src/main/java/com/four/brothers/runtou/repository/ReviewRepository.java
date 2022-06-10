@@ -8,8 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReviewRepository {
@@ -48,6 +51,72 @@ public class ReviewRepository {
       .getResultList();
 
     return resultList;
+  }
+
+  /**
+   * 매칭으로 리뷰를 찾는 메서드
+   * @param matching
+   * @return
+   */
+  public Optional<Review> findByMatching(Matching matching) {
+    String jpql = "select r from Review r " +
+        "where r.matching = :matching";
+    Review entity = null;
+
+    TypedQuery<Review> query = em.createQuery(jpql, Review.class)
+        .setParameter("matching", matching);
+
+    try {
+      entity = query.getSingleResult();
+    } catch (NoResultException e) {
+      return Optional.empty();
+    }
+
+    return Optional.of(entity);
+  }
+
+  /**
+   * 리뷰 pk 값으로 리뷰를 찾는 메서드
+   * @param pk
+   * @return
+   */
+  public Optional<Review> findById(long pk) {
+    Review review = em.find(Review.class, pk);
+    return Optional.ofNullable(review);
+  }
+
+  /**
+   * 리뷰 작성자(심부름 요청자)가 작성한 리뷰 조회
+   * @param ordererPk
+   * @return
+   */
+  public List<Review> findByOrdererId(long ordererPk) {
+    String jpql = "select r from Review r " +
+        "join r.matching.orderSheet.orderer o " +
+        "where o.id = :ordererPk";
+
+    List<Review> result = em.createQuery(jpql, Review.class)
+        .setParameter("ordererPk", ordererPk)
+        .getResultList();
+
+    return result;
+  }
+
+  /**
+   * 수행자가 받은 리뷰 조회
+   * @param performerPk
+   * @return
+   */
+  public List<Review> findByPerformerId(long performerPk) {
+    String jpql = "select r from Review r " +
+        "join r.matching.performer p " +
+        "where p.id = :performerPk";
+
+    List<Review> result = em.createQuery(jpql, Review.class)
+        .setParameter("performerPk", performerPk)
+        .getResultList();
+
+    return result;
   }
 
   /**
