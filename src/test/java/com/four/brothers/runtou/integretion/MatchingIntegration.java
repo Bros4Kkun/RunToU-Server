@@ -31,7 +31,7 @@ public class MatchingIntegration {
   private TestRestTemplate template;
 
   /**
-   * 공용으로 사용하기 위해, 따로 빼둔 '요청자 회원가입 및 로그인 메서드'
+   * 공용으로 사용하기 위해, 따로 빼둔 '수행자 회원가입 및 로그인 메서드'
    *
    * @return JSESSIONID
    */
