@@ -86,6 +86,7 @@ public class MatchingIntegration {
     long chatRoomPk = 77;
     long matchRequestId = 33;
     long orderSheetId = 44;
+
     String ordererNickname = "testnickname";
     String title = "testtitle";
     String contentSample = "sameple";
@@ -103,26 +104,14 @@ public class MatchingIntegration {
     boolean isAccepted = false;
     boolean isOrderSheetMatched = false;
 
-    OrderSheetDto.SimpOrderSheetInfo orderSheetInfo = new OrderSheetDto.SimpOrderSheetInfo
-        (orderSheetId, ordererNickname, title, contentSample, orderSheetCategory,destination, cost );
-
-    OrdererDto.SimpOrdererInfo ordererInfo = new OrdererDto.SimpOrdererInfo(ordererid, ordereraccountId, ordererNickname);
-
-    PerformerDto.SimpPerformerInfo performerInfo = new PerformerDto.SimpPerformerInfo(perforemrid, performeracoountid, performernickname);
-
-    MatchRequestDto.MatchRequestInfo matchRequestInfo = new MatchRequestDto.MatchRequestInfo
-        (matchRequestId, orderSheetInfo, ordererInfo, performerInfo, isAccepted, isOrderSheetMatched);
-
-    long ordererid1 = 23;
-    //String ordereraccountId1 = "aaaaaddd";
     String ordererpassword = "aasdfava";
-    //String ordererNickname1 = "testnickname";
     String ordererrealName = "ck";
     String ordererphoneNumber = "0101998992";
     String ordereraccountNumber = "1123123141";
     Boolean isDoingJobNow = false;
-    Orderer orderer = new Orderer
-        (ordererid, ordereraccountId, ordererpassword, ordererNickname, ordererrealName, ordererphoneNumber, ordereraccountNumber, isDoingJobNow );
+
+    Orderer orderer = new Orderer(ordererid, ordereraccountId, ordererpassword, ordererNickname, ordererrealName, ordererphoneNumber, ordereraccountNumber, isDoingJobNow);
+    //ordererid, ordereraccountId, ordererpassword, ordererNickname, ordererrealName, ordererphoneNumber, ordereraccountNumber, isDoingJobNow
 
     String perforemrpassword = "aaaaaaaa";
     String perforemrrealName = "cg";
@@ -130,15 +119,49 @@ public class MatchingIntegration {
     String performeraccountNumber = "1515151222";
     LocalDateTime becamePerformerDateTime = LocalDateTime.now();
     Long earnedMoney = 15000l;
-    Performer performer = new Performer
-        (perforemrid, performeracoountid, perforemrpassword, performernickname, perforemrrealName, perforemrphoneNumber, performeraccountNumber,isDoingJobNow, becamePerformerDateTime, earnedMoney);
+
+    Performer performer = new Performer(perforemrid, performeracoountid, perforemrpassword, performernickname, perforemrrealName, perforemrphoneNumber, performeraccountNumber,isDoingJobNow, becamePerformerDateTime, earnedMoney);
+   // perforemrid, performeracoountid, perforemrpassword, performernickname, perforemrrealName, perforemrphoneNumber, performeraccountNumber,isDoingJobNow, becamePerformerDateTime, earnedMoney
 
     String ordersheetcontent = "빠르게";
     LocalDateTime wishedDeadline = LocalDateTime.now();
+
     OrderSheet orderSheet = new OrderSheet(orderer, title, ordersheetcontent, orderSheetCategory, destination, cost, wishedDeadline);
+    //orderer, title, ordersheetcontent, orderSheetCategory, destination, cost, wishedDeadline
 
     chatRoomRepository.saveChatRoom(orderer, performer, orderSheet);
     chatRoomRepository.findChatRoomById(chatRoomPk);
+
+
+    OrderSheetDto.SimpOrderSheetInfo orderSheetInfo = new OrderSheetDto.SimpOrderSheetInfo();
+    orderSheetInfo.setOrderSheetId(orderSheetId);
+    orderSheetInfo.setOrdererNickname(ordererNickname);
+    orderSheetInfo.setTitle(title);
+    orderSheetInfo.setContentSample(contentSample);
+    orderSheetInfo.setCategory(orderSheetCategory);
+    orderSheetInfo.setDestination(destination);
+    orderSheetInfo.setCost(cost);
+
+    OrdererDto.SimpOrdererInfo ordererInfo = new OrdererDto.SimpOrdererInfo();
+
+    ordererInfo.setId(ordererid);
+    ordererInfo.setAccountId(ordereraccountId);
+    ordererInfo.setNickname(ordererNickname);
+
+    PerformerDto.SimpPerformerInfo performerInfo = new PerformerDto.SimpPerformerInfo();
+
+    performerInfo.setId(perforemrid);
+    performerInfo.setAccountId(performeracoountid);
+    performerInfo.setNickname(performernickname);
+
+    MatchRequestDto.MatchRequestInfo matchRequestInfo = new MatchRequestDto.MatchRequestInfo();
+    matchRequestInfo.setMatchRequestId(matchRequestId);
+    matchRequestInfo.setOrdererInfo(ordererInfo);
+    matchRequestInfo.setOrderSheetInfo(orderSheetInfo);
+    matchRequestInfo.setPerformerInfo(performerInfo);
+    matchRequestInfo.setAccepted(isAccepted);
+    matchRequestInfo.setOrderSheetMatched(isOrderSheetMatched);
+// 이곳
 
     HttpHeaders headers = new HttpHeaders();
     headers.set("Cookie", jsessionid);
